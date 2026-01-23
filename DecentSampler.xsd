@@ -1797,8 +1797,9 @@ Oscillators are useful for creating synthetic layers, sub-bass, or completely sy
             <xs:annotation>
                 <xs:documentation>
 The waveform type for the oscillator.
-Options: `sine`, `saw`, `square`, `triangle`, `noise`, `white_noise`
+Options: `sine`, `saw`, `square`, `triangle`, `noise`, `white_noise`, `pluck1`
 Note: Both `noise` and `white_noise` refer to the same white noise generator.
+      `pluck1` is a physical modeling oscillator using digital waveguide synthesis to simulate plucked strings.
 Default: `sine`
                 </xs:documentation>
             </xs:annotation>
@@ -1810,6 +1811,7 @@ Default: `sine`
                     <xs:enumeration value="triangle"/>
                     <xs:enumeration value="noise"/>
                     <xs:enumeration value="white_noise"/>
+                    <xs:enumeration value="pluck1"/>
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
@@ -1823,6 +1825,44 @@ Example: `12` would play an octave up, `-12` an octave down, `7` a perfect fifth
 Default: `0`
                 </xs:documentation>
             </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="damping" default="0.5">
+            <xs:annotation>
+                <xs:documentation>
+Controls the decay time of the plucked string (only applicable when waveform="pluck1").
+Range: 0.0 to 1.0
+Lower values (closer to 0.0) create heavily damped, shorter sounds.
+Higher values (closer to 1.0) create minimal damping with longer, more resonant decay.
+This simulates the natural damping characteristics of string materials and playing techniques.
+Default: `0.5`
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:decimal">
+                    <xs:minInclusive value="0.0"/>
+                    <xs:maxInclusive value="1.0"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="pluckType" default="0.5">
+            <xs:annotation>
+                <xs:documentation>
+Blends between different excitation signals to control timbral character (only applicable when waveform="pluck1").
+Range: 0.0 to 1.0
+At 0.0: smooth triangle wave excitation producing a softer, mellower tone.
+At 1.0: noise burst excitation producing a brighter, more aggressive attack with richer harmonics.
+Intermediate values blend between the two extremes.
+Default: `0.5`
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:decimal">
+                    <xs:minInclusive value="0.0"/>
+                    <xs:maxInclusive value="1.0"/>
+                </xs:restriction>
+            </xs:simpleType>
         </xs:attribute>
 
         <xs:attributeGroup ref="regionSettings" />
@@ -2057,6 +2097,8 @@ Default: `0`
             <xs:enumeration value="GROUP_TUNING" />
             <xs:enumeration value="PAN" />
             <xs:enumeration value="OSCILLATOR_WAVEFORM" />
+            <xs:enumeration value="OSCILLATOR_DAMPING" />
+            <xs:enumeration value="OSCILLATOR_PLUCK_TYPE" />
             <xs:enumeration value="AMP_VEL_TRACK" />
             <xs:enumeration value="ENV_ATTACK" />
             <xs:enumeration value="ENV_DECAY" />
@@ -2399,6 +2441,27 @@ This can also be set at the `&lt;group&gt;` level. Default: `attack`.
                     <xs:enumeration value="legato" />
                 </xs:restriction>
             </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="releaseTriggerDecay" type="decibelOrAbsoluteGain">
+            <xs:annotation><xs:documentation>
+Controls the volume decay rate for release-triggered samples based on how long the note was held.
+When a release trigger sample plays, its volume decreases based on the time elapsed since the note was initially pressed.
+
+The value can be specified in two formats:
+
+**Decibel format (recommended):** Append "dB" to specify decay in decibels per second.
+For example, `"3dB"` means the volume decreases by 3dB for each second the note was held.
+If you specify a positive dB value, it will be automatically converted to negative (decay direction).
+
+**Linear format:** A decimal value between 0.0 and 1.0 specifying the linear gain decay factor per second.
+For example, `0.3` means the volume decreases by a factor of 0.3 each second.
+
+This is useful for piano pedal-up samples and other release triggers where shorter notes should have louder release samples.
+Can be set at the `&lt;group&gt;`, `&lt;sample&gt;`, or `&lt;groups&gt;` level.
+
+Default: `0.0` (no decay - release samples play at full velocity regardless of note duration)
+            </xs:documentation></xs:annotation>
         </xs:attribute>
 
         <xs:attributeGroup ref="adsrEnvelope" />
