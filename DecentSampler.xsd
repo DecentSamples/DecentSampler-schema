@@ -2731,6 +2731,17 @@ Values: `fast`, `normal`. Default: `fast`
             </xs:simpleType>
         </xs:attribute>
 
+        <xs:attribute name="silencingDecay" type="xs:decimal">
+            <xs:annotation><xs:documentation>
+Specifies a custom fade-out time in seconds when a voice is silenced by the silencedByTags mechanism or tag polyphony limits.
+When set to a value greater than 0, this overrides the silencingMode behavior and uses the specified decay time for the fade-out.
+This provides precise control over silencing transitions.
+For example, silencingDecay="0.05" creates a 50ms fade-out.
+
+Default: 0 (uses silencingMode instead)
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
         <xs:attribute name="previousNote" type="noteNameOrNumber">
             <xs:annotation><xs:documentation>
 Only play this sample if the previously triggered note equals this note.
