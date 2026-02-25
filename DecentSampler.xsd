@@ -45,6 +45,7 @@ SOFTWARE.
                 <xs:element name="effects" type="effects" />
                 <xs:element name="midi" type="midi" />
                 <xs:element name="modulators" type="modulators"></xs:element>
+                <xs:element name="buses" type="buses" />
             </xs:choice>
 
             <xs:attribute name="minVersion" type="xs:string">
@@ -1658,6 +1659,49 @@ Attributes: `damping`, `roomSize`, `wetLevel`
 
 <!--=================================-->
 
+    <xs:complexType name="buses">
+        <xs:annotation><xs:documentation>
+Optionally, you can have up to 16 buses defined in the `buses` element.
+Buses can be used to create a more complex mix of the samples and to route audio to various audio outputs.
+This feature was added in version 1.12.0.
+        </xs:documentation></xs:annotation>
+        <xs:sequence>
+            <xs:element name="bus" type="busElement" minOccurs="0" maxOccurs="16" />
+        </xs:sequence>
+    </xs:complexType>
+
+<!--=================================-->
+
+    <xs:complexType name="busElement">
+        <xs:annotation><xs:documentation>
+Specify parameters for each individual bus. Each bus can have its own volume, output routing, and effects chain.
+        </xs:documentation></xs:annotation>
+        <xs:sequence>
+            <xs:element name="effects" type="groupEffects" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="busVolume" type="decimalMultiplier">
+            <xs:annotation><xs:documentation>The volume of the bus (0.0–1.0). Default: 1.0</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="output1Target" type="outputTargetType"><xs:annotation><xs:documentation>First audio output target for this bus.</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attribute name="output2Target" type="outputTargetType"><xs:annotation><xs:documentation>Second audio output target for this bus.</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attribute name="output3Target" type="outputTargetType"><xs:annotation><xs:documentation>Third audio output target for this bus.</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attribute name="output4Target" type="outputTargetType"><xs:annotation><xs:documentation>Fourth audio output target for this bus.</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attribute name="output5Target" type="outputTargetType"><xs:annotation><xs:documentation>Fifth audio output target for this bus.</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attribute name="output6Target" type="outputTargetType"><xs:annotation><xs:documentation>Sixth audio output target for this bus.</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attribute name="output7Target" type="outputTargetType"><xs:annotation><xs:documentation>Seventh audio output target for this bus.</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attribute name="output8Target" type="outputTargetType"><xs:annotation><xs:documentation>Eighth audio output target for this bus.</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attribute name="output1Volume" type="decimalMultiplier"><xs:annotation><xs:documentation>Volume of audio sent to output 1 (0.0–1.0).</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attribute name="output2Volume" type="decimalMultiplier"><xs:annotation><xs:documentation>Volume of audio sent to output 2 (0.0–1.0).</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attribute name="output3Volume" type="decimalMultiplier"><xs:annotation><xs:documentation>Volume of audio sent to output 3 (0.0–1.0).</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attribute name="output4Volume" type="decimalMultiplier"><xs:annotation><xs:documentation>Volume of audio sent to output 4 (0.0–1.0).</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attribute name="output5Volume" type="decimalMultiplier"><xs:annotation><xs:documentation>Volume of audio sent to output 5 (0.0–1.0).</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attribute name="output6Volume" type="decimalMultiplier"><xs:annotation><xs:documentation>Volume of audio sent to output 6 (0.0–1.0).</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attribute name="output7Volume" type="decimalMultiplier"><xs:annotation><xs:documentation>Volume of audio sent to output 7 (0.0–1.0).</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attribute name="output8Volume" type="decimalMultiplier"><xs:annotation><xs:documentation>Volume of audio sent to output 8 (0.0–1.0).</xs:documentation></xs:annotation></xs:attribute>
+    </xs:complexType>
+
+<!--=================================-->
+
     <xs:simpleType name="globalEffectType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="bandpass" />
@@ -1699,6 +1743,7 @@ MIDI mappings.
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="cc" type="midiCCElement" />
             <xs:element name="note" type="midiNoteElement" />
+            <xs:element name="velocity" type="midiVelocityElement" />
         </xs:choice>
     </xs:complexType>
 
@@ -1739,6 +1784,21 @@ Beneath the `note` element, you can have any number of bindings.
     </xs:complexType>
 
 <!--=================================-->
+
+    <xs:complexType name="midiVelocityElement">
+        <xs:annotation><xs:documentation>
+Within the `midi` element, you can have a `velocity` element.
+This element allows you to control instrument parameters in response to MIDI note velocity.
+Beneath the `velocity` element, you can have any number of bindings.
+This is useful for creating dynamic responses based on how hard a note is played.
+        </xs:documentation></xs:annotation>
+
+        <xs:sequence>
+            <xs:element name="binding" type="binding" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+<!--=================================--> 
 
     <xs:complexType name="sample">
         <xs:attribute name="path" type="relativeFilePath" use="required">
