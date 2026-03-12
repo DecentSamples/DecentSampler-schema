@@ -1641,6 +1641,7 @@ Attributes: `damping`, `roomSize`, `wetLevel`
         <xs:attributeGroup ref="effectReverbAttributes" />
         <xs:attributeGroup ref="effectConvolutionReverbAttributes" />
         <xs:attributeGroup ref="effectWaveShapeFolderAttributes" />
+        <xs:attributeGroup ref="effectStereoSimulatorAttributes" />
 
     </xs:complexType>
 
@@ -1654,6 +1655,7 @@ Attributes: `damping`, `roomSize`, `wetLevel`
         <xs:attributeGroup ref="effectFilterAttributes" />
         <xs:attributeGroup ref="effectGainAttributes" />
         <xs:attributeGroup ref="effectWaveShapeFolderAttributes" />
+        <xs:attributeGroup ref="effectStereoSimulatorAttributes" />
 
     </xs:complexType>
 
@@ -1714,6 +1716,7 @@ Specify parameters for each individual bus. Each bus can have its own volume, ou
             <xs:enumeration value="lowpass_4pl" />
             <xs:enumeration value="phaser" />
             <xs:enumeration value="reverb" />
+            <xs:enumeration value="stereo_simulator" />
             <xs:enumeration value="wave_folder" />
             <xs:enumeration value="wave_shaper" />
         </xs:restriction>
@@ -1729,6 +1732,7 @@ Specify parameters for each individual bus. Each bus can have its own volume, ou
             <xs:enumeration value="hipass" />
             <xs:enumeration value="lowpass" />
             <xs:enumeration value="lowpass_4pl" />
+            <xs:enumeration value="stereo_simulator" />
             <xs:enumeration value="wave_folder" />
             <xs:enumeration value="wave_shaper" />
         </xs:restriction>
@@ -3146,6 +3150,58 @@ This really just controls the volume of the input signal.
                     <xs:maxExclusive value="10.0" />
                 </xs:restriction>
             </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+
+<!--=================================-->
+
+    <xs:attributeGroup name="effectStereoSimulatorAttributes">
+        <xs:annotation><xs:documentation>
+Attributes for the `stereo_simulator` effect.
+Parameters: algorithm (lauridsen|schroeder|adt), width (0–1, controls dry/wet),
+delayTime (seconds), modRate (Hz, ADT only), modDepth (0–1, ADT only).
+        </xs:documentation></xs:annotation>
+        <xs:attribute name="algorithm">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="lauridsen" />
+                    <xs:enumeration value="schroeder" />
+                    <xs:enumeration value="adt" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="width" type="decimalMultiplier" default="0.5">
+            <xs:annotation><xs:documentation>
+Stereo spread and dry/wet amount. 0 = mono/dry, 1 = full stereo effect.
+Bindable via parameter="FX_WIDTH".
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="delayTime" default="0.005">
+            <xs:annotation><xs:documentation>
+Inter-channel delay time in seconds. Bindable via parameter="FX_DELAY_TIME".
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:decimal">
+                    <xs:minInclusive value="0.001" />
+                    <xs:maxInclusive value="0.1" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="modRate" default="0.5">
+            <xs:annotation><xs:documentation>
+LFO modulation rate in Hz. Only applies to the ADT algorithm. Bindable via parameter="FX_MOD_RATE".
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:decimal">
+                    <xs:minInclusive value="0.01" />
+                    <xs:maxInclusive value="20" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="modDepth" type="decimalMultiplier" default="0.3">
+            <xs:annotation><xs:documentation>
+LFO modulation depth (0–1). Only applies to the ADT algorithm. Bindable via parameter="FX_MOD_DEPTH".
+            </xs:documentation></xs:annotation>
         </xs:attribute>
     </xs:attributeGroup>
 
