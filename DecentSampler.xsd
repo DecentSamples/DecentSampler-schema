@@ -945,6 +945,12 @@ Valid values are `true` and `false`. This is only looked at if translation is se
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
+        <xs:attribute name="triggerOnLoad" type="xs:boolean">
+            <xs:annotation><xs:documentation>
+Valid values are `true` and `false`. Default: `true`. When set to `false`, this binding will not fire when the preset is first loaded or when a DAW session is restored. Useful for `fixed_value` VALUE bindings inside button states that would otherwise overwrite a user's saved control position on session restore.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
         <xs:attribute name="translationValue">
             <xs:annotation><xs:documentation>
 The parameter value to use when using `translation="fixed_value"`.
@@ -2129,6 +2135,14 @@ Default: `0`
             <xs:enumeration value="LOOP_START" />
             <xs:enumeration value="LOOP_END" />
             <xs:enumeration value="ALL_NOTES_OFF" />
+            <xs:enumeration value="SILENCING_DECAY" />
+            <xs:enumeration value="SILENCING_MODE" />
+            <xs:enumeration value="PITCH_KEY_TRACK" />
+            <xs:enumeration value="LO_NOTE" />
+            <xs:enumeration value="HI_NOTE" />
+            <xs:enumeration value="LO_VEL" />
+            <xs:enumeration value="HI_VEL" />
+            <xs:enumeration value="ROOT_NOTE" />
 
             <!-- instrument, effect -->
             <xs:enumeration value="FX_CENTER_FREQUENCY" />
@@ -2185,6 +2199,18 @@ Default: `0`
             <xs:enumeration value="OUTPUT_6_TARGET" />
             <xs:enumeration value="OUTPUT_7_TARGET" />
             <xs:enumeration value="OUTPUT_8_TARGET" />
+
+            <!-- group, general -->
+            <xs:enumeration value="SAMPLE_START" />
+            <xs:enumeration value="SAMPLE_END" />
+            <xs:enumeration value="SILENCING_DECAY" />
+            <xs:enumeration value="SILENCING_MODE" />
+            <xs:enumeration value="PITCH_KEY_TRACK" />
+            <xs:enumeration value="LO_NOTE" />
+            <xs:enumeration value="HI_NOTE" />
+            <xs:enumeration value="LO_VEL" />
+            <xs:enumeration value="HI_VEL" />
+            <xs:enumeration value="ROOT_NOTE" />
 
             <!-- tag, amp -->
             <xs:enumeration value="TAG_ENABLED" />
