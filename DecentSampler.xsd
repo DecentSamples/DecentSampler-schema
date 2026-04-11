@@ -1867,9 +1867,10 @@ Oscillators are useful for creating synthetic layers, sub-bass, or completely sy
             <xs:annotation>
                 <xs:documentation>
 The waveform type for the oscillator.
-Options: `sine`, `saw`, `square`, `triangle`, `noise`, `white_noise`, `pluck1`
+Options: `sine`, `saw`, `square`, `triangle`, `noise`, `white_noise`, `pluck1`, `wavetable`
 Note: Both `noise` and `white_noise` refer to the same white noise generator.
       `pluck1` is a physical modeling oscillator using digital waveguide synthesis to simulate plucked strings.
+      `wavetable` loads a user-supplied multi-frame wavetable .wav file (see wavetableFile attribute).
 Default: `sine`
                 </xs:documentation>
             </xs:annotation>
@@ -1882,6 +1883,7 @@ Default: `sine`
                     <xs:enumeration value="noise"/>
                     <xs:enumeration value="white_noise"/>
                     <xs:enumeration value="pluck1"/>
+                    <xs:enumeration value="wavetable"/>
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
@@ -1933,6 +1935,74 @@ Default: `0.5`
                     <xs:maxInclusive value="1.0"/>
                 </xs:restriction>
             </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="wavetableFile" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>
+Path to a wavetable audio file (relative to the .dspreset file location). Only used when waveform="wavetable".
+The file should contain one or more single-cycle waveform frames concatenated together (e.g., a standard Serum-compatible wavetable .wav).
+Serum-format files with a `clm ` RIFF chunk are auto-detected; otherwise the frame size is taken from wavetableFrameSize.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="wavetableFrameSize" default="2048">
+            <xs:annotation>
+                <xs:documentation>
+Number of samples per wavetable frame. Only used when waveform="wavetable" and no `clm ` RIFF chunk is detected in the file.
+Default: 2048 (Serum-compatible industry standard).
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:integer">
+                    <xs:minInclusive value="1"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="wavetablePosition" default="0.0">
+            <xs:annotation>
+                <xs:documentation>
+Initial playback position within the wavetable. Only used when waveform="wavetable".
+Range: 0.0 (first frame) to 1.0 (last frame). Fractional values linearly interpolate between adjacent frames.
+Can be modulated in real time via bindings (parameter="OSCILLATOR_WAVETABLE_POSITION").
+Default: 0.0
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:decimal">
+                    <xs:minInclusive value="0.0"/>
+                    <xs:maxInclusive value="1.0"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="randomPhase" type="xs:boolean" default="false">
+            <xs:annotation>
+                <xs:documentation>
+When true, each note-on randomizes the oscillator start phase instead of always resetting to 0.
+Only applies when waveform="wavetable". Strongly recommended when layering multiple wavetable
+groups (e.g. detuned unison voices), as fixed phase causes cancellation between voices.
+Default: false
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="wavetableFrameInterpolation" type="xs:boolean" default="true">
+            <xs:annotation>
+                <xs:documentation>
+Controls whether adjacent wavetable frames are linearly crossfaded as the position knob moves.
+Only applies when waveform="wavetable".
+When true (default), the position knob smoothly interpolates between adjacent frames—ideal for
+morphing wavetables where intermediate timbres are musically meaningful.
+When false, the oscillator snaps to the nearest integer frame with no crossfading—useful for
+wavetables that contain discrete, unrelated shapes (e.g. sine, triangle, saw, square) where
+blended intermediates are unwanted.
+Can be changed at runtime via bindings (parameter="OSCILLATOR_WAVETABLE_FRAME_INTERPOLATION").
+Default: true
+                </xs:documentation>
+            </xs:annotation>
         </xs:attribute>
 
         <xs:attributeGroup ref="regionSettings" />
