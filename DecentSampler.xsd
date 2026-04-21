@@ -152,6 +152,7 @@ As such, every UI must have at most one `tab` element.
             <xs:element name="label" type="label" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="rectangle" type="rectangle" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="line" type="line" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="oscilloscope" type="oscilloscope" minOccurs="0" maxOccurs="unbounded" />
         </xs:choice>
 
         <xs:attribute name="name">
@@ -896,15 +897,17 @@ If you are targeting an group-level effect, this would specified the group under
 
         <xs:attribute name="effectIndex" type="xs:nonNegativeInteger">
             <xs:annotation><xs:documentation>
-When a binding is targeting an effect, this is the same thing as the `position` attribute.
+When a binding is targeting an effect, this is the same thing as the position attribute.
 It is a specific 0-based index of the effect to be modified by this binding.
+As an alternative to using an index, you can use the effectTags attribute to target effects by tag name.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
         <xs:attribute name="modulatorIndex" type="xs:nonNegativeInteger">
             <xs:annotation><xs:documentation>
-When a binding is targeting a modulator, this is the same thing as the `position` attribute.
-It is a specific 0-based index of the modulator be modified by this binding.
+When a binding is targeting a modulator, this is the same thing as the position attribute.
+It is a specific 0-based index of the modulator to be modified by this binding.
+As an alternative to using an index, you can use the modulatorTags attribute to target modulators by tag name.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
@@ -923,8 +926,42 @@ See DecentSampler documentation, Appendix D for an example.
 
         <xs:attribute name="tags">
             <xs:annotation><xs:documentation>
-A comma-separated list of tags to be modified by this binding.
-This allows you to set values for multiple groups at once by targeting a tag that is assigned to the groups.
+A comma-separated list of tags. The meaning depends on context: at level="group", this selects the target
+group(s) by tag. For backward compatibility, tags is also promoted into the appropriate typed tag attribute
+(groupTags, effectTags, modulatorTags, or controlTags) when the corresponding typed attribute is not
+explicitly set. Prefer the typed attributes for new presets.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="groupTags" type="xs:string">
+            <xs:annotation><xs:documentation>
+A comma-separated list of group tags. At level="group", targets all group elements whose tags attribute
+contains any of these tags. This is the explicit, typed form of the group-selection behavior that the
+generic tags attribute has always provided.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="effectTags" type="xs:string">
+            <xs:annotation><xs:documentation>
+A comma-separated list of effect tags. When type="effect", targets all effect elements (at instrument or
+group level) whose tags attribute contains any of these tags. Use this instead of effectIndex when you
+want to address effects by name rather than position.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="modulatorTags" type="xs:string">
+            <xs:annotation><xs:documentation>
+A comma-separated list of modulator tags. When type="modulator" at level="instrument", targets all modulator
+elements (lfo, envelope, etc.) whose tags attribute contains any of these tags. Use this instead of
+modulatorIndex when you want to address modulators by name rather than position.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="controlTags" type="xs:string">
+            <xs:annotation><xs:documentation>
+A comma-separated list of UI control tags. When type="control" at level="ui", targets all UI controls
+whose tags attribute contains any of these tags. Use this instead of controlIndex when you want to
+address controls by name rather than position.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
@@ -1453,6 +1490,75 @@ A tool tip to display when the user hovers over this line.
 
 <!--=================================-->
 
+    <xs:complexType name="oscilloscope">
+        <xs:annotation>
+            <xs:documentation>
+The `&lt;oscilloscope&gt;` element displays a live waveform of the plugin's audio output.
+Place it inside a `&lt;tab&gt;` element to include it in your instrument's UI.
+The waveform is a mono mix of the left and right output channels, refreshed at ~20 fps.
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:attribute name="x" type="xs:integer" use="required">
+            <xs:annotation><xs:documentation>
+The x position of the element's top-left corner, in pixels.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="y" type="xs:integer" use="required">
+            <xs:annotation><xs:documentation>
+The y position of the element's top-left corner, in pixels.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="width" type="xs:integer" use="required">
+            <xs:annotation><xs:documentation>
+The width of the oscilloscope element in pixels.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="height" type="xs:integer" use="required">
+            <xs:annotation><xs:documentation>
+The height of the oscilloscope element in pixels.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="backgroundColor" type="hexARGB" default="#FF000000">
+            <xs:annotation><xs:documentation>
+The background fill color of the oscilloscope display.
+Format: `#AARRGGBB`. Default: `#FF000000` (opaque black).
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="waveColor" type="hexARGB" default="#FF00FF00">
+            <xs:annotation><xs:documentation>
+The color used to draw the waveform line.
+Format: `#AARRGGBB`. Default: `#FF00FF00` (opaque green).
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="lineThickness" type="xs:decimal" default="1.5">
+            <xs:annotation><xs:documentation>
+The stroke width of the waveform line in pixels. Default: `1.5`.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="showCenterLine" type="xs:boolean" default="false">
+            <xs:annotation><xs:documentation>
+When `true`, draws a faint horizontal center line at the zero-crossing level.
+Default: `false`.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="visible" type="xs:boolean" default="true">
+            <xs:annotation><xs:documentation>
+Controls whether the oscilloscope is visible. Default: `true`.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+<!--=================================-->
+
     <xs:complexType name="groups">
         <xs:annotation>
             <xs:documentation>
@@ -1512,9 +1618,273 @@ Default: `sine`
                                 <xs:enumeration value="triangle"/>
                                 <xs:enumeration value="noise"/>
                                 <xs:enumeration value="white_noise"/>
+                                <xs:enumeration value="fm6op"/>
                             </xs:restriction>
                         </xs:simpleType>
                     </xs:attribute>
+
+                    <!-- ══════════════════════════════════════════════════════════════
+                         FM6 operator attributes (only used when waveform="fm6op" at
+                         the oscillator level, or fm6op waveform set on the group).
+                         All of these may be set at the <group> level and are
+                         inherited by the oscillator via parent-upstream lookup.
+                         ══════════════════════════════════════════════════════════════ -->
+
+                    <xs:attribute name="fmAlgorithm" default="1">
+                        <xs:annotation>
+                            <xs:documentation>
+(Only for `waveform="fm6op"`) The DX7-compatible 6-operator FM algorithm number.
+Valid values: 1–32. Each value selects one of the 32 classic Yamaha DX7 routing
+topologies, defining which operators are carriers (produce audio output) and which
+are modulators (feed phase-modulation into other operators).
+Default: `1`
+                            </xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:integer">
+                                <xs:minInclusive value="1"/>
+                                <xs:maxInclusive value="32"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+
+                    <!-- ── Op 1 ── -->
+                    <xs:attribute name="fmOp1Ratio" type="xs:decimal" default="1.0">
+                        <xs:annotation><xs:documentation>
+(Only for `waveform="fm6op"`) Frequency ratio for FM operator 1 (the primary carrier in most algorithms).
+Multiplies the played note frequency. E.g., `2.0` = one octave up, `0.5` = one octave down.
+Default: `1.0`
+                        </xs:documentation></xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="fmOp1Detune" default="0">
+                        <xs:annotation><xs:documentation>
+(Only for `waveform="fm6op"`) DX7-compatible pitch detune for operator 1. Range: -7 to +7.
+Uses the classic DX7 detune algorithm: higher pitch offsets at lower notes, smaller offsets at higher notes.
+`0` = no detune, positive values sharpen, negative values flatten. Default: `0`
+                        </xs:documentation></xs:annotation>
+                        <xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="-7"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="fmOp1Mode" default="ratio">
+                        <xs:annotation><xs:documentation>
+(Only for `waveform="fm6op"`) Frequency mode for operator 1. `ratio` (default) = frequency is a ratio
+of the played note. `fixed` = absolute frequency in Hz specified by `fmOp1FixedFreq`. Default: `ratio`
+                        </xs:documentation></xs:annotation>
+                        <xs:simpleType><xs:restriction base="xs:string"><xs:enumeration value="ratio"/><xs:enumeration value="fixed"/></xs:restriction></xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="fmOp1FixedFreq" type="xs:decimal" default="440.0">
+                        <xs:annotation><xs:documentation>
+(Only for `waveform="fm6op"`, `fmOp1Mode="fixed"`) Fixed frequency in Hz for operator 1.
+Ignored when mode is `ratio`. Useful for metallic/bell-like timbres. Default: `440.0`
+                        </xs:documentation></xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="fmOp1Level" default="1.0">
+                        <xs:annotation><xs:documentation>
+(Only for `waveform="fm6op"`) Output/modulation level for operator 1. Range: 0.0–1.0.
+Default: `1.0`
+                        </xs:documentation></xs:annotation>
+                        <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="fmOp1VelocitySensitivity" default="0">
+                        <xs:annotation><xs:documentation>
+(Only for `waveform="fm6op"`) Velocity sensitivity for operator 1. Range: 0–7 (DX7 convention).
+`0` = no velocity response (full level regardless of velocity). `7` = maximum velocity scaling
+(level varies from 0 at vel=1 to full at vel=127). Default: `0`
+                        </xs:documentation></xs:annotation>
+                        <xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="fmOp1Feedback" default="0.0">
+                        <xs:annotation><xs:documentation>
+(Only for `waveform="fm6op"`) Self-feedback amount for operator 1. Range: 0.0–1.0.
+In most algorithms only one operator (typically Op6) physically carries the feedback path;
+setting feedback on other operators has no audible effect unless the algorithm routes them
+as feedback sources. Default: `0.0`
+                        </xs:documentation></xs:annotation>
+                        <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="fmOp1Attack" type="xs:decimal" default="0.0">
+                        <xs:annotation><xs:documentation>
+(Only for `waveform="fm6op"`) ADSR attack time (seconds) for operator 1's internal envelope.
+A value of `-1` is a sentinel meaning the operator has no independent envelope and will be
+fully controlled by the outer group-level ADSR. Default: `0.0`
+                        </xs:documentation></xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="fmOp1Decay"   type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR decay time (seconds) for operator 1. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp1Sustain" type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR sustain level (0.0–1.0) for operator 1. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp1Release" type="xs:decimal" default="-1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR release time (seconds) for operator 1. A value of `-1` (default) is a sentinel meaning the outer group ADSR controls the release. Default: `-1.0`</xs:documentation></xs:annotation></xs:attribute>
+
+                    <!-- ── Op 2 ── -->
+                    <xs:attribute name="fmOp2Ratio"   type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency ratio for FM operator 2. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp2Detune" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) DX7-compatible pitch detune for operator 2. Range: -7 to +7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="-7"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp2Mode" default="ratio"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency mode for operator 2. `ratio` or `fixed`. Default: `ratio`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:string"><xs:enumeration value="ratio"/><xs:enumeration value="fixed"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp2FixedFreq" type="xs:decimal" default="440.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp2Mode="fixed"`) Fixed frequency in Hz for operator 2. Default: `440.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp2Level" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Output/modulation level for operator 2. Range: 0.0–1.0. Default: `1.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp2VelocitySensitivity" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Velocity sensitivity for operator 2. Range: 0–7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp2Feedback" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Self-feedback for operator 2. Range: 0.0–1.0. Default: `0.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp2Attack"   type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR attack time (seconds) for operator 2. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp2Decay"    type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR decay time (seconds) for operator 2. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp2Sustain"  type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR sustain level for operator 2. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp2Release"  type="xs:decimal" default="-1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR release time for operator 2. `-1` = transparent (outer ADSR controls). Default: `-1.0`</xs:documentation></xs:annotation></xs:attribute>
+
+                    <!-- ── Op 3 ── -->
+                    <xs:attribute name="fmOp3Ratio"   type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency ratio for FM operator 3. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp3Detune" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) DX7-compatible pitch detune for operator 3. Range: -7 to +7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="-7"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp3Mode" default="ratio"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency mode for operator 3. `ratio` or `fixed`. Default: `ratio`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:string"><xs:enumeration value="ratio"/><xs:enumeration value="fixed"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp3FixedFreq" type="xs:decimal" default="440.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp3Mode="fixed"`) Fixed frequency in Hz for operator 3. Default: `440.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp3Level" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Output/modulation level for operator 3. Range: 0.0–1.0. Default: `1.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp3VelocitySensitivity" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Velocity sensitivity for operator 3. Range: 0–7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp3Feedback" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Self-feedback for operator 3. Range: 0.0–1.0. Default: `0.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp3Attack"   type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR attack time (seconds) for operator 3. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp3Decay"    type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR decay time (seconds) for operator 3. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp3Sustain"  type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR sustain level for operator 3. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp3Release"  type="xs:decimal" default="-1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR release time for operator 3. `-1` = transparent (outer ADSR controls). Default: `-1.0`</xs:documentation></xs:annotation></xs:attribute>
+
+                    <!-- ── Op 4 ── -->
+                    <xs:attribute name="fmOp4Ratio"   type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency ratio for FM operator 4. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp4Detune" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) DX7-compatible pitch detune for operator 4. Range: -7 to +7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="-7"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp4Mode" default="ratio"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency mode for operator 4. `ratio` or `fixed`. Default: `ratio`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:string"><xs:enumeration value="ratio"/><xs:enumeration value="fixed"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp4FixedFreq" type="xs:decimal" default="440.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp4Mode="fixed"`) Fixed frequency in Hz for operator 4. Default: `440.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp4Level" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Output/modulation level for operator 4. Range: 0.0–1.0. Default: `1.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp4VelocitySensitivity" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Velocity sensitivity for operator 4. Range: 0–7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp4Feedback" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Self-feedback for operator 4. Range: 0.0–1.0. Default: `0.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp4Attack"   type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR attack time (seconds) for operator 4. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp4Decay"    type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR decay time (seconds) for operator 4. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp4Sustain"  type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR sustain level for operator 4. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp4Release"  type="xs:decimal" default="-1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR release time for operator 4. `-1` = transparent (outer ADSR controls). Default: `-1.0`</xs:documentation></xs:annotation></xs:attribute>
+
+                    <!-- ── Op 5 ── -->
+                    <xs:attribute name="fmOp5Ratio"   type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency ratio for FM operator 5. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp5Detune" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) DX7-compatible pitch detune for operator 5. Range: -7 to +7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="-7"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp5Mode" default="ratio"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency mode for operator 5. `ratio` or `fixed`. Default: `ratio`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:string"><xs:enumeration value="ratio"/><xs:enumeration value="fixed"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp5FixedFreq" type="xs:decimal" default="440.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp5Mode="fixed"`) Fixed frequency in Hz for operator 5. Default: `440.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp5Level" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Output/modulation level for operator 5. Range: 0.0–1.0. Default: `1.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp5VelocitySensitivity" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Velocity sensitivity for operator 5. Range: 0–7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp5Feedback" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Self-feedback for operator 5. Range: 0.0–1.0. Default: `0.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp5Attack"   type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR attack time (seconds) for operator 5. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp5Decay"    type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR decay time (seconds) for operator 5. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp5Sustain"  type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR sustain level for operator 5. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp5Release"  type="xs:decimal" default="-1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR release time for operator 5. `-1` = transparent (outer ADSR controls). Default: `-1.0`</xs:documentation></xs:annotation></xs:attribute>
+
+                    <!-- ── Op 6 ── -->
+                    <xs:attribute name="fmOp6Ratio"   type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency ratio for FM operator 6 (the feedback/top-of-chain operator in most algorithms). Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp6Detune" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) DX7-compatible pitch detune for operator 6. Range: -7 to +7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="-7"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp6Mode" default="ratio"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency mode for operator 6. `ratio` or `fixed`. Default: `ratio`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:string"><xs:enumeration value="ratio"/><xs:enumeration value="fixed"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp6FixedFreq" type="xs:decimal" default="440.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp6Mode="fixed"`) Fixed frequency in Hz for operator 6. Default: `440.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp6Level" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Output/modulation level for operator 6. Range: 0.0–1.0. Default: `1.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp6VelocitySensitivity" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Velocity sensitivity for operator 6. Range: 0–7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp6Feedback" default="0.0">
+                        <xs:annotation>
+                            <xs:documentation>
+(Only for `waveform="fm6op"`) Self-feedback amount for operator 6. Range: 0.0–1.0.
+In the DX7 architecture Op6 always carries the single feedback path defined by each algorithm.
+This is the primary feedback attribute and is the only one that has an audible effect in
+most algorithms (algorithms 1–31). In algorithm 32 (all carriers), Op6 feeds back to itself.
+Default: `0.0`
+                            </xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="fmOp6Attack"   type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR attack time (seconds) for operator 6. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp6Decay"    type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR decay time (seconds) for operator 6. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp6Sustain"  type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR sustain level for operator 6. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp6Release"  type="xs:decimal" default="-1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR release time for operator 6. `-1` = transparent (outer ADSR controls). Default: `-1.0`</xs:documentation></xs:annotation></xs:attribute>
+
+                    <!--
+                         DX7-compatible 4-stage rate/level operator envelopes.
+                         Activate per-operator by setting fmOpNEgType="dx7".
+                         All rates and levels use the native DX7 integer range 0-99.
+                         When dx7 mode is active, the ADSR attributes for that
+                         operator (fmOpNAttack/Decay/Sustain/Release) are ignored.
+
+                         Segment meaning:
+                           Stage 1 (attack):  rise from silence to L1 at speed R1
+                           Stage 2 (decay):   move from L1 to L2 at speed R2
+                           Stage 3 (sustain): move toward L3 at speed R3; held while key is down
+                           Stage 4 (release): move to L4 at speed R4 after key-off
+
+                         Default values produce a flat envelope (instant attack,
+                         infinite sustain, instant release), matching standard DX7
+                         patch initialisation: R1=99 L1=99 / R2=99 L2=99 /
+                         R3=0 L3=99 / R4=99 L4=0.
+                    -->
+
+                    <!-- Operator 1 DX7 EG -->
+                    <xs:attribute name="fmOp1EgType" default="adsr">
+                        <xs:annotation><xs:documentation>
+(Only for `waveform="fm6op"`) Selects the envelope type for operator 1.
+`adsr` (default) uses the standard `fmOp1Attack`/`Decay`/`Sustain`/`Release` ADSR attributes.
+`dx7` activates the 4-stage DX7-compatible rate/level envelope; in this mode the ADSR
+attributes for this operator are ignored and the `fmOp1EgRate1`–`fmOp1EgLevel4` values
+are used instead. Default: `adsr`
+                        </xs:documentation></xs:annotation>
+                        <xs:simpleType><xs:restriction base="xs:string">
+                            <xs:enumeration value="adsr"/>
+                            <xs:enumeration value="dx7"/>
+                        </xs:restriction></xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="fmOp1EgRate1" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp1EgType="dx7"`) Attack rate R1 for operator 1. Range 0–99; higher = faster. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp1EgRate2" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp1EgType="dx7"`) Decay rate R2 for operator 1. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp1EgRate3" default="0" ><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp1EgType="dx7"`) Sustain rate R3 for operator 1. Range 0–99. `0` holds L3 indefinitely while the key is down. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp1EgRate4" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp1EgType="dx7"`) Release rate R4 for operator 1. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp1EgLevel1" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp1EgType="dx7"`) Attack target level L1 for operator 1. Range 0–99; 99 = full amplitude. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp1EgLevel2" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp1EgType="dx7"`) Decay target level L2 for operator 1. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp1EgLevel3" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp1EgType="dx7"`) Sustain level L3 for operator 1. Range 0–99. Held while the key is down. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp1EgLevel4" default="0" ><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp1EgType="dx7"`) Release target level L4 for operator 1. Range 0–99; 0 = silence. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+
+                    <!-- Operator 2 DX7 EG -->
+                    <xs:attribute name="fmOp2EgType" default="adsr"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Envelope type for operator 2. `adsr` or `dx7`. Default: `adsr`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:string"><xs:enumeration value="adsr"/><xs:enumeration value="dx7"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp2EgRate1" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp2EgType="dx7"`) Attack rate R1 for operator 2. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp2EgRate2" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp2EgType="dx7"`) Decay rate R2 for operator 2. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp2EgRate3" default="0" ><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp2EgType="dx7"`) Sustain rate R3 for operator 2. Range 0–99. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp2EgRate4" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp2EgType="dx7"`) Release rate R4 for operator 2. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp2EgLevel1" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp2EgType="dx7"`) Attack level L1 for operator 2. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp2EgLevel2" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp2EgType="dx7"`) Decay level L2 for operator 2. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp2EgLevel3" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp2EgType="dx7"`) Sustain level L3 for operator 2. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp2EgLevel4" default="0" ><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp2EgType="dx7"`) Release level L4 for operator 2. Range 0–99. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+
+                    <!-- Operator 3 DX7 EG -->
+                    <xs:attribute name="fmOp3EgType" default="adsr"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Envelope type for operator 3. `adsr` or `dx7`. Default: `adsr`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:string"><xs:enumeration value="adsr"/><xs:enumeration value="dx7"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp3EgRate1" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp3EgType="dx7"`) Attack rate R1 for operator 3. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp3EgRate2" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp3EgType="dx7"`) Decay rate R2 for operator 3. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp3EgRate3" default="0" ><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp3EgType="dx7"`) Sustain rate R3 for operator 3. Range 0–99. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp3EgRate4" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp3EgType="dx7"`) Release rate R4 for operator 3. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp3EgLevel1" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp3EgType="dx7"`) Attack level L1 for operator 3. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp3EgLevel2" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp3EgType="dx7"`) Decay level L2 for operator 3. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp3EgLevel3" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp3EgType="dx7"`) Sustain level L3 for operator 3. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp3EgLevel4" default="0" ><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp3EgType="dx7"`) Release level L4 for operator 3. Range 0–99. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+
+                    <!-- Operator 4 DX7 EG -->
+                    <xs:attribute name="fmOp4EgType" default="adsr"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Envelope type for operator 4. `adsr` or `dx7`. Default: `adsr`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:string"><xs:enumeration value="adsr"/><xs:enumeration value="dx7"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp4EgRate1" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp4EgType="dx7"`) Attack rate R1 for operator 4. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp4EgRate2" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp4EgType="dx7"`) Decay rate R2 for operator 4. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp4EgRate3" default="0" ><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp4EgType="dx7"`) Sustain rate R3 for operator 4. Range 0–99. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp4EgRate4" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp4EgType="dx7"`) Release rate R4 for operator 4. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp4EgLevel1" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp4EgType="dx7"`) Attack level L1 for operator 4. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp4EgLevel2" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp4EgType="dx7"`) Decay level L2 for operator 4. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp4EgLevel3" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp4EgType="dx7"`) Sustain level L3 for operator 4. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp4EgLevel4" default="0" ><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp4EgType="dx7"`) Release level L4 for operator 4. Range 0–99. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+
+                    <!-- Operator 5 DX7 EG -->
+                    <xs:attribute name="fmOp5EgType" default="adsr"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Envelope type for operator 5. `adsr` or `dx7`. Default: `adsr`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:string"><xs:enumeration value="adsr"/><xs:enumeration value="dx7"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp5EgRate1" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp5EgType="dx7"`) Attack rate R1 for operator 5. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp5EgRate2" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp5EgType="dx7"`) Decay rate R2 for operator 5. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp5EgRate3" default="0" ><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp5EgType="dx7"`) Sustain rate R3 for operator 5. Range 0–99. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp5EgRate4" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp5EgType="dx7"`) Release rate R4 for operator 5. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp5EgLevel1" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp5EgType="dx7"`) Attack level L1 for operator 5. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp5EgLevel2" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp5EgType="dx7"`) Decay level L2 for operator 5. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp5EgLevel3" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp5EgType="dx7"`) Sustain level L3 for operator 5. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp5EgLevel4" default="0" ><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp5EgType="dx7"`) Release level L4 for operator 5. Range 0–99. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+
+                    <!-- Operator 6 DX7 EG -->
+                    <xs:attribute name="fmOp6EgType" default="adsr"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Envelope type for operator 6. `adsr` or `dx7`. Default: `adsr`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:string"><xs:enumeration value="adsr"/><xs:enumeration value="dx7"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp6EgRate1" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp6EgType="dx7"`) Attack rate R1 for operator 6. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp6EgRate2" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp6EgType="dx7"`) Decay rate R2 for operator 6. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp6EgRate3" default="0" ><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp6EgType="dx7"`) Sustain rate R3 for operator 6. Range 0–99. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp6EgRate4" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp6EgType="dx7"`) Release rate R4 for operator 6. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp6EgLevel1" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp6EgType="dx7"`) Attack level L1 for operator 6. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp6EgLevel2" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp6EgType="dx7"`) Decay level L2 for operator 6. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp6EgLevel3" default="99"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp6EgType="dx7"`) Sustain level L3 for operator 6. Range 0–99. Default: `99`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp6EgLevel4" default="0" ><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp6EgType="dx7"`) Release level L4 for operator 6. Range 0–99. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType></xs:attribute>
+
                     <xs:attribute name="enabled" type="xs:boolean">
                         <xs:annotation><xs:documentation>
 Whether or not this group is enabled.
@@ -1884,6 +2254,7 @@ Default: `sine`
                     <xs:enumeration value="white_noise"/>
                     <xs:enumeration value="pluck1"/>
                     <xs:enumeration value="wavetable"/>
+                    <xs:enumeration value="fm6op"/>
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
@@ -2247,6 +2618,27 @@ Default: `0`
             <xs:enumeration value="OSCILLATOR_WAVEFORM" />
             <xs:enumeration value="OSCILLATOR_DAMPING" />
             <xs:enumeration value="OSCILLATOR_PLUCK_TYPE" />
+
+            <!-- group, general — FM 6-operator synthesizer (waveform="fm6op") -->
+            <xs:enumeration value="OSCILLATOR_FM_ALGORITHM" />
+            <xs:enumeration value="OSCILLATOR_FM_OP1_LEVEL" />
+            <xs:enumeration value="OSCILLATOR_FM_OP2_LEVEL" />
+            <xs:enumeration value="OSCILLATOR_FM_OP3_LEVEL" />
+            <xs:enumeration value="OSCILLATOR_FM_OP4_LEVEL" />
+            <xs:enumeration value="OSCILLATOR_FM_OP5_LEVEL" />
+            <xs:enumeration value="OSCILLATOR_FM_OP6_LEVEL" />
+            <xs:enumeration value="OSCILLATOR_FM_OP1_RATIO" />
+            <xs:enumeration value="OSCILLATOR_FM_OP2_RATIO" />
+            <xs:enumeration value="OSCILLATOR_FM_OP3_RATIO" />
+            <xs:enumeration value="OSCILLATOR_FM_OP4_RATIO" />
+            <xs:enumeration value="OSCILLATOR_FM_OP5_RATIO" />
+            <xs:enumeration value="OSCILLATOR_FM_OP6_RATIO" />
+            <xs:enumeration value="OSCILLATOR_FM_OP1_FEEDBACK" />
+            <xs:enumeration value="OSCILLATOR_FM_OP2_FEEDBACK" />
+            <xs:enumeration value="OSCILLATOR_FM_OP3_FEEDBACK" />
+            <xs:enumeration value="OSCILLATOR_FM_OP4_FEEDBACK" />
+            <xs:enumeration value="OSCILLATOR_FM_OP5_FEEDBACK" />
+            <xs:enumeration value="OSCILLATOR_FM_OP6_FEEDBACK" />
             <xs:enumeration value="AMP_VEL_TRACK" />
             <xs:enumeration value="ENV_ATTACK" />
             <xs:enumeration value="ENV_DECAY" />
