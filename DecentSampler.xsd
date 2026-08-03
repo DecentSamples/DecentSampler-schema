@@ -387,41 +387,6 @@ The rate at which the sequence is played. This is a floating point number. The d
 
 <!--=================================-->
 
-    <xs:complexType name="buses">
-        <xs:annotation>
-            <xs:documentation>
-The `buses` element allows you to specify up to 16 audio buses for creating complex mixes and routing audio to various outputs.
-            </xs:documentation>
-        </xs:annotation>
-
-        <xs:sequence minOccurs="0" maxOccurs="16">
-            <xs:element name="bus">
-                <xs:annotation>
-                    <xs:documentation>
-A bus element defines an audio bus that samples can be routed to.
-                    </xs:documentation>
-                </xs:annotation>
-                <xs:complexType>
-                    <xs:sequence minOccurs="0" maxOccurs="1">
-                        <xs:element name="effects" type="groupEffects" />
-                    </xs:sequence>
-
-                    <xs:attribute name="busVolume" type="decimalMultiplier" default="1.0">
-                        <xs:annotation>
-                            <xs:documentation>
-The volume of the bus. This is a floating-point number between 0.0 and 1.0, where 0.0 is silent and 1.0 is full volume.
-                            </xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-
-                    <xs:attributeGroup ref="busOutputAttributes" />
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
-
-<!--=================================-->
-
     <xs:complexType name="modulatorLFO">
 
         <xs:sequence maxOccurs="unbounded">
@@ -1523,17 +1488,17 @@ The height of the oscilloscope element in pixels.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="backgroundColor" type="hexARGB" default="#FF000000">
+        <xs:attribute name="backgroundColor" type="hexARGB" default="FF000000">
             <xs:annotation><xs:documentation>
 The background fill color of the oscilloscope display.
-Format: `#AARRGGBB`. Default: `#FF000000` (opaque black).
+Format: `AARRGGBB`. Default: `FF000000` (opaque black).
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="waveColor" type="hexARGB" default="#FF00FF00">
+        <xs:attribute name="waveColor" type="hexARGB" default="FF00FF00">
             <xs:annotation><xs:documentation>
 The color used to draw the waveform line.
-Format: `#AARRGGBB`. Default: `#FF00FF00` (opaque green).
+Format: `AARRGGBB`. Default: `FF00FF00` (opaque green).
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
@@ -1988,6 +1953,9 @@ There are currently only a handful effects available although more could definit
 &lt;h3&gt; `chorus` &lt;/h3&gt;
 Attributes: `mix`, `modDepth`, `modRate`
 
+&lt;h3&gt; `compressor` &lt;/h3&gt;
+Attributes: `threshold`, `ratio`, `attack`, `release`, `inputGain`, `outputGain`, `autoBypass`
+
 &lt;h3&gt; `convolution` &lt;/h3&gt;
 Attributes: `irFile`, `mix`
 
@@ -2010,6 +1978,7 @@ Attributes: `damping`, `roomSize`, `wetLevel`
         <xs:attribute name="type" type="globalEffectType" use="required" />
 
         <xs:attributeGroup ref="effectChorusAttributes" />
+        <xs:attributeGroup ref="effectCompressorAttributes" />
         <xs:attributeGroup ref="effectDelayAttributes" />
         <xs:attributeGroup ref="effectFilterAttributes" />
         <xs:attributeGroup ref="effectGainAttributes" />
@@ -2028,6 +1997,8 @@ Attributes: `damping`, `roomSize`, `wetLevel`
         <xs:attribute name="type" type="groupEffectType" use="required" />
 
         <xs:attributeGroup ref="effectChorusAttributes" />
+        <xs:attributeGroup ref="effectCompressorAttributes" />
+        <xs:attributeGroup ref="effectDelayAttributes" />
         <xs:attributeGroup ref="effectFilterAttributes" />
         <xs:attributeGroup ref="effectGainAttributes" />
         <xs:attributeGroup ref="effectWaveShapeFolderAttributes" />
@@ -2057,25 +2028,10 @@ Specify parameters for each individual bus. Each bus can have its own volume, ou
         <xs:sequence>
             <xs:element name="effects" type="groupEffects" minOccurs="0" maxOccurs="1" />
         </xs:sequence>
-        <xs:attribute name="busVolume" type="decimalMultiplier">
+        <xs:attribute name="busVolume" type="decimalMultiplier" default="1.0">
             <xs:annotation><xs:documentation>The volume of the bus (0.0–1.0). Default: 1.0</xs:documentation></xs:annotation>
         </xs:attribute>
-        <xs:attribute name="output1Target" type="outputTargetType"><xs:annotation><xs:documentation>First audio output target for this bus.</xs:documentation></xs:annotation></xs:attribute>
-        <xs:attribute name="output2Target" type="outputTargetType"><xs:annotation><xs:documentation>Second audio output target for this bus.</xs:documentation></xs:annotation></xs:attribute>
-        <xs:attribute name="output3Target" type="outputTargetType"><xs:annotation><xs:documentation>Third audio output target for this bus.</xs:documentation></xs:annotation></xs:attribute>
-        <xs:attribute name="output4Target" type="outputTargetType"><xs:annotation><xs:documentation>Fourth audio output target for this bus.</xs:documentation></xs:annotation></xs:attribute>
-        <xs:attribute name="output5Target" type="outputTargetType"><xs:annotation><xs:documentation>Fifth audio output target for this bus.</xs:documentation></xs:annotation></xs:attribute>
-        <xs:attribute name="output6Target" type="outputTargetType"><xs:annotation><xs:documentation>Sixth audio output target for this bus.</xs:documentation></xs:annotation></xs:attribute>
-        <xs:attribute name="output7Target" type="outputTargetType"><xs:annotation><xs:documentation>Seventh audio output target for this bus.</xs:documentation></xs:annotation></xs:attribute>
-        <xs:attribute name="output8Target" type="outputTargetType"><xs:annotation><xs:documentation>Eighth audio output target for this bus.</xs:documentation></xs:annotation></xs:attribute>
-        <xs:attribute name="output1Volume" type="decimalMultiplier"><xs:annotation><xs:documentation>Volume of audio sent to output 1 (0.0–1.0).</xs:documentation></xs:annotation></xs:attribute>
-        <xs:attribute name="output2Volume" type="decimalMultiplier"><xs:annotation><xs:documentation>Volume of audio sent to output 2 (0.0–1.0).</xs:documentation></xs:annotation></xs:attribute>
-        <xs:attribute name="output3Volume" type="decimalMultiplier"><xs:annotation><xs:documentation>Volume of audio sent to output 3 (0.0–1.0).</xs:documentation></xs:annotation></xs:attribute>
-        <xs:attribute name="output4Volume" type="decimalMultiplier"><xs:annotation><xs:documentation>Volume of audio sent to output 4 (0.0–1.0).</xs:documentation></xs:annotation></xs:attribute>
-        <xs:attribute name="output5Volume" type="decimalMultiplier"><xs:annotation><xs:documentation>Volume of audio sent to output 5 (0.0–1.0).</xs:documentation></xs:annotation></xs:attribute>
-        <xs:attribute name="output6Volume" type="decimalMultiplier"><xs:annotation><xs:documentation>Volume of audio sent to output 6 (0.0–1.0).</xs:documentation></xs:annotation></xs:attribute>
-        <xs:attribute name="output7Volume" type="decimalMultiplier"><xs:annotation><xs:documentation>Volume of audio sent to output 7 (0.0–1.0).</xs:documentation></xs:annotation></xs:attribute>
-        <xs:attribute name="output8Volume" type="decimalMultiplier"><xs:annotation><xs:documentation>Volume of audio sent to output 8 (0.0–1.0).</xs:documentation></xs:annotation></xs:attribute>
+        <xs:attributeGroup ref="busOutputAttributes" />
     </xs:complexType>
 
 <!--=================================-->
@@ -2084,6 +2040,7 @@ Specify parameters for each individual bus. Each bus can have its own volume, ou
         <xs:restriction base="xs:string">
             <xs:enumeration value="bandpass" />
             <xs:enumeration value="chorus" />
+            <xs:enumeration value="compressor" />
             <xs:enumeration value="convolution" />
             <xs:enumeration value="delay" />
             <xs:enumeration value="gain" />
@@ -2104,6 +2061,7 @@ Specify parameters for each individual bus. Each bus can have its own volume, ou
         <xs:restriction base="xs:string">
             <xs:enumeration value="bandpass" />
             <xs:enumeration value="chorus" />
+            <xs:enumeration value="compressor" />
             <xs:enumeration value="gain" />
             <xs:enumeration value="hipass" />
             <xs:enumeration value="lowpass" />
@@ -3630,11 +3588,12 @@ This really just controls the volume of the input signal.
 
         <xs:attribute name="threshold" default="0.25">
             <xs:annotation><xs:documentation>
-`wave_folder`: The amplitude above which wave folding should take place.
+`wave_folder`: The amplitude above which wave folding should take place (0.0 – &lt;10.0).
+`compressor`: The level in dB above which compression starts being applied (-60 – 0). Default: -12.
             </xs:documentation></xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:decimal">
-                    <xs:minInclusive value="0.0" />
+                    <xs:minInclusive value="-60.0" />
                     <xs:maxExclusive value="10.0" />
                 </xs:restriction>
             </xs:simpleType>
@@ -3646,8 +3605,10 @@ This really just controls the volume of the input signal.
     <xs:attributeGroup name="effectStereoSimulatorAttributes">
         <xs:annotation><xs:documentation>
 Attributes for the `stereo_simulator` effect.
-Parameters: algorithm (lauridsen|schroeder|adt), width (0–1, controls dry/wet),
-delayTime (seconds), modRate (Hz, ADT only), modDepth (0–1, ADT only).
+Parameters: algorithm (lauridsen|schroeder|adt), width (0–1, controls dry/wet).
+The `delayTime` (declared alongside the delay effect's attributes; valid range for stereo_simulator
+is 0.001–0.1 seconds, default 0.005), `modRate` and `modDepth` (declared alongside the chorus/phaser
+attributes; modRate applies only to the ADT algorithm) attributes are shared with other effects.
         </xs:documentation></xs:annotation>
         <xs:attribute name="algorithm">
             <xs:simpleType>
@@ -3664,31 +3625,76 @@ Stereo spread and dry/wet amount. 0 = mono/dry, 1 = full stereo effect.
 Bindable via parameter="FX_WIDTH".
             </xs:documentation></xs:annotation>
         </xs:attribute>
-        <xs:attribute name="delayTime" default="0.005">
+    </xs:attributeGroup>
+
+<!--=================================-->
+
+    <xs:attributeGroup name="effectCompressorAttributes">
+        <xs:annotation><xs:documentation>
+Attributes for the `compressor` effect. See the `threshold` attribute (declared alongside the
+wave_folder/wave_shaper attributes) for the compression threshold, in dB.
+        </xs:documentation></xs:annotation>
+        <xs:attribute name="ratio" default="4">
             <xs:annotation><xs:documentation>
-Inter-channel delay time in seconds. Bindable via parameter="FX_DELAY_TIME".
+The compression ratio. 1 = no compression, 20 = near-limiting. Bindable via parameter="FX_RATIO".
             </xs:documentation></xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:decimal">
-                    <xs:minInclusive value="0.001" />
-                    <xs:maxInclusive value="0.1" />
+                    <xs:minInclusive value="1.0" />
+                    <xs:maxInclusive value="20.0" />
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
-        <xs:attribute name="modRate" default="0.5">
+        <xs:attribute name="attack" default="5">
             <xs:annotation><xs:documentation>
-LFO modulation rate in Hz. Only applies to the ADT algorithm. Bindable via parameter="FX_MOD_RATE".
+How quickly (in milliseconds) the compressor reacts once the signal crosses the threshold.
+Bindable via parameter="FX_ATTACK".
             </xs:documentation></xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:decimal">
-                    <xs:minInclusive value="0.01" />
-                    <xs:maxInclusive value="20" />
+                    <xs:minInclusive value="0.1" />
+                    <xs:maxInclusive value="200.0" />
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
-        <xs:attribute name="modDepth" type="decimalMultiplier" default="0.3">
+        <xs:attribute name="release" default="100">
             <xs:annotation><xs:documentation>
-LFO modulation depth (0–1). Only applies to the ADT algorithm. Bindable via parameter="FX_MOD_DEPTH".
+How quickly (in milliseconds) the compressor lets go once the signal drops back below the threshold.
+Bindable via parameter="FX_RELEASE".
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:decimal">
+                    <xs:minInclusive value="5.0" />
+                    <xs:maxInclusive value="2000.0" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="inputGain" default="0">
+            <xs:annotation><xs:documentation>
+Gain, in dB, applied to the signal before compression. Bindable via parameter="FX_INPUT_GAIN".
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:decimal">
+                    <xs:minInclusive value="-24.0" />
+                    <xs:maxInclusive value="24.0" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="outputGain" default="0">
+            <xs:annotation><xs:documentation>
+Makeup gain, in dB, applied to the signal after compression. Bindable via parameter="FX_OUTPUT_GAIN".
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:decimal">
+                    <xs:minInclusive value="-24.0" />
+                    <xs:maxInclusive value="24.0" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="autoBypass" type="xs:boolean" default="false">
+            <xs:annotation><xs:documentation>
+When true, the compressor fades itself out (click-free) whenever the input stays below threshold,
+and fades back in as soon as the signal re-engages. Not bindable.
             </xs:documentation></xs:annotation>
         </xs:attribute>
     </xs:attributeGroup>
@@ -3700,6 +3706,7 @@ LFO modulation depth (0–1). Only applies to the ADT algorithm. Bindable via pa
         <xs:attribute name="delayTime" default="0.7">
             <xs:annotation><xs:documentation>
 The delay time in seconds.
+Also used by `stereo_simulator` as its inter-channel delay time (valid range there is 0.001–0.1, default 0.005).
             </xs:documentation></xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:decimal">
@@ -3745,18 +3752,18 @@ For example, if the delayTime is `0.5` seconds and the stereoOffset is `0.02` s,
 
         <xs:attribute name="modDepth" type="decimalMultiplier" default="0.2">
             <xs:annotation><xs:documentation>
-The modulation depth of the effect.
+The modulation depth of the effect. Also used by `stereo_simulator` (ADT algorithm only), default 0.3 there.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
         <xs:attribute name="modRate">
             <xs:annotation><xs:documentation>
-The modulation speed in Hz.
+The modulation speed in Hz. Also used by `stereo_simulator` (ADT algorithm only, range 0.01–20, default 0.5 there).
             </xs:documentation></xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:decimal">
                     <xs:minInclusive value="0.0" />
-                    <xs:maxInclusive value="10.0" />
+                    <xs:maxInclusive value="20.0" />
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
@@ -4287,7 +4294,7 @@ The modulation speed in Hz.
 <!--=================================-->
 
     <xs:attributeGroup name="busOutputAttributes">
-        <xs:attribute name="output1Target" type="outputTargetType" default="MAIN_OUTPUT">
+        <xs:attribute name="output1Target" type="outputTargetType" default="NO_OUTPUT">
             <xs:annotation>
                 <xs:documentation>
 The first audio output for this bus. This is a string that specifies the audio output that the bus should be routed to.
