@@ -46,6 +46,7 @@ SOFTWARE.
                 <xs:element name="midi" type="midi" />
                 <xs:element name="modulators" type="modulators"></xs:element>
                 <xs:element name="buses" type="buses" />
+                <xs:element name="arpeggiator" type="arpeggiator" />
             </xs:choice>
 
             <xs:attribute name="minVersion" type="xs:string">
@@ -387,6 +388,162 @@ The rate at which the sequence is played. This is a floating point number. The d
 
 <!--=================================-->
 
+    <xs:complexType name="arpeggiator">
+        <xs:annotation>
+            <xs:documentation>
+As of 1.26.0, the `arpeggiator` element is how you configure DecentSampler's built-in, live arpeggiator.
+Unlike `noteSequences`, which plays back a fixed, pre-authored pattern, the arpeggiator reacts to
+whichever notes are currently held down. There should be exactly one `arpeggiator` element in each
+`DecentSampler` file.
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:attribute name="enabled" type="xs:boolean" default="false">
+            <xs:annotation>
+                <xs:documentation>
+Whether the arpeggiator is armed. When armed, it takes over every note played anywhere on the keyboard.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="arpOrder" default="up">
+            <xs:annotation>
+                <xs:documentation>
+The order in which held notes (and their octave-expanded copies) are played.
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="up" />
+                    <xs:enumeration value="down" />
+                    <xs:enumeration value="up_down" />
+                    <xs:enumeration value="up_down_inclusive" />
+                    <xs:enumeration value="down_up" />
+                    <xs:enumeration value="down_up_inclusive" />
+                    <xs:enumeration value="as_played" />
+                    <xs:enumeration value="random" />
+                    <xs:enumeration value="random_no_repeat" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="arpOctaveRange" default="1">
+            <xs:annotation>
+                <xs:documentation>
+How many octaves the held notes are spread across, counting the octave you're actually holding.
+`1` means no octave duplication at all. Whole number from 1 to 8.
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:positiveInteger">
+                    <xs:minInclusive value="1" />
+                    <xs:maxInclusive value="8" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="arpOctaveMode" default="replayPerOctave">
+            <xs:annotation>
+                <xs:documentation>
+How the octave-expanded copies are woven into the pattern. `replayPerOctave` repeats the held-note
+pattern once per octave. `interleaveByPitch` merges every note across every octave into one
+pitch-sorted list before applying `arpOrder`.
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="replayPerOctave" />
+                    <xs:enumeration value="interleaveByPitch" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="arpStepCount" default="16">
+            <xs:annotation>
+                <xs:documentation>
+A hard ceiling on how many notes make up one cycle of the pattern, from 1 to 16. The pattern is
+truncated (never padded) if the held chord x octave range would produce more notes than this.
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:positiveInteger">
+                    <xs:minInclusive value="1" />
+                    <xs:maxInclusive value="16" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="arpGateLength" type="decimalPositive" default="0.75">
+            <xs:annotation>
+                <xs:documentation>
+How long each note rings out, as a fraction of one step's duration. `0.5` cuts each note roughly
+halfway through its step; `1.0` lets it ring for the full step.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="arpFollowGlobalTempo" type="xs:boolean" default="true">
+            <xs:annotation>
+                <xs:documentation>
+Whether the arpeggiator's rate tracks the host/DAW tempo. When false, the rate is computed from
+`arpOverrideBpm` instead, ignoring whatever the host reports.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="arpSyncDivision" default="noteOneSixteenth">
+            <xs:annotation>
+                <xs:documentation>
+The musical note value of one step, e.g. `noteOneSixteenth` for a 16th-note arpeggio.
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="noteOneSixtyFourthTriplet" />
+                    <xs:enumeration value="noteOneSixtyFourth" />
+                    <xs:enumeration value="noteOneThirtySecondTriplet" />
+                    <xs:enumeration value="noteOneSixtyFourthDotted" />
+                    <xs:enumeration value="noteOneThirtySecond" />
+                    <xs:enumeration value="noteOneSixteenthTriplet" />
+                    <xs:enumeration value="noteOneThirtySecondDotted" />
+                    <xs:enumeration value="noteOneSixteenth" />
+                    <xs:enumeration value="noteOneEighthTriplet" />
+                    <xs:enumeration value="noteOneSixteenthDotted" />
+                    <xs:enumeration value="noteOneEighth" />
+                    <xs:enumeration value="noteOneFourthTriplet" />
+                    <xs:enumeration value="noteOneEighthDotted" />
+                    <xs:enumeration value="noteOneFourth" />
+                    <xs:enumeration value="noteOneHalfTriplet" />
+                    <xs:enumeration value="noteOneFourthDotted" />
+                    <xs:enumeration value="noteOneHalf" />
+                    <xs:enumeration value="noteOneTriplet" />
+                    <xs:enumeration value="noteOneHalfDotted" />
+                    <xs:enumeration value="noteWhole" />
+                    <xs:enumeration value="noteWholeDotted" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="arpRateMultiplier" type="decimalPositive" default="1.0">
+            <xs:annotation>
+                <xs:documentation>
+A continuous multiplier applied on top of `arpSyncDivision`'s rate - higher values play faster.
+Floating point number, 0.01 to 100.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="arpOverrideBpm" type="decimalPositive" default="120.0">
+            <xs:annotation>
+                <xs:documentation>
+The tempo used to compute the rate when `arpFollowGlobalTempo` is false. Floating point number, 1 to 1000.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+<!--=================================-->
+
     <xs:complexType name="modulatorLFO">
 
         <xs:sequence maxOccurs="unbounded">
@@ -409,9 +566,25 @@ Possible values are `sine`, `square`, `saw`.
 
         <xs:attribute name="frequency" type="decimalPositive" use="required">
             <xs:annotation><xs:documentation>
-The speed of the LFO in cycles per second.
-For example, a value of `10` would mean that the waveform repeats ten times per second.
+The speed of the LFO.
+If `frequencyFormat` is `hz`, this is in cycles per second.
+If `frequencyFormat` is `musical_time`, this should be an integer subdivision index
+(typically produced by a control using `valueType="musical_time"`).
             </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="frequencyFormat" default="hz">
+            <xs:annotation><xs:documentation>
+Controls how the `frequency` attribute is interpreted.
+`hz` (default): frequency is cycles per second.
+`musical_time`: frequency is a musical subdivision index that stays synced to host tempo.
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="hz" />
+                    <xs:enumeration value="musical_time" />
+                </xs:restriction>
+            </xs:simpleType>
         </xs:attribute>
 
         <xs:attribute name="modAmount" type="decimalMultiplier" default="1.0">
@@ -433,8 +606,9 @@ Default value: `0.0` (no delay).
         <xs:attribute name="modBehavior" default="set">
             <xs:annotation><xs:documentation>
 This attribute controls how the LFO affects the parameter it is targeting.
-Possible values are `add`, `multiply`, and `set`.
+Possible values are `add`, `modulate`, `multiply`, and `set`.
 If `add` is chosen, the LFO will add its value to the parameter it is targeting.
+If `modulate` is chosen, the LFO will add a modulation delta around the target's current/base value, so a neutral modulator value contributes no offset.
 If `multiply` is chosen, the LFO will multiply its value by the parameter it is targeting.
 If `set` is chosen, the LFO will set the parameter it is targeting to its value.
 Default value: `set`.
@@ -442,6 +616,7 @@ Default value: `set`.
             <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:enumeration value="add" />
+                    <xs:enumeration value="modulate" />
                     <xs:enumeration value="multiply" />
                     <xs:enumeration value="set" />
                 </xs:restriction>
@@ -484,8 +659,9 @@ Default value: `1.0`.
         <xs:attribute name="modBehavior" default="set">
             <xs:annotation><xs:documentation>
 This attribute controls how the envelope affects the parameter it is targeting.
-Possible values are `add`, `multiply`, and `set`.
+Possible values are `add`, `modulate`, `multiply`, and `set`.
 If `add` is chosen, the envelope will add its value to the parameter it is targeting.
+If `modulate` is chosen, the envelope will add a modulation delta around the target's current/base value, so a neutral modulator value contributes no offset.
 If `multiply` is chosen, the envelope will multiply its value by the parameter it is targeting.
 If `set` is chosen, the envelope will set the parameter it is targeting to its value.
 Default value: `set`.
@@ -493,6 +669,7 @@ Default value: `set`.
             <xs:simpleType>
                 <xs:restriction base="xs:string">
                     <xs:enumeration value="add" />
+                    <xs:enumeration value="modulate" />
                     <xs:enumeration value="multiply" />
                     <xs:enumeration value="set" />
                 </xs:restriction>
@@ -814,6 +991,7 @@ TODO: `"general"` is not mentioned as a valid value, but is present in multiple 
                     <xs:enumeration value="modulator" />
                     <xs:enumeration value="note_sequence" />
                     <xs:enumeration value="cc_binding" />
+                    <xs:enumeration value="arpeggiator" />
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
@@ -2469,6 +2647,7 @@ Default: `0`
     <xs:simpleType name="controlStyle">
         <xs:restriction base="xs:string">
             <xs:enumeration value="custom_skin_horizontal_drag" />
+            <xs:enumeration value="custom_skin_horizontal_vertical_drag" />
             <xs:enumeration value="custom_skin_vertical_drag" />
             <xs:enumeration value="linear_bar" />
             <xs:enumeration value="linear_bar_vertical" />
@@ -2681,6 +2860,18 @@ Default: `0`
 
             <!-- note_sequence -->
             <xs:enumeration value="RATE" />
+
+            <!-- arpeggiator -->
+            <xs:enumeration value="ARP_ENABLED" />
+            <xs:enumeration value="ARP_ORDER" />
+            <xs:enumeration value="ARP_OCTAVE_RANGE" />
+            <xs:enumeration value="ARP_OCTAVE_MODE" />
+            <xs:enumeration value="ARP_STEP_COUNT" />
+            <xs:enumeration value="ARP_GATE_LENGTH" />
+            <xs:enumeration value="ARP_SYNC_DIVISION" />
+            <xs:enumeration value="ARP_FOLLOW_GLOBAL_TEMPO" />
+            <xs:enumeration value="ARP_RATE_MULTIPLIER" />
+            <xs:enumeration value="ARP_OVERRIDE_BPM" />
 
             <!-- modulator, instrument -->
             <xs:enumeration value="MOD_AMOUNT" />
@@ -3355,7 +3546,7 @@ This is path to an image to use for the control.
 This is expected to be a JPEG or PNG in KnobMan format.
 A huge gallery of compatible knobs can be found here (https://www.g200kg.com/en/webknobman/gallery.php).
 &lt;hr /&gt;
-If you are using custom knobs, it’s important that you specify a `style=` value of either `custom_skin_vertical_drag` or `custom_skin_horizontal_drag`.
+If you are using custom knobs, it’s important that you specify a `style=` value of either `custom_skin_vertical_drag`, `custom_skin_horizontal_drag`, or `custom_skin_horizontal_vertical_drag`.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
@@ -3390,7 +3581,7 @@ The higher the number, the less sensitive the control will be to mouse movements
             <xs:annotation><xs:documentation>
 There are several possible values for this: `float` which yields numbers with two decimal points,
 `integer` which yields whole numbers, `multi_state`, which allows the user to choose between multiple states,
-and `musical_time` which yields musical time increments in beats and measures (for use with the built-in delay effect only).
+and `musical_time` which yields musical time increments in beats and measures.
 In order to use the `multi_state` option, you must also specify several `state name="something"` type elements.
 Default: float
             </xs:documentation></xs:annotation>
