@@ -47,6 +47,7 @@ SOFTWARE.
                 <xs:element name="modulators" type="modulators"></xs:element>
                 <xs:element name="buses" type="buses" />
                 <xs:element name="arpeggiator" type="arpeggiator" />
+                <xs:element name="noteSequences" type="noteSequences" />
             </xs:choice>
 
             <xs:attribute name="minVersion" type="xs:string">
@@ -726,9 +727,17 @@ For precise UI creation, it may be advisable to use a combination of `control` a
             </xs:documentation>
         </xs:annotation>
 
-        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="binding" type="binding" />
-        </xs:sequence>
+            <xs:element name="state" type="buttonState">
+                <xs:annotation>
+                    <xs:documentation>
+Used when valueType="multi_state": each state's bindings fire when the knob lands on that state,
+the same way a multi-state button's states do.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:choice>
 
         <xs:attributeGroup ref="controlProperties" />
         <xs:attributeGroup ref="textProperties" />
@@ -844,9 +853,17 @@ A user control widget without a built-in label.
             </xs:documentation>
         </xs:annotation>
 
-        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="binding" type="binding" />
-        </xs:sequence>
+            <xs:element name="state" type="buttonState">
+                <xs:annotation>
+                    <xs:documentation>
+Used when valueType="multi_state": each state's bindings fire when the control lands on that state,
+the same way a multi-state button's states do.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:choice>
 
 
         <xs:attributeGroup ref="controlProperties" />
@@ -2321,6 +2338,15 @@ This is useful for creating dynamic responses based on how hard a note is played
             <xs:annotation>
                 <xs:documentation>
 The relative path of the sample file to play for this zone.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="name" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>
+An optional descriptive name for this sample zone. Purely informational - used in the sample editor UI
+to help identify the zone, and has no effect on playback.
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
