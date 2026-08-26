@@ -2157,6 +2157,9 @@ Attributes: `irFile`, `mix`
 &lt;h3&gt; `delay` &lt;/h3&gt;
 Attributes: `delayTime`, `feedback`, `stereoOffset`, `wetLevel`
 
+&lt;h3&gt; `gate` &lt;/h3&gt;
+Attributes: `amount`, `mix`
+
 &lt;h3&gt; Filters: `lowpass`, `lowpass_4pl`, `bandpass`, `hipass` &lt;/h3&gt;
 Attributes: `frequency`, `resonance`
 
@@ -2182,6 +2185,7 @@ Attributes: `damping`, `roomSize`, `wetLevel`
         <xs:attributeGroup ref="effectConvolutionReverbAttributes" />
         <xs:attributeGroup ref="effectWaveShapeFolderAttributes" />
         <xs:attributeGroup ref="effectStereoSimulatorAttributes" />
+        <xs:attributeGroup ref="effectGateAttributes" />
 
     </xs:complexType>
 
@@ -2198,6 +2202,7 @@ Attributes: `damping`, `roomSize`, `wetLevel`
         <xs:attributeGroup ref="effectGainAttributes" />
         <xs:attributeGroup ref="effectWaveShapeFolderAttributes" />
         <xs:attributeGroup ref="effectStereoSimulatorAttributes" />
+        <xs:attributeGroup ref="effectGateAttributes" />
 
     </xs:complexType>
 
@@ -2239,6 +2244,7 @@ Specify parameters for each individual bus. Each bus can have its own volume, ou
             <xs:enumeration value="convolution" />
             <xs:enumeration value="delay" />
             <xs:enumeration value="gain" />
+            <xs:enumeration value="gate" />
             <xs:enumeration value="hipass" />
             <xs:enumeration value="lowpass" />
             <xs:enumeration value="lowpass_4pl" />
@@ -2258,6 +2264,7 @@ Specify parameters for each individual bus. Each bus can have its own volume, ou
             <xs:enumeration value="chorus" />
             <xs:enumeration value="compressor" />
             <xs:enumeration value="gain" />
+            <xs:enumeration value="gate" />
             <xs:enumeration value="hipass" />
             <xs:enumeration value="lowpass" />
             <xs:enumeration value="lowpass_4pl" />
@@ -3912,6 +3919,21 @@ Makeup gain, in dB, applied to the signal after compression. Bindable via parame
             <xs:annotation><xs:documentation>
 When true, the compressor fades itself out (click-free) whenever the input stays below threshold,
 and fades back in as soon as the signal re-engages. Not bindable.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+
+<!--=================================-->
+
+    <xs:attributeGroup name="effectGateAttributes">
+        <xs:annotation><xs:documentation>
+Attributes for the `gate` effect. The `mix` attribute (declared alongside the chorus/phaser
+attributes) is also used here to control the effect's wet/dry balance.
+        </xs:documentation></xs:annotation>
+        <xs:attribute name="amount" type="decimalMultiplier" default="0.5">
+            <xs:annotation><xs:documentation>
+The probability that any given ~50ms decision window gates the signal to silence.
+0 = never gates (fully open), 1.0 = gates constantly (fully closed). Bindable via parameter="FX_GATE_AMOUNT".
             </xs:documentation></xs:annotation>
         </xs:attribute>
     </xs:attributeGroup>
