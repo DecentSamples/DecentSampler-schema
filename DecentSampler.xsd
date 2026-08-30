@@ -1852,12 +1852,50 @@ Default: `1.0`
                         </xs:documentation></xs:annotation>
                         <xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType>
                     </xs:attribute>
+                    <xs:attribute name="fmFeedback" default="0.0">
+                        <xs:annotation><xs:documentation>
+(Only for `waveform="fm6op"`) Shorthand that applies the same self-feedback amount to all six
+operators, so you do not have to know which operator the current algorithm feeds back through.
+Range: 0.0-1.0. Default: `0.0`
+                        </xs:documentation></xs:annotation>
+                        <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="fmModulatorAttack" default="0.0">
+                        <xs:annotation><xs:documentation>
+(Only for `waveform="fm6op"`) Shifts the attack stage of every operator acting as a MODULATOR
+under the current algorithm. Positive values lengthen the attack, negative shorten it; `0` leaves
+the patch alone. Expressed in DX7 envelope-rate units and applied as an offset to each operator's
+own rate, so the differences between operators are preserved. Range: -99-99. Default: `0.0`
+                        </xs:documentation></xs:annotation>
+                        <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="-99"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="fmModulatorDecay" default="0.0">
+                        <xs:annotation><xs:documentation>
+(Only for `waveform="fm6op"`) As `fmModulatorAttack`, but for the decay stage. Range: -99-99.
+Default: `0.0`
+                        </xs:documentation></xs:annotation>
+                        <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="-99"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="fmCarrierAttack" default="0.0">
+                        <xs:annotation><xs:documentation>
+(Only for `waveform="fm6op"`) As `fmModulatorAttack`, but for the operators acting as CARRIERS
+under the current algorithm. Range: -99-99. Default: `0.0`
+                        </xs:documentation></xs:annotation>
+                        <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="-99"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType>
+                    </xs:attribute>
+                    <xs:attribute name="fmCarrierDecay" default="0.0">
+                        <xs:annotation><xs:documentation>
+(Only for `waveform="fm6op"`) As `fmCarrierAttack`, but for the decay stage. Range: -99-99.
+Default: `0.0`
+                        </xs:documentation></xs:annotation>
+                        <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="-99"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType>
+                    </xs:attribute>
                     <xs:attribute name="fmOp1Feedback" default="0.0">
                         <xs:annotation><xs:documentation>
 (Only for `waveform="fm6op"`) Self-feedback amount for operator 1. Range: 0.0–1.0.
-In most algorithms only one operator (typically Op6) physically carries the feedback path;
-setting feedback on other operators has no audible effect unless the algorithm routes them
-as feedback sources. Default: `0.0`
+Exactly one operator carries the feedback path in any given algorithm - Op6 in 19 of the 32,
+but Op2, Op3, Op4 or Op5 in the rest - and setting feedback on any other operator has no
+audible effect. Use `fmFeedback` if you would rather not track which. Default: `0.0`
                         </xs:documentation></xs:annotation>
                         <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
                     </xs:attribute>
