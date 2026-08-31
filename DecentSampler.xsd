@@ -155,6 +155,7 @@ As such, every UI must have at most one `tab` element.
             <xs:element name="rectangle" type="rectangle" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="line" type="line" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="oscilloscope" type="oscilloscope" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="drawbars" type="drawbars" minOccurs="0" maxOccurs="unbounded" />
         </xs:choice>
 
         <xs:attribute name="name">
@@ -1650,6 +1651,71 @@ A tool tip to display when the user hovers over this line.
 
 <!--=================================-->
 
+    <xs:complexType name="drawbars">
+        <xs:annotation>
+            <xs:documentation>
+The `&lt;drawbars&gt;` element is a row of vertical drawbars, dragged to shape a set of levels the
+way a drawbar organ does. Place it inside a `&lt;tab&gt;` element.
+
+It is meant for the harmonic oscillator's partials. Unlike other controls, a single
+`&lt;binding&gt;` covers every bar: which partial a movement applies to comes from the bar itself,
+so you do not write one binding per partial.
+
+    &lt;drawbars x="10" y="10" width="300" height="120" numBars="9"&gt;
+      &lt;binding type="general" level="group" tags="organ"
+               parameter="OSCILLATOR_HARMONIC_PARTIAL_LEVEL" /&gt;
+    &lt;/drawbars&gt;
+
+Note that a level written to a `&lt;group&gt;` is shadowed by the same attribute set directly on an
+`&lt;oscillator&gt;`, so do not set `harmonicPartialNLevel` on the oscillator you want the drawbars
+to control.
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:sequence>
+            <xs:element name="binding" type="binding" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+
+        <xs:attribute name="x" type="xs:integer" use="required">
+            <xs:annotation><xs:documentation>
+The x position of the element's top-left corner, in pixels.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="y" type="xs:integer" use="required">
+            <xs:annotation><xs:documentation>
+The y position of the element's top-left corner, in pixels.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="width" type="xs:integer" use="required">
+            <xs:annotation><xs:documentation>The width of the element, in pixels.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="height" type="xs:integer" use="required">
+            <xs:annotation><xs:documentation>The height of the element, in pixels.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="numBars" default="9">
+            <xs:annotation><xs:documentation>
+How many bars are shown. Nine matches a drawbar organ; the harmonic oscillator supports up to 64
+partials. Default: `9`
+            </xs:documentation></xs:annotation>
+            <xs:simpleType><xs:restriction base="xs:integer">
+                <xs:minInclusive value="1"/><xs:maxInclusive value="64"/>
+            </xs:restriction></xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="enabled" type="xs:boolean" default="true">
+            <xs:annotation><xs:documentation>Whether the control responds to the mouse. Default: `true`</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="visible" type="xs:boolean" default="true">
+            <xs:annotation><xs:documentation>Whether the control is shown. Default: `true`</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:anyAttribute processContents="skip">
+            <xs:annotation><xs:documentation>
+Each bar's position is stored as `level1`, `level2` and so on, 0.0-1.0. You do not normally write
+these by hand - the control saves them as they are dragged - but they are how a preset remembers
+its drawbar positions.
+            </xs:documentation></xs:annotation>
+        </xs:anyAttribute>
+    </xs:complexType>
+
     <xs:complexType name="oscilloscope">
         <xs:annotation>
             <xs:documentation>
@@ -2378,6 +2444,12 @@ Default: `0`
             <xs:enumeration value="OSCILLATOR_FM_OP4_FEEDBACK" />
             <xs:enumeration value="OSCILLATOR_FM_OP5_FEEDBACK" />
             <xs:enumeration value="OSCILLATOR_FM_OP6_FEEDBACK" />
+            <xs:enumeration value="OSCILLATOR_FM_FEEDBACK" />
+            <xs:enumeration value="OSCILLATOR_FM_MODULATOR_ATTACK" />
+            <xs:enumeration value="OSCILLATOR_FM_MODULATOR_DECAY" />
+            <xs:enumeration value="OSCILLATOR_FM_CARRIER_ATTACK" />
+            <xs:enumeration value="OSCILLATOR_FM_CARRIER_DECAY" />
+            <xs:enumeration value="OSCILLATOR_HARMONIC_PARTIAL_LEVEL" />
             <xs:enumeration value="AMP_VEL_TRACK" />
             <xs:enumeration value="ENV_ATTACK" />
             <xs:enumeration value="ENV_DECAY" />
