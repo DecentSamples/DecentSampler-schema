@@ -3558,6 +3558,20 @@ Range: 1-20000. Default: `160`
 through the frames while the note is releasing. Default: `true`
             </xs:documentation></xs:annotation>
         </xs:attribute>
+        <xs:attribute name="polyphony" default="-1">
+            <xs:annotation><xs:documentation>
+How many voices this oscillator may sound at once. `-1`, the default, means no limit.
+
+Set it to `1` to make the oscillator monophonic, which is what makes `glideMode` behave like the
+portamento on a classic synth - one voice sliding from note to note - rather than every voice
+gliding independently.
+
+This is not the same as a `&lt;tag&gt;`'s `polyphony`, which is a cross-cutting limit spanning
+groups. This one is a property of the sound. If both apply, each is enforced, so the stricter
+wins. Default: `-1`
+            </xs:documentation></xs:annotation>
+            <xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="-1"/></xs:restriction></xs:simpleType>
+        </xs:attribute>
     </xs:attributeGroup>
 
     <xs:attributeGroup name="regionSettings">
