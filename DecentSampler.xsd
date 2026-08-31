@@ -1877,10 +1877,13 @@ Default: `1.0`
                         </xs:annotation>
                     </xs:attribute>
 
-                    <xs:attribute name="polyphony" type="xs:nonNegativeInteger">
+                    <xs:attribute name="polyphony" type="xs:positiveInteger">
                         <xs:annotation>
                             <xs:documentation>
-A whole number that specifies the number of voices allowed for this tag.
+How many voices are allowed for this tag. Leave the attribute off for no limit.
+
+`0` is not a meaningful voice count - a sound that plays nothing is what `enabled="false"` is for -
+and it used to mean different things depending on where it was set, so it is no longer accepted.
                             </xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
@@ -2450,6 +2453,7 @@ Default: `0`
             <xs:enumeration value="OSCILLATOR_FM_CARRIER_ATTACK" />
             <xs:enumeration value="OSCILLATOR_FM_CARRIER_DECAY" />
             <xs:enumeration value="OSCILLATOR_HARMONIC_PARTIAL_LEVEL" />
+            <xs:enumeration value="OSCILLATOR_POLYPHONY" />
             <xs:enumeration value="AMP_VEL_TRACK" />
             <xs:enumeration value="ENV_ATTACK" />
             <xs:enumeration value="ENV_DECAY" />
@@ -3558,9 +3562,10 @@ Range: 1-20000. Default: `160`
 through the frames while the note is releasing. Default: `true`
             </xs:documentation></xs:annotation>
         </xs:attribute>
-        <xs:attribute name="polyphony" default="-1">
+        <xs:attribute name="polyphony" type="xs:positiveInteger">
             <xs:annotation><xs:documentation>
-How many voices this oscillator may sound at once. `-1`, the default, means no limit.
+How many voices this oscillator may sound at once. Leave the attribute off for no limit - the same
+way a `&lt;tag&gt;` expresses it.
 
 Set it to `1` to make the oscillator monophonic, which is what makes `glideMode` behave like the
 portamento on a classic synth - one voice sliding from note to note - rather than every voice
@@ -3568,9 +3573,8 @@ gliding independently.
 
 This is not the same as a `&lt;tag&gt;`'s `polyphony`, which is a cross-cutting limit spanning
 groups. This one is a property of the sound. If both apply, each is enforced, so the stricter
-wins. Default: `-1`
+wins.
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="-1"/></xs:restriction></xs:simpleType>
         </xs:attribute>
     </xs:attributeGroup>
 
