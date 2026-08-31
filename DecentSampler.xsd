@@ -2891,9 +2891,10 @@ Default: `0.0`
                     <xs:attribute name="fmOp1Feedback" default="0.0">
                         <xs:annotation><xs:documentation>
 (Only for `waveform="fm6op"`) Self-feedback amount for operator 1. Range: 0.0–1.0.
-Exactly one operator carries the feedback path in any given algorithm - Op6 in 19 of the 32,
+Exactly one operator carries the feedback path in any given algorithm - Op6 in 18 of the 32,
 but Op2, Op3, Op4 or Op5 in the rest - and setting feedback on any other operator has no
-audible effect. Use `fmFeedback` if you would rather not track which. Default: `0.0`
+audible effect. Note algorithm 6 uses Op5 here, which differs from a real DX7. Use
+`fmFeedback` if you would rather not track which. Default: `0.0`
                         </xs:documentation></xs:annotation>
                         <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
                     </xs:attribute>
