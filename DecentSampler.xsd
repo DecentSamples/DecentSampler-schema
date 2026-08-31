@@ -3635,7 +3635,11 @@ Default: `127`
 
         <xs:attribute name="ampEnvEnabled" type="xs:boolean">
             <xs:annotation><xs:documentation>
-                Whether or not the amplitude envelope is enabled.
+                Whether the outer amplitude envelope (the attack/decay/sustain/release attributes)
+                shapes this sound. Set it to `false` to let the sound's own envelopes govern
+                instead. On an oscillator this is only honoured where something else can end the
+                note - currently `waveform="fm6op"` with DX7 operator envelopes - since a plain
+                sine or saw has no internal envelope and would sound forever. Default: `true`
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
