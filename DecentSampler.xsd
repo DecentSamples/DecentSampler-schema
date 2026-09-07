@@ -50,6 +50,19 @@ SOFTWARE.
                 <xs:element name="noteSequences" type="noteSequences" />
             </xs:choice>
 
+            <xs:attribute name="limiterStyle" default="default">
+                <xs:annotation>
+                    <xs:documentation>
+(optional): How the output stage behaves. "default" also compresses above -10 dBFS at 4:1 with makeup gain, which is what every instrument built before this option existed was made against. "brickwall" keeps only the ceiling, so chords and dynamics come through at full size, at the cost of being 3.75 dB quieter overall.
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="default"/>
+                        <xs:enumeration value="brickwall"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
             <xs:attribute name="minVersion" type="xs:string">
                 <xs:annotation>
                     <xs:documentation>
