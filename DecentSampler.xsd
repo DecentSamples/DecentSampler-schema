@@ -74,6 +74,38 @@ The dialog box does not show up for iOS users as most of them have auto-updates 
                 </xs:annotation>
             </xs:attribute>
 
+            <!-- Written by the plugin, never read back from a preset file. Declared so that
+                 presets saved by older versions still validate. Do not author these. -->
+            <xs:attribute name="samplePath" type="xs:string">
+                <xs:annotation><xs:documentation>
+Ignored. Session-only information the plugin used to write into saved presets. Current versions
+write it as `_samplePath`, and only into the host's saved state rather than into a preset file.
+                </xs:documentation></xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="presetName" type="xs:string">
+                <xs:annotation><xs:documentation>Ignored. Session-only, as with `samplePath`.</xs:documentation></xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="libraryUrl" type="xs:string">
+                <xs:annotation><xs:documentation>Ignored. Session-only, as with `samplePath`.</xs:documentation></xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="libraryCanonicalUrl" type="xs:string">
+                <xs:annotation><xs:documentation>Ignored. Session-only, as with `samplePath`.</xs:documentation></xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="libraryBookmark" type="xs:string">
+                <xs:annotation><xs:documentation>Ignored. Session-only, as with `samplePath`.</xs:documentation></xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="pluginVersion" type="xs:string">
+                <xs:annotation><xs:documentation>
+Ignored. Appears in a number of older presets but has never been read by the engine. `minVersion`
+is the attribute that actually does something.
+                </xs:documentation></xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="coverArtImage" type="xs:string">
+                <xs:annotation><xs:documentation>
+Ignored by the engine. Cover art for a library is set in its dslibraryinfo file, not here.
+                </xs:documentation></xs:annotation>
+            </xs:attribute>
+
         </xs:complexType>
     </xs:element>
 
@@ -143,6 +175,7 @@ Recommended value: `375`
         <!-- Seen in the boilerplate example -->
         <xs:attribute name="layoutMode" /> <!-- layoutMode="relative" -->
         <xs:attribute name="bgMode" /> <!-- bgMode="top_left" -->
+        <xs:attribute name="y" type="xs:decimal" />
     </xs:complexType>
 
 <!--=================================-->
@@ -215,9 +248,11 @@ The top of the range for which this color should be displayed.
 A hex representation of the ARGB color to be used for this key range.
                         </xs:documentation></xs:annotation>
                     </xs:attribute>
+                    <xs:attribute name="enabled" type="xs:boolean" />
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
+        <xs:attribute name="x" type="xs:decimal" />
     </xs:complexType>
 
 <!--=================================-->
@@ -272,6 +307,7 @@ The time in milliseconds it takes for the MPE timbre to fall to its target value
 Default value: 0 milliseconds.
             </xs:documentation></xs:annotation>
         </xs:attribute>
+        <xs:attribute name="modAmount" type="xs:decimal" />
     </xs:complexType>
 
 <!--=================================-->
@@ -315,6 +351,7 @@ The time in milliseconds it takes for the MPE pressure to fall to its target val
 Default value: 0 milliseconds.
             </xs:documentation></xs:annotation>
         </xs:attribute>
+        <xs:attribute name="modAmount" type="xs:decimal" />
     </xs:complexType>
 
 <!--=================================-->
@@ -371,6 +408,9 @@ The length of the note in beats. This is a floating point number.
                                         </xs:documentation>
                                     </xs:annotation>
                                 </xs:attribute>
+                                <xs:attribute name="enabled" type="xs:boolean" />
+                                <xs:attribute name="eventType" type="xs:string" />
+                                <xs:attribute name="swallowNotes" type="xs:boolean" />
                             </xs:complexType>
                         </xs:element>
                     </xs:sequence>
@@ -756,6 +796,7 @@ the same way a multi-state button's states do.
         <xs:attributeGroup ref="controlProperties" />
         <xs:attributeGroup ref="textProperties" />
         <xs:attributeGroup ref="widgetGeometry" />
+        <xs:attribute name="parameter" type="xs:string" />
     </xs:complexType>
 
 <!--=================================-->
@@ -841,6 +882,11 @@ These can be used in conjunction with any binding that takes a `controlIndex` (i
 A tool tip to display when the user hovers over this control.
             </xs:documentation></xs:annotation>
         </xs:attribute>
+        <xs:attribute name="name" type="xs:string" />
+        <xs:attribute name="parameterName" type="xs:string" />
+        <xs:attribute name="defaultValue" type="xs:string" />
+        <xs:attribute name="textColor" type="hexARGB" />
+        <xs:attribute name="textSize" type="xs:decimal" />
     </xs:complexType>
 
 <!--=================================-->
@@ -856,6 +902,10 @@ The text to display on a text button when this state is active.
             </xs:documentation></xs:annotation>
         </xs:attribute>
         <xs:attributeGroup ref="buttonImageAttributes" />
+        <xs:attribute name="enabled" type="xs:boolean" />
+        <xs:attribute name="width" type="xs:decimal" />
+        <xs:attribute name="height" type="xs:decimal" />
+        <xs:attribute name="tooltip" type="xs:string" />
     </xs:complexType>
 
 <!--=================================-->
@@ -883,6 +933,16 @@ the same way a multi-state button's states do.
         <xs:attributeGroup ref="controlProperties" />
         <xs:attributeGroup ref="textProperties" />
         <xs:attributeGroup ref="widgetGeometry" />
+        <xs:attribute name="_index" type="xs:integer">
+          <xs:annotation><xs:documentation>Written by the plugin. Ignored when a preset is loaded.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="_uid" type="xs:string">
+          <xs:annotation><xs:documentation>Written by the plugin. Ignored when a preset is loaded.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="disabledOpacity" type="xs:decimal" />
+        <xs:attribute name="outputLevel" type="xs:string" />
+        <xs:attribute name="tag" type="xs:string" />
+        <xs:attribute name="text" type="xs:string" />
     </xs:complexType>
 
 <!--=================================-->
@@ -1016,6 +1076,9 @@ The name of this option.
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
+        <xs:attribute name="mainImage" type="xs:string" />
+        <xs:attribute name="hoverImage" type="xs:string" />
+        <xs:attribute name="clickImage" type="xs:string" />
     </xs:complexType>
 
 <!--=================================-->
@@ -1302,6 +1365,14 @@ The 0-based index of the color element within the keyboard element.
 A value that turns the binding on and off. Valid values are: `true`, `false`.
             </xs:documentation></xs:annotation>
         </xs:attribute>
+        <xs:attribute name="busIndex" type="xs:integer" />
+        <xs:attribute name="factor" type="xs:decimal" />
+        <xs:attribute name="modAmount" type="xs:decimal" />
+        <xs:attribute name="modBehavior" type="xs:string" />
+        <xs:attribute name="noteIndex" type="xs:integer" />
+        <xs:attribute name="tag" type="xs:string" />
+        <xs:attribute name="trackForegroundColor" type="hexARGB" />
+        <xs:attribute name="value" type="xs:string" />
     </xs:complexType>
 
 <!--=================================-->
@@ -1380,6 +1451,9 @@ A tool tip to display when the user hovers over this label.
 
         <xs:attributeGroup ref="textProperties" />
         <xs:attributeGroup ref="widgetGeometry" />
+        <xs:attribute name="_index" type="xs:integer">
+          <xs:annotation><xs:documentation>Written by the plugin. Ignored when a preset is loaded.</xs:documentation></xs:annotation>
+        </xs:attribute>
     </xs:complexType>
 
 <!--=================================-->
@@ -1430,6 +1504,8 @@ A tool tip to display when the user hovers over this image.
         </xs:attribute>
 
         <xs:attributeGroup ref="widgetGeometry" />
+        <xs:attribute name="style" type="xs:string" />
+        <xs:attribute name="tags" type="xs:string" />
     </xs:complexType>
 
 <!--=================================-->
@@ -1521,6 +1597,7 @@ A tool tip to display when the user hovers over this image.
         </xs:attribute>
 
         <xs:attributeGroup ref="widgetGeometry" />
+        <xs:attribute name="aspectRatioMode" type="xs:string" />
     </xs:complexType>
 
 <!--=================================-->
@@ -1592,6 +1669,8 @@ A tool tip to display when the user hovers over this rectangle.
         </xs:attribute>
 
         <xs:attributeGroup ref="widgetGeometry" />
+        <xs:attribute name="color" type="hexARGB" />
+        <xs:attribute name="outlineColor" type="hexARGB" />
     </xs:complexType>
 
 <!--=================================-->
@@ -1684,6 +1763,9 @@ A tool tip to display when the user hovers over this line.
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
+        <xs:attribute name="y" type="xs:decimal" />
+        <xs:attribute name="width" type="xs:decimal" />
+        <xs:attribute name="height" type="xs:decimal" />
     </xs:complexType>
 
 <!--=================================-->
@@ -1818,6 +1900,7 @@ Default: `false`.
 Controls whether the oscilloscope is visible. Default: `true`.
             </xs:documentation></xs:annotation>
         </xs:attribute>
+        <xs:attribute name="tags" type="xs:string" />
     </xs:complexType>
 
 <!--=================================-->
@@ -1897,6 +1980,9 @@ Default: `0`
                     </xs:attribute>
                                         <xs:attributeGroup ref="synthesisSettings" />
                     <xs:attributeGroup ref="regionSettings" />
+    <xs:attribute name="modVolume" type="xs:decimal" />
+    <xs:attribute name="start" type="xs:decimal" />
+    <xs:attribute name="end" type="xs:decimal" />
 </xs:complexType>
             </xs:element>
         </xs:sequence>
@@ -1938,6 +2024,11 @@ Default: `1.0`
         <xs:attribute name="globalTuning" type="xs:decimal" default="0" />
 
         <xs:attributeGroup ref="regionSettings" />
+        <xs:attribute name="pitchBendRange" type="xs:decimal" />
+        <xs:attribute name="polyphony" type="xs:integer" />
+        <xs:attribute name="tuning" type="xs:decimal" />
+        <xs:attribute name="damping" type="xs:decimal" />
+        <xs:attribute name="pluckType" type="xs:string" />
     </xs:complexType>
 
 <!--=================================-->
@@ -2077,6 +2168,18 @@ Attributes: `damping`, `roomSize`, `wetLevel`
         <xs:attributeGroup ref="effectStereoSimulatorAttributes" />
         <xs:attributeGroup ref="effectStutterAttributes" />
 
+        <xs:attribute name="enabled" type="xs:boolean" />
+        <xs:attribute name="levelUnit" type="xs:string" />
+        <xs:attribute name="gain" type="xs:decimal" />
+        <xs:attribute name="q" type="xs:decimal" />
+        <xs:attribute name="delayTimeFormat" type="xs:string" />
+        <xs:attribute name="pitchShift" type="xs:decimal" />
+        <xs:attribute name="highQuality" type="xs:boolean" />
+        <xs:attribute name="bitDepth" type="xs:decimal" />
+        <xs:attribute name="sampleRateReduction" type="xs:decimal" />
+        <xs:attribute name="tags" type="xs:string">
+          <xs:annotation><xs:documentation>A comma-separated list of tags. A binding can target effects by tag rather than by position.</xs:documentation></xs:annotation>
+        </xs:attribute>
     </xs:complexType>
 
 <!--=================================-->
@@ -2094,6 +2197,23 @@ Attributes: `damping`, `roomSize`, `wetLevel`
         <xs:attributeGroup ref="effectStereoSimulatorAttributes" />
         <xs:attributeGroup ref="effectStutterAttributes" />
 
+        <xs:attribute name="enabled" type="xs:boolean" />
+        <xs:attribute name="levelUnit" type="xs:string" />
+        <xs:attribute name="gain" type="xs:decimal" />
+        <xs:attribute name="q" type="xs:decimal" />
+        <xs:attribute name="wetLevel" type="xs:decimal" />
+        <xs:attribute name="roomSize" type="xs:decimal" />
+        <xs:attribute name="damping" type="xs:decimal" />
+        <xs:attribute name="feedback" type="xs:decimal" />
+        <xs:attribute name="irFile" type="xs:string" />
+        <xs:attribute name="delayTimeFormat" type="xs:string" />
+        <xs:attribute name="pitchShift" type="xs:decimal" />
+        <xs:attribute name="highQuality" type="xs:boolean" />
+        <xs:attribute name="bitDepth" type="xs:decimal" />
+        <xs:attribute name="sampleRateReduction" type="xs:decimal" />
+        <xs:attribute name="tags" type="xs:string">
+          <xs:annotation><xs:documentation>A comma-separated list of tags. A binding can target effects by tag rather than by position.</xs:documentation></xs:annotation>
+        </xs:attribute>
     </xs:complexType>
 
 <!--=================================-->
@@ -2122,6 +2242,7 @@ Specify parameters for each individual bus. Each bus can have its own volume, ou
             <xs:annotation><xs:documentation>The volume of the bus (0.0–1.0). Default: 1.0</xs:documentation></xs:annotation>
         </xs:attribute>
         <xs:attributeGroup ref="busOutputAttributes" />
+        <xs:attribute name="name" type="xs:string" />
     </xs:complexType>
 
 <!--=================================-->
@@ -2207,6 +2328,7 @@ Beneath the `cc` element, you can have any number of bindings.
         </xs:sequence>
 
         <xs:attribute name="number" type="midi7Bit" use="required" />
+        <xs:attribute name="scope" type="xs:string" />
     </xs:complexType>
 
 <!--=================================-->
@@ -2225,6 +2347,9 @@ Beneath the `note` element, you can have any number of bindings.
         </xs:sequence>
 
         <xs:attribute name="note" type="midi7Bit" use="required" />
+        <xs:attribute name="enabled" type="xs:boolean" />
+        <xs:attribute name="swallowNotes" type="xs:boolean" />
+        <xs:attribute name="eventType" type="xs:string" />
     </xs:complexType>
 
 <!--=================================-->
@@ -2293,6 +2418,10 @@ Default: `0`
         </xs:attribute>
 
         <xs:attributeGroup ref="regionSettings" />
+        <xs:attribute name="length" type="xs:decimal" />
+        <xs:attribute name="loopCrossfadeMilliseconds" type="xs:decimal">
+          <xs:annotation><xs:documentation>Ignored by the engine. Written by the Logic EXS24 importer when it converts an instrument; loopCrossfade is the attribute that has an effect.</xs:documentation></xs:annotation>
+        </xs:attribute>
     </xs:complexType>
 
 <!--=================================-->
