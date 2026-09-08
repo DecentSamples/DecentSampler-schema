@@ -1829,6 +1829,24 @@ The first group in a file is group `0`, the second is group `1`, etc.
                         </xs:documentation></xs:annotation>
                     </xs:attribute>
 
+                    <xs:attribute name="groupVolume" type="decibelOrAbsoluteGain">
+                        <xs:annotation>
+                            <xs:documentation>
+The volume of this group. This is a clearer name for the `volume` attribute at the `group` level,
+and does exactly the same thing.
+
+The three `volume` attributes in a preset - the one on `groups`, the one on `group`, and the one on
+`sample` - are three separate settings that multiply together. They are not one attribute inherited
+downwards the way most attributes are. The shared name makes that easy to misread, so `globalVolume`
+and `groupVolume` are available to say which level you mean.
+
+`volume` continues to work exactly as it always has, and existing presets need no changes.
+If you set both `volume` and `groupVolume` on the same group, `groupVolume` is the one that applies.
+Default: `1.0`
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+
                     <xs:attribute name="groupTuning" type="xs:decimal">
                         <xs:annotation>
                             <xs:documentation>
@@ -1846,6 +1864,25 @@ Default: `0`
         </xs:sequence>
 
         
+        <xs:attribute name="globalVolume" type="decibelOrAbsoluteGain">
+            <xs:annotation>
+                <xs:documentation>
+The overall volume of the instrument. This is a clearer name for the `volume` attribute at the
+`groups` level, and does exactly the same thing.
+
+The three `volume` attributes in a preset - the one on `groups`, the one on `group`, and the one on
+`sample` - are three separate settings that multiply together. They are not one attribute inherited
+downwards the way most attributes are. The shared name makes that easy to misread, so `globalVolume`
+and `groupVolume` are available to say which level you mean.
+
+`volume` continues to work exactly as it always has, and existing presets need no changes.
+If you set both `volume` and `globalVolume` on the same `groups` element, `globalVolume` is the one
+that applies.
+Default: `1.0`
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
         <xs:attribute name="globalTuning" type="xs:decimal" default="0" />
 
         <xs:attributeGroup ref="regionSettings" />
