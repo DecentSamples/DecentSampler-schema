@@ -2015,7 +2015,7 @@ Attributes: `irFile`, `mix`
 &lt;h3&gt; `delay` &lt;/h3&gt;
 Attributes: `delayTime`, `feedback`, `stereoOffset`, `wetLevel`
 
-&lt;h3&gt; `gate` &lt;/h3&gt;
+&lt;h3&gt; `stutter` &lt;/h3&gt;
 Attributes: `amount`, `mix`
 
 &lt;h3&gt; Filters: `lowpass`, `lowpass_4pl`, `bandpass`, `hipass` &lt;/h3&gt;
@@ -2043,7 +2043,7 @@ Attributes: `damping`, `roomSize`, `wetLevel`
         <xs:attributeGroup ref="effectConvolutionReverbAttributes" />
         <xs:attributeGroup ref="effectWaveShapeFolderAttributes" />
         <xs:attributeGroup ref="effectStereoSimulatorAttributes" />
-        <xs:attributeGroup ref="effectGateAttributes" />
+        <xs:attributeGroup ref="effectStutterAttributes" />
 
     </xs:complexType>
 
@@ -2060,7 +2060,7 @@ Attributes: `damping`, `roomSize`, `wetLevel`
         <xs:attributeGroup ref="effectGainAttributes" />
         <xs:attributeGroup ref="effectWaveShapeFolderAttributes" />
         <xs:attributeGroup ref="effectStereoSimulatorAttributes" />
-        <xs:attributeGroup ref="effectGateAttributes" />
+        <xs:attributeGroup ref="effectStutterAttributes" />
 
     </xs:complexType>
 
@@ -2097,18 +2097,23 @@ Specify parameters for each individual bus. Each bus can have its own volume, ou
     <xs:simpleType name="globalEffectType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="bandpass" />
+            <xs:enumeration value="bit_crusher" />
             <xs:enumeration value="chorus" />
             <xs:enumeration value="compressor" />
             <xs:enumeration value="convolution" />
             <xs:enumeration value="delay" />
             <xs:enumeration value="gain" />
-            <xs:enumeration value="gate" />
-            <xs:enumeration value="hipass" />
+            <xs:enumeration value="highpass" />
             <xs:enumeration value="lowpass" />
+            <xs:enumeration value="lowpass_1pl" />
             <xs:enumeration value="lowpass_4pl" />
+            <xs:enumeration value="notch" />
+            <xs:enumeration value="peak" />
             <xs:enumeration value="phaser" />
+            <xs:enumeration value="pitch_shift" />
             <xs:enumeration value="reverb" />
             <xs:enumeration value="stereo_simulator" />
+            <xs:enumeration value="stutter" />
             <xs:enumeration value="wave_folder" />
             <xs:enumeration value="wave_shaper" />
         </xs:restriction>
@@ -2119,14 +2124,23 @@ Specify parameters for each individual bus. Each bus can have its own volume, ou
     <xs:simpleType name="groupEffectType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="bandpass" />
+            <xs:enumeration value="bit_crusher" />
             <xs:enumeration value="chorus" />
             <xs:enumeration value="compressor" />
+            <xs:enumeration value="convolution" />
+            <xs:enumeration value="delay" />
             <xs:enumeration value="gain" />
-            <xs:enumeration value="gate" />
-            <xs:enumeration value="hipass" />
+            <xs:enumeration value="highpass" />
             <xs:enumeration value="lowpass" />
+            <xs:enumeration value="lowpass_1pl" />
             <xs:enumeration value="lowpass_4pl" />
+            <xs:enumeration value="notch" />
+            <xs:enumeration value="peak" />
+            <xs:enumeration value="phaser" />
+            <xs:enumeration value="pitch_shift" />
+            <xs:enumeration value="reverb" />
             <xs:enumeration value="stereo_simulator" />
+            <xs:enumeration value="stutter" />
             <xs:enumeration value="wave_folder" />
             <xs:enumeration value="wave_shaper" />
         </xs:restriction>
@@ -2472,7 +2486,16 @@ Default: `0`
             <xs:enumeration value="ROOT_NOTE" />
 
             <!-- instrument, effect -->
+            <xs:enumeration value="FX_ATTACK" />
+            <xs:enumeration value="FX_BIT_DEPTH" />
             <xs:enumeration value="FX_CENTER_FREQUENCY" />
+            <xs:enumeration value="FX_INPUT_GAIN" />
+            <xs:enumeration value="FX_OUTPUT_GAIN" />
+            <xs:enumeration value="FX_RATIO" />
+            <xs:enumeration value="FX_RELEASE" />
+            <xs:enumeration value="FX_SAMPLE_RATE_REDUCTION" />
+            <xs:enumeration value="FX_STUTTER_AMOUNT" />
+            <xs:enumeration value="FX_WIDTH" />
             <xs:enumeration value="FX_DELAY_TIME" />
             <xs:enumeration value="FX_DELAY_TIME_FORMAT" />
             <xs:enumeration value="FX_DRIVE" />
@@ -4603,15 +4626,15 @@ and fades back in as soon as the signal re-engages. Not bindable.
 
 <!--=================================-->
 
-    <xs:attributeGroup name="effectGateAttributes">
+    <xs:attributeGroup name="effectStutterAttributes">
         <xs:annotation><xs:documentation>
-Attributes for the `gate` effect. The `mix` attribute (declared alongside the chorus/phaser
+Attributes for the `stutter` effect. The `mix` attribute (declared alongside the chorus/phaser
 attributes) is also used here to control the effect's wet/dry balance.
         </xs:documentation></xs:annotation>
         <xs:attribute name="amount" type="decimalMultiplier" default="0.5">
             <xs:annotation><xs:documentation>
 The probability that any given ~50ms decision window gates the signal to silence.
-0 = never gates (fully open), 1.0 = gates constantly (fully closed). Bindable via parameter="FX_GATE_AMOUNT".
+0 = never gates (fully open), 1.0 = gates constantly (fully closed). Bindable via parameter="FX_STUTTER_AMOUNT".
             </xs:documentation></xs:annotation>
         </xs:attribute>
     </xs:attributeGroup>
