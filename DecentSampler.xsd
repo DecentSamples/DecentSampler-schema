@@ -1946,6 +1946,14 @@ The tag name.
 
                     <xs:attribute name="enabled" type="xs:boolean"/>
 
+                    <xs:attribute name="pan" type="panPercentage">
+                        <xs:annotation><xs:documentation>
+Ignored. Versions of the plugin up to 1.31.0 wrote this onto every tag when saving a preset,
+so a great many presets carry it, but nothing has ever read it. Declared here only so those
+files still validate. Do not set it in new presets; there is no tag-level panning.
+                        </xs:documentation></xs:annotation>
+                    </xs:attribute>
+
                     <xs:attribute name="volume" type="decimalMultiplier">
                         <xs:annotation>
                             <xs:documentation>
