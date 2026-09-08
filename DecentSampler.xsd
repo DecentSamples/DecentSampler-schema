@@ -154,7 +154,7 @@ After the first time this library is opened, this will get displayed on the “M
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="width" type="xs:integer" use="required">
+        <xs:attribute name="width" type="xs:double" use="required">
             <xs:annotation>
                 <xs:documentation>
 The width of your user interface.
@@ -163,7 +163,7 @@ Recommended value: `812`
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="height" type="xs:integer" use="required">
+        <xs:attribute name="height" type="xs:double" use="required">
             <xs:annotation>
                 <xs:documentation>
 The height of your user interface.
@@ -175,7 +175,7 @@ Recommended value: `375`
         <!-- Seen in the boilerplate example -->
         <xs:attribute name="layoutMode" /> <!-- layoutMode="relative" -->
         <xs:attribute name="bgMode" /> <!-- bgMode="top_left" -->
-        <xs:attribute name="y" type="xs:decimal" />
+        <xs:attribute name="y" type="xs:double" />
     </xs:complexType>
 
 <!--=================================-->
@@ -252,7 +252,7 @@ A hex representation of the ARGB color to be used for this key range.
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
-        <xs:attribute name="x" type="xs:decimal" />
+        <xs:attribute name="x" type="xs:double" />
     </xs:complexType>
 
 <!--=================================-->
@@ -307,7 +307,7 @@ The time in milliseconds it takes for the MPE timbre to fall to its target value
 Default value: 0 milliseconds.
             </xs:documentation></xs:annotation>
         </xs:attribute>
-        <xs:attribute name="modAmount" type="xs:decimal" />
+        <xs:attribute name="modAmount" type="xs:double" />
     </xs:complexType>
 
 <!--=================================-->
@@ -351,7 +351,7 @@ The time in milliseconds it takes for the MPE pressure to fall to its target val
 Default value: 0 milliseconds.
             </xs:documentation></xs:annotation>
         </xs:attribute>
-        <xs:attribute name="modAmount" type="xs:decimal" />
+        <xs:attribute name="modAmount" type="xs:double" />
     </xs:complexType>
 
 <!--=================================-->
@@ -380,7 +380,7 @@ A note element within a sequence.
                                 </xs:documentation>
                             </xs:annotation>
                             <xs:complexType>
-                                <xs:attribute name="position" type="xs:decimal" use="required">
+                                <xs:attribute name="position" type="xs:double" use="required">
                                     <xs:annotation>
                                         <xs:documentation>
 The position of the note in the sequence, in beats. This is a floating point number.
@@ -401,7 +401,7 @@ The MIDI note number of the note.
                                         </xs:documentation>
                                     </xs:annotation>
                                 </xs:attribute>
-                                <xs:attribute name="length" type="xs:decimal" use="required">
+                                <xs:attribute name="length" type="xs:double" use="required">
                                     <xs:annotation>
                                         <xs:documentation>
 The length of the note in beats. This is a floating point number.
@@ -422,7 +422,7 @@ An optional descriptive name for the sequence. This is only used in the sample e
                             </xs:documentation>
                         </xs:annotation>
                     </xs:attribute>
-                    <xs:attribute name="length" type="xs:decimal" use="required">
+                    <xs:attribute name="length" type="xs:double" use="required">
                         <xs:annotation>
                             <xs:documentation>
 The length of the sequence in beats. This is a floating point number.
@@ -887,7 +887,7 @@ A tool tip to display when the user hovers over this control.
         <xs:attribute name="parameterName" type="xs:string" />
         <xs:attribute name="defaultValue" type="xs:string" />
         <xs:attribute name="textColor" type="hexARGB" />
-        <xs:attribute name="textSize" type="xs:decimal" />
+        <xs:attribute name="textSize" type="xs:double" />
     </xs:complexType>
 
 <!--=================================-->
@@ -904,8 +904,8 @@ The text to display on a text button when this state is active.
         </xs:attribute>
         <xs:attributeGroup ref="buttonImageAttributes" />
         <xs:attribute name="enabled" type="xs:boolean" />
-        <xs:attribute name="width" type="xs:decimal" />
-        <xs:attribute name="height" type="xs:decimal" />
+        <xs:attribute name="width" type="xs:double" />
+        <xs:attribute name="height" type="xs:double" />
         <xs:attribute name="tooltip" type="xs:string" />
     </xs:complexType>
 
@@ -940,7 +940,7 @@ the same way a multi-state button's states do.
         <xs:attribute name="_uid" type="xs:string">
           <xs:annotation><xs:documentation>Written by the plugin. Ignored when a preset is loaded.</xs:documentation></xs:annotation>
         </xs:attribute>
-        <xs:attribute name="disabledOpacity" type="xs:decimal" />
+        <xs:attribute name="disabledOpacity" type="xs:double" />
         <xs:attribute name="outputLevel" type="xs:string" />
         <xs:attribute name="tag" type="xs:string" />
         <xs:attribute name="text" type="xs:string" />
@@ -1239,8 +1239,8 @@ address controls by name rather than position.
         </xs:attribute>
 
         <xs:attribute name="translationTable" type="translationTableType" default="0,0;1.1,1"/>
-        <xs:attribute name="translationOutputMin" type="xs:decimal" />
-        <xs:attribute name="translationOutputMax" type="xs:decimal" />
+        <xs:attribute name="translationOutputMin" type="xs:double" />
+        <xs:attribute name="translationOutputMax" type="xs:double" />
         <xs:attribute name="translationReversed" type="xs:boolean">
             <xs:annotation><xs:documentation>
 Valid values are `true` and `false`. This is only looked at if translation is set to linear.
@@ -1302,7 +1302,7 @@ Value should be a floating point number from 0.0 to 1.0.
             </xs:documentation></xs:annotation>
         </xs:attribute>
         
-        <xs:attribute name="seqTranspose" type="xs:decimal">
+        <xs:attribute name="seqTranspose" type="xs:double">
             <xs:annotation><xs:documentation>
 Transpose the notes in the sequence by an arbitrary number of half steps.
 Value should be a floating point number from -36 to 36.
@@ -1370,8 +1370,8 @@ A value that turns the binding on and off. Valid values are: `true`, `false`.
             </xs:documentation></xs:annotation>
         </xs:attribute>
         <xs:attribute name="busIndex" type="xs:integer" />
-        <xs:attribute name="factor" type="xs:decimal" />
-        <xs:attribute name="modAmount" type="xs:decimal" />
+        <xs:attribute name="factor" type="xs:double" />
+        <xs:attribute name="modAmount" type="xs:double" />
         <xs:attribute name="modBehavior" type="xs:string" />
         <xs:attribute name="noteIndex" type="xs:integer" />
         <xs:attribute name="tag" type="xs:string" />
@@ -1533,7 +1533,7 @@ The number of frames in the animation.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="frameRate" type="xs:decimal" use="required">
+        <xs:attribute name="frameRate" type="xs:double" use="required">
             <xs:annotation><xs:documentation>
 The frame rate of the animation in frames per second. The maximum supported frame rate is 24 frames per second.
             </xs:documentation></xs:annotation>
@@ -1638,7 +1638,7 @@ Format: `#AARRGGBB`.
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="borderThickness" type="xs:decimal" default="0">
+        <xs:attribute name="borderThickness" type="xs:double" default="0">
             <xs:annotation>
                 <xs:documentation>
 The thickness of the rectangle border in pixels.
@@ -1734,7 +1734,7 @@ Example: `#FF000000` is fully opaque black.
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="lineThickness" type="xs:decimal" default="1">
+        <xs:attribute name="lineThickness" type="xs:double" default="1">
             <xs:annotation>
                 <xs:documentation>
 The thickness of the line in pixels.
@@ -1767,9 +1767,9 @@ A tool tip to display when the user hovers over this line.
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
-        <xs:attribute name="y" type="xs:decimal" />
-        <xs:attribute name="width" type="xs:decimal" />
-        <xs:attribute name="height" type="xs:decimal" />
+        <xs:attribute name="y" type="xs:double" />
+        <xs:attribute name="width" type="xs:double" />
+        <xs:attribute name="height" type="xs:double" />
     </xs:complexType>
 
 <!--=================================-->
@@ -1799,20 +1799,20 @@ to control.
             <xs:element name="binding" type="binding" minOccurs="0" maxOccurs="unbounded" />
         </xs:sequence>
 
-        <xs:attribute name="x" type="xs:integer" use="required">
+        <xs:attribute name="x" type="xs:double" use="required">
             <xs:annotation><xs:documentation>
 The x position of the element's top-left corner, in pixels.
             </xs:documentation></xs:annotation>
         </xs:attribute>
-        <xs:attribute name="y" type="xs:integer" use="required">
+        <xs:attribute name="y" type="xs:double" use="required">
             <xs:annotation><xs:documentation>
 The y position of the element's top-left corner, in pixels.
             </xs:documentation></xs:annotation>
         </xs:attribute>
-        <xs:attribute name="width" type="xs:integer" use="required">
+        <xs:attribute name="width" type="xs:double" use="required">
             <xs:annotation><xs:documentation>The width of the element, in pixels.</xs:documentation></xs:annotation>
         </xs:attribute>
-        <xs:attribute name="height" type="xs:integer" use="required">
+        <xs:attribute name="height" type="xs:double" use="required">
             <xs:annotation><xs:documentation>The height of the element, in pixels.</xs:documentation></xs:annotation>
         </xs:attribute>
         <xs:attribute name="numBars" default="9">
@@ -1848,25 +1848,25 @@ The waveform is a mono mix of the left and right output channels, refreshed at ~
             </xs:documentation>
         </xs:annotation>
 
-        <xs:attribute name="x" type="xs:integer" use="required">
+        <xs:attribute name="x" type="xs:double" use="required">
             <xs:annotation><xs:documentation>
 The x position of the element's top-left corner, in pixels.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="y" type="xs:integer" use="required">
+        <xs:attribute name="y" type="xs:double" use="required">
             <xs:annotation><xs:documentation>
 The y position of the element's top-left corner, in pixels.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="width" type="xs:integer" use="required">
+        <xs:attribute name="width" type="xs:double" use="required">
             <xs:annotation><xs:documentation>
 The width of the oscilloscope element in pixels.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="height" type="xs:integer" use="required">
+        <xs:attribute name="height" type="xs:double" use="required">
             <xs:annotation><xs:documentation>
 The height of the oscilloscope element in pixels.
             </xs:documentation></xs:annotation>
@@ -1886,7 +1886,7 @@ Format: `AARRGGBB`. Default: `FF00FF00` (opaque green).
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="lineThickness" type="xs:decimal" default="1.5">
+        <xs:attribute name="lineThickness" type="xs:double" default="1.5">
             <xs:annotation><xs:documentation>
 The stroke width of the waveform line in pixels. Default: `1.5`.
             </xs:documentation></xs:annotation>
@@ -1972,7 +1972,7 @@ Default: `1.0`
                         </xs:annotation>
                     </xs:attribute>
 
-                    <xs:attribute name="groupTuning" type="xs:decimal">
+                    <xs:attribute name="groupTuning" type="xs:double">
                         <xs:annotation>
                             <xs:documentation>
 Group-level pitch adjustment for changing note pitch.
@@ -1984,9 +1984,9 @@ Default: `0`
                     </xs:attribute>
                                         <xs:attributeGroup ref="synthesisSettings" />
                     <xs:attributeGroup ref="regionSettings" />
-    <xs:attribute name="modVolume" type="xs:decimal" />
-    <xs:attribute name="start" type="xs:decimal" />
-    <xs:attribute name="end" type="xs:decimal" />
+    <xs:attribute name="modVolume" type="xs:double" />
+    <xs:attribute name="start" type="xs:double" />
+    <xs:attribute name="end" type="xs:double" />
 </xs:complexType>
             </xs:element>
         </xs:sequence>
@@ -2025,13 +2025,13 @@ Default: `1.0`
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="globalTuning" type="xs:decimal" default="0" />
+        <xs:attribute name="globalTuning" type="xs:double" default="0" />
 
         <xs:attributeGroup ref="regionSettings" />
-        <xs:attribute name="pitchBendRange" type="xs:decimal" />
+        <xs:attribute name="pitchBendRange" type="xs:double" />
         <xs:attribute name="polyphony" type="xs:integer" />
-        <xs:attribute name="tuning" type="xs:decimal" />
-        <xs:attribute name="damping" type="xs:decimal" />
+        <xs:attribute name="tuning" type="xs:double" />
+        <xs:attribute name="damping" type="xs:double" />
         <xs:attribute name="pluckType" type="xs:string" />
     </xs:complexType>
 
@@ -2174,13 +2174,13 @@ Attributes: `damping`, `roomSize`, `wetLevel`
 
         <xs:attribute name="enabled" type="xs:boolean" />
         <xs:attribute name="levelUnit" type="xs:string" />
-        <xs:attribute name="gain" type="xs:decimal" />
-        <xs:attribute name="q" type="xs:decimal" />
+        <xs:attribute name="gain" type="xs:double" />
+        <xs:attribute name="q" type="xs:double" />
         <xs:attribute name="delayTimeFormat" type="xs:string" />
-        <xs:attribute name="pitchShift" type="xs:decimal" />
+        <xs:attribute name="pitchShift" type="xs:double" />
         <xs:attribute name="highQuality" type="xs:boolean" />
-        <xs:attribute name="bitDepth" type="xs:decimal" />
-        <xs:attribute name="sampleRateReduction" type="xs:decimal" />
+        <xs:attribute name="bitDepth" type="xs:double" />
+        <xs:attribute name="sampleRateReduction" type="xs:double" />
         <xs:attribute name="tags" type="xs:string">
           <xs:annotation><xs:documentation>A comma-separated list of tags. A binding can target effects by tag rather than by position.</xs:documentation></xs:annotation>
         </xs:attribute>
@@ -2203,18 +2203,18 @@ Attributes: `damping`, `roomSize`, `wetLevel`
 
         <xs:attribute name="enabled" type="xs:boolean" />
         <xs:attribute name="levelUnit" type="xs:string" />
-        <xs:attribute name="gain" type="xs:decimal" />
-        <xs:attribute name="q" type="xs:decimal" />
-        <xs:attribute name="wetLevel" type="xs:decimal" />
-        <xs:attribute name="roomSize" type="xs:decimal" />
-        <xs:attribute name="damping" type="xs:decimal" />
-        <xs:attribute name="feedback" type="xs:decimal" />
+        <xs:attribute name="gain" type="xs:double" />
+        <xs:attribute name="q" type="xs:double" />
+        <xs:attribute name="wetLevel" type="xs:double" />
+        <xs:attribute name="roomSize" type="xs:double" />
+        <xs:attribute name="damping" type="xs:double" />
+        <xs:attribute name="feedback" type="xs:double" />
         <xs:attribute name="irFile" type="xs:string" />
         <xs:attribute name="delayTimeFormat" type="xs:string" />
-        <xs:attribute name="pitchShift" type="xs:decimal" />
+        <xs:attribute name="pitchShift" type="xs:double" />
         <xs:attribute name="highQuality" type="xs:boolean" />
-        <xs:attribute name="bitDepth" type="xs:decimal" />
-        <xs:attribute name="sampleRateReduction" type="xs:decimal" />
+        <xs:attribute name="bitDepth" type="xs:double" />
+        <xs:attribute name="sampleRateReduction" type="xs:double" />
         <xs:attribute name="tags" type="xs:string">
           <xs:annotation><xs:documentation>A comma-separated list of tags. A binding can target effects by tag rather than by position.</xs:documentation></xs:annotation>
         </xs:attribute>
@@ -2411,7 +2411,7 @@ Default: the file's length in samples minus 1.
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="tuning" type="xs:decimal">
+        <xs:attribute name="tuning" type="xs:double">
             <xs:annotation>
                 <xs:documentation>
 A fine-tuning number (in semitones) for changing the note pitch.
@@ -2422,8 +2422,8 @@ Default: `0`
         </xs:attribute>
 
         <xs:attributeGroup ref="regionSettings" />
-        <xs:attribute name="length" type="xs:decimal" />
-        <xs:attribute name="loopCrossfadeMilliseconds" type="xs:decimal">
+        <xs:attribute name="length" type="xs:double" />
+        <xs:attribute name="loopCrossfadeMilliseconds" type="xs:double">
           <xs:annotation><xs:documentation>Ignored by the engine. Written by the Logic EXS24 importer when it converts an instrument; loopCrossfade is the attribute that has an effect.</xs:documentation></xs:annotation>
         </xs:attribute>
     </xs:complexType>
@@ -2461,7 +2461,7 @@ A value from -100 to 100 that determines the shape of a curve.
 `-100` is a logarithmic curve, `0` is a linear curve, and `100` is an exponential curve.
             </xs:documentation>
         </xs:annotation>
-        <xs:restriction base="xs:decimal">
+        <xs:restriction base="xs:double">
             <xs:minInclusive value="-100" />
             <xs:maxInclusive value="100" />
         </xs:restriction>
@@ -2477,8 +2477,12 @@ These are identical to web color hex codes except with an additional 2-digit hex
 The first two digits are a hexadecimal representation of alpha level with 00 being fully transparent, 80 being 50% transparent, and FF being fully opaque.
             </xs:documentation>
         </xs:annotation>
-        <xs:restriction base="xs:hexBinary">
-            <xs:length value="4" fixed="true" />
+        <!-- A leading # is allowed. JUCE's hex parser skips any character that is not a hex digit,
+             so "#FF1a1a1a" and "FF1a1a1a" produce the same colour, and presets use both. Six-digit
+             values are still rejected: they parse to an alpha of 00, which is invisible, so that is
+             an authoring mistake worth catching rather than a spelling to accept. -->
+        <xs:restriction base="xs:string">
+            <xs:pattern value="#?[0-9a-fA-F]{8}" />
         </xs:restriction>
     </xs:simpleType>
 
@@ -2491,14 +2495,14 @@ Filter resonance. The engine clamps this to the range 0.01 to 5.0
 (DSFilterProcessor::setResonance), so it is not a 0-1 multiplier despite what the old schema said.
             </xs:documentation>
         </xs:annotation>
-        <xs:restriction base="xs:decimal">
+        <xs:restriction base="xs:double">
             <xs:minInclusive value="0.0" />
             <xs:maxInclusive value="5.0" />
         </xs:restriction>
     </xs:simpleType>
 
     <xs:simpleType name="decimalMultiplier">
-        <xs:restriction base="xs:decimal">
+        <xs:restriction base="xs:double">
             <xs:minInclusive value="0.0" />
             <xs:maxInclusive value="1.0" />
         </xs:restriction>
@@ -2534,7 +2538,8 @@ Do not use absolute paths - they break across OS platforms and users.
 
     <xs:simpleType name="decibelGain">
         <xs:restriction base="xs:string">
-            <xs:pattern value="-?\d+(\.\d*)?dB"></xs:pattern>
+            <!-- A leading + is accepted by the engine (getDoubleValue), and presets use it. -->
+            <xs:pattern value="[+-]?\d+(\.\d*)?([eE][+-]?\d+)?dB"></xs:pattern>
         </xs:restriction>
     </xs:simpleType>
 
@@ -2553,6 +2558,8 @@ Example: `3dB`
 
 <!--=================================-->
 
+    <!-- Based on xs:double rather than xs:decimal: presets written by the plugin contain values
+         like -2.235174179077148e-6, which xs:decimal rejects and the engine reads without trouble. -->
     <xs:simpleType name="panPercentage">
         <xs:annotation>
             <xs:documentation>
@@ -2561,7 +2568,7 @@ Stereo panning as a number from `-100` to `100`.
 Default: `0`
             </xs:documentation>
         </xs:annotation>
-        <xs:restriction base="xs:decimal">
+        <xs:restriction base="xs:double">
             <xs:minInclusive value="-100.0" />
             <xs:maxInclusive value="100.0" />
         </xs:restriction>
@@ -2609,7 +2616,10 @@ Default: `0`
 
     <xs:simpleType name="translationTableType">
         <xs:restriction base="xs:string">
-            <xs:pattern value="(-?[0-9.]+,-?[0-9.]+)(;-?[0-9.]+,-?[0-9.]+)*" />
+            <!-- DSBinding splits on ";" then ",", keeps only the pairs, and reads each half with
+                 getFloatValue(). Trailing separators, spaces after commas and a stray full stop are
+                 all tolerated there, and real presets contain all three. -->
+            <xs:pattern value="[0-9eE.,;+\-\s]*" />
         </xs:restriction>
     </xs:simpleType>
 
@@ -3389,7 +3399,7 @@ Shared by &lt;group&gt; and &lt;oscillator&gt;: the engine resolves every one of
 Hand-written presets tend to set them on &lt;group&gt;; the preset editor writes them onto the
 &lt;oscillator&gt; itself.
         </xs:documentation></xs:annotation>
-<xs:attribute name="tuning" type="xs:decimal" default="0">
+<xs:attribute name="tuning" type="xs:double" default="0">
             <xs:annotation>
                 <xs:documentation>
 A fine-tuning offset (in semitones) from the played MIDI note.
@@ -3412,7 +3422,7 @@ Default: `0.5`
                 </xs:documentation>
             </xs:annotation>
             <xs:simpleType>
-                <xs:restriction base="xs:decimal">
+                <xs:restriction base="xs:double">
                     <xs:minInclusive value="0.0"/>
                     <xs:maxInclusive value="1.0"/>
                 </xs:restriction>
@@ -3431,7 +3441,7 @@ Default: `0.5`
                 </xs:documentation>
             </xs:annotation>
             <xs:simpleType>
-                <xs:restriction base="xs:decimal">
+                <xs:restriction base="xs:double">
                     <xs:minInclusive value="0.0"/>
                     <xs:maxInclusive value="1.0"/>
                 </xs:restriction>
@@ -3472,7 +3482,7 @@ Default: 0.0
                 </xs:documentation>
             </xs:annotation>
             <xs:simpleType>
-                <xs:restriction base="xs:decimal">
+                <xs:restriction base="xs:double">
                     <xs:minInclusive value="0.0"/>
                     <xs:maxInclusive value="1.0"/>
                 </xs:restriction>
@@ -3518,18 +3528,20 @@ Default: `sine`
                         </xs:annotation>
                         <xs:simpleType>
                             <xs:restriction base="xs:string">
-                                <xs:enumeration value="sine"/>
-                                <xs:enumeration value="saw"/>
-                                <xs:enumeration value="square"/>
-                                <xs:enumeration value="triangle"/>
-                                <xs:enumeration value="noise"/>
-                                <xs:enumeration value="white_noise"/>
-                                <xs:enumeration value="fm6op"/>
-                    <xs:enumeration value="fm"/>
-                    <xs:enumeration value="pluck"/>
-                    <xs:enumeration value="harmonic"/>
-                    <xs:enumeration value="harmonic_snapshot"/>
-                    <xs:enumeration value="formant"/>
+                                <xs:enumeration value="fm" />
+                                <xs:enumeration value="fm6op" />
+                                <xs:enumeration value="formant" />
+                                <xs:enumeration value="harmonic" />
+                                <xs:enumeration value="harmonic_snapshot" />
+                                <xs:enumeration value="noise" />
+                                <xs:enumeration value="pluck" />
+                                <xs:enumeration value="pluck1" />
+                                <xs:enumeration value="saw" />
+                                <xs:enumeration value="sine" />
+                                <xs:enumeration value="square" />
+                                <xs:enumeration value="triangle" />
+                                <xs:enumeration value="wavetable" />
+                                <xs:enumeration value="white_noise" />
                             </xs:restriction>
                         </xs:simpleType>
                     </xs:attribute>
@@ -3560,7 +3572,7 @@ Default: `1`
                     </xs:attribute>
 
                     <!-- ── Op 1 ── -->
-                    <xs:attribute name="fmOp1Ratio" type="xs:decimal" default="1.0">
+                    <xs:attribute name="fmOp1Ratio" type="xs:double" default="1.0">
                         <xs:annotation><xs:documentation>
 (Only for `waveform="fm6op"`) Frequency ratio for FM operator 1 (the primary carrier in most algorithms).
 Multiplies the played note frequency. E.g., `2.0` = one octave up, `0.5` = one octave down.
@@ -3582,7 +3594,7 @@ of the played note. `fixed` = absolute frequency in Hz specified by `fmOp1FixedF
                         </xs:documentation></xs:annotation>
                         <xs:simpleType><xs:restriction base="xs:string"><xs:enumeration value="ratio"/><xs:enumeration value="fixed"/></xs:restriction></xs:simpleType>
                     </xs:attribute>
-                    <xs:attribute name="fmOp1FixedFreq" type="xs:decimal" default="440.0">
+                    <xs:attribute name="fmOp1FixedFreq" type="xs:double" default="440.0">
                         <xs:annotation><xs:documentation>
 (Only for `waveform="fm6op"`, `fmOp1Mode="fixed"`) Fixed frequency in Hz for operator 1.
 Ignored when mode is `ratio`. Useful for metallic/bell-like timbres. Default: `440.0`
@@ -3593,7 +3605,7 @@ Ignored when mode is `ratio`. Useful for metallic/bell-like timbres. Default: `4
 (Only for `waveform="fm6op"`) Output/modulation level for operator 1. Range: 0.0–1.0.
 Default: `1.0`
                         </xs:documentation></xs:annotation>
-                        <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+                        <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
                     </xs:attribute>
                     <xs:attribute name="fmOp1VelocitySensitivity" default="0">
                         <xs:annotation><xs:documentation>
@@ -3609,7 +3621,7 @@ Default: `1.0`
 operators, so you do not have to know which operator the current algorithm feeds back through.
 Range: 0.0-1.0. Default: `0.0`
                         </xs:documentation></xs:annotation>
-                        <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+                        <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
                     </xs:attribute>
                     <xs:attribute name="fmModulatorAttack" default="0.0">
                         <xs:annotation><xs:documentation>
@@ -3618,28 +3630,28 @@ under the current algorithm. Positive values lengthen the attack, negative short
 the patch alone. Expressed in DX7 envelope-rate units and applied as an offset to each operator's
 own rate, so the differences between operators are preserved. Range: -99-99. Default: `0.0`
                         </xs:documentation></xs:annotation>
-                        <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="-99"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType>
+                        <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="-99"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType>
                     </xs:attribute>
                     <xs:attribute name="fmModulatorDecay" default="0.0">
                         <xs:annotation><xs:documentation>
 (Only for `waveform="fm6op"`) As `fmModulatorAttack`, but for the decay stage. Range: -99-99.
 Default: `0.0`
                         </xs:documentation></xs:annotation>
-                        <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="-99"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType>
+                        <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="-99"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType>
                     </xs:attribute>
                     <xs:attribute name="fmCarrierAttack" default="0.0">
                         <xs:annotation><xs:documentation>
 (Only for `waveform="fm6op"`) As `fmModulatorAttack`, but for the operators acting as CARRIERS
 under the current algorithm. Range: -99-99. Default: `0.0`
                         </xs:documentation></xs:annotation>
-                        <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="-99"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType>
+                        <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="-99"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType>
                     </xs:attribute>
                     <xs:attribute name="fmCarrierDecay" default="0.0">
                         <xs:annotation><xs:documentation>
 (Only for `waveform="fm6op"`) As `fmCarrierAttack`, but for the decay stage. Range: -99-99.
 Default: `0.0`
                         </xs:documentation></xs:annotation>
-                        <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="-99"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType>
+                        <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="-99"/><xs:maxInclusive value="99"/></xs:restriction></xs:simpleType>
                     </xs:attribute>
                     <xs:attribute name="fmOp1Feedback" default="0.0">
                         <xs:annotation><xs:documentation>
@@ -3649,77 +3661,77 @@ but Op2, Op3, Op4 or Op5 in the rest - and setting feedback on any other operato
 audible effect. Note algorithm 6 uses Op5 here, which differs from a real DX7. Use
 `fmFeedback` if you would rather not track which. Default: `0.0`
                         </xs:documentation></xs:annotation>
-                        <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+                        <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
                     </xs:attribute>
-                    <xs:attribute name="fmOp1Attack" type="xs:decimal" default="0.0">
+                    <xs:attribute name="fmOp1Attack" type="xs:double" default="0.0">
                         <xs:annotation><xs:documentation>
 (Only for `waveform="fm6op"`) ADSR attack time (seconds) for operator 1's internal envelope.
 A value of `-1` is a sentinel meaning the operator has no independent envelope and will be
 fully controlled by the outer group-level ADSR. Default: `0.0`
                         </xs:documentation></xs:annotation>
                     </xs:attribute>
-                    <xs:attribute name="fmOp1Decay"   type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR decay time (seconds) for operator 1. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp1Sustain" type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR sustain level (0.0–1.0) for operator 1. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp1Release" type="xs:decimal" default="-1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR release time (seconds) for operator 1. A value of `-1` (default) is a sentinel meaning the outer group ADSR controls the release. Default: `-1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp1Decay"   type="xs:double" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR decay time (seconds) for operator 1. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp1Sustain" type="xs:double" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR sustain level (0.0–1.0) for operator 1. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp1Release" type="xs:double" default="-1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR release time (seconds) for operator 1. A value of `-1` (default) is a sentinel meaning the outer group ADSR controls the release. Default: `-1.0`</xs:documentation></xs:annotation></xs:attribute>
 
                     <!-- ── Op 2 ── -->
-                    <xs:attribute name="fmOp2Ratio"   type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency ratio for FM operator 2. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp2Ratio"   type="xs:double" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency ratio for FM operator 2. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
                     <xs:attribute name="fmOp2Detune" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) DX7-compatible pitch detune for operator 2. Range: -7 to +7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="-7"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
                     <xs:attribute name="fmOp2Mode" default="ratio"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency mode for operator 2. `ratio` or `fixed`. Default: `ratio`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:string"><xs:enumeration value="ratio"/><xs:enumeration value="fixed"/></xs:restriction></xs:simpleType></xs:attribute>
-                    <xs:attribute name="fmOp2FixedFreq" type="xs:decimal" default="440.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp2Mode="fixed"`) Fixed frequency in Hz for operator 2. Default: `440.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp2Level" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Output/modulation level for operator 2. Range: 0.0–1.0. Default: `1.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp2FixedFreq" type="xs:double" default="440.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp2Mode="fixed"`) Fixed frequency in Hz for operator 2. Default: `440.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp2Level" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Output/modulation level for operator 2. Range: 0.0–1.0. Default: `1.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
                     <xs:attribute name="fmOp2VelocitySensitivity" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Velocity sensitivity for operator 2. Range: 0–7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
-                    <xs:attribute name="fmOp2Feedback" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Self-feedback for operator 2. Range: 0.0–1.0. Default: `0.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
-                    <xs:attribute name="fmOp2Attack"   type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR attack time (seconds) for operator 2. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp2Decay"    type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR decay time (seconds) for operator 2. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp2Sustain"  type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR sustain level for operator 2. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp2Release"  type="xs:decimal" default="-1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR release time for operator 2. `-1` = transparent (outer ADSR controls). Default: `-1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp2Feedback" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Self-feedback for operator 2. Range: 0.0–1.0. Default: `0.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp2Attack"   type="xs:double" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR attack time (seconds) for operator 2. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp2Decay"    type="xs:double" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR decay time (seconds) for operator 2. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp2Sustain"  type="xs:double" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR sustain level for operator 2. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp2Release"  type="xs:double" default="-1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR release time for operator 2. `-1` = transparent (outer ADSR controls). Default: `-1.0`</xs:documentation></xs:annotation></xs:attribute>
 
                     <!-- ── Op 3 ── -->
-                    <xs:attribute name="fmOp3Ratio"   type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency ratio for FM operator 3. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp3Ratio"   type="xs:double" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency ratio for FM operator 3. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
                     <xs:attribute name="fmOp3Detune" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) DX7-compatible pitch detune for operator 3. Range: -7 to +7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="-7"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
                     <xs:attribute name="fmOp3Mode" default="ratio"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency mode for operator 3. `ratio` or `fixed`. Default: `ratio`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:string"><xs:enumeration value="ratio"/><xs:enumeration value="fixed"/></xs:restriction></xs:simpleType></xs:attribute>
-                    <xs:attribute name="fmOp3FixedFreq" type="xs:decimal" default="440.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp3Mode="fixed"`) Fixed frequency in Hz for operator 3. Default: `440.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp3Level" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Output/modulation level for operator 3. Range: 0.0–1.0. Default: `1.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp3FixedFreq" type="xs:double" default="440.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp3Mode="fixed"`) Fixed frequency in Hz for operator 3. Default: `440.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp3Level" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Output/modulation level for operator 3. Range: 0.0–1.0. Default: `1.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
                     <xs:attribute name="fmOp3VelocitySensitivity" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Velocity sensitivity for operator 3. Range: 0–7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
-                    <xs:attribute name="fmOp3Feedback" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Self-feedback for operator 3. Range: 0.0–1.0. Default: `0.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
-                    <xs:attribute name="fmOp3Attack"   type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR attack time (seconds) for operator 3. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp3Decay"    type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR decay time (seconds) for operator 3. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp3Sustain"  type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR sustain level for operator 3. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp3Release"  type="xs:decimal" default="-1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR release time for operator 3. `-1` = transparent (outer ADSR controls). Default: `-1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp3Feedback" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Self-feedback for operator 3. Range: 0.0–1.0. Default: `0.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp3Attack"   type="xs:double" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR attack time (seconds) for operator 3. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp3Decay"    type="xs:double" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR decay time (seconds) for operator 3. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp3Sustain"  type="xs:double" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR sustain level for operator 3. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp3Release"  type="xs:double" default="-1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR release time for operator 3. `-1` = transparent (outer ADSR controls). Default: `-1.0`</xs:documentation></xs:annotation></xs:attribute>
 
                     <!-- ── Op 4 ── -->
-                    <xs:attribute name="fmOp4Ratio"   type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency ratio for FM operator 4. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp4Ratio"   type="xs:double" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency ratio for FM operator 4. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
                     <xs:attribute name="fmOp4Detune" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) DX7-compatible pitch detune for operator 4. Range: -7 to +7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="-7"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
                     <xs:attribute name="fmOp4Mode" default="ratio"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency mode for operator 4. `ratio` or `fixed`. Default: `ratio`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:string"><xs:enumeration value="ratio"/><xs:enumeration value="fixed"/></xs:restriction></xs:simpleType></xs:attribute>
-                    <xs:attribute name="fmOp4FixedFreq" type="xs:decimal" default="440.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp4Mode="fixed"`) Fixed frequency in Hz for operator 4. Default: `440.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp4Level" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Output/modulation level for operator 4. Range: 0.0–1.0. Default: `1.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp4FixedFreq" type="xs:double" default="440.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp4Mode="fixed"`) Fixed frequency in Hz for operator 4. Default: `440.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp4Level" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Output/modulation level for operator 4. Range: 0.0–1.0. Default: `1.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
                     <xs:attribute name="fmOp4VelocitySensitivity" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Velocity sensitivity for operator 4. Range: 0–7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
-                    <xs:attribute name="fmOp4Feedback" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Self-feedback for operator 4. Range: 0.0–1.0. Default: `0.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
-                    <xs:attribute name="fmOp4Attack"   type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR attack time (seconds) for operator 4. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp4Decay"    type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR decay time (seconds) for operator 4. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp4Sustain"  type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR sustain level for operator 4. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp4Release"  type="xs:decimal" default="-1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR release time for operator 4. `-1` = transparent (outer ADSR controls). Default: `-1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp4Feedback" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Self-feedback for operator 4. Range: 0.0–1.0. Default: `0.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp4Attack"   type="xs:double" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR attack time (seconds) for operator 4. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp4Decay"    type="xs:double" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR decay time (seconds) for operator 4. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp4Sustain"  type="xs:double" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR sustain level for operator 4. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp4Release"  type="xs:double" default="-1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR release time for operator 4. `-1` = transparent (outer ADSR controls). Default: `-1.0`</xs:documentation></xs:annotation></xs:attribute>
 
                     <!-- ── Op 5 ── -->
-                    <xs:attribute name="fmOp5Ratio"   type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency ratio for FM operator 5. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp5Ratio"   type="xs:double" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency ratio for FM operator 5. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
                     <xs:attribute name="fmOp5Detune" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) DX7-compatible pitch detune for operator 5. Range: -7 to +7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="-7"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
                     <xs:attribute name="fmOp5Mode" default="ratio"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency mode for operator 5. `ratio` or `fixed`. Default: `ratio`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:string"><xs:enumeration value="ratio"/><xs:enumeration value="fixed"/></xs:restriction></xs:simpleType></xs:attribute>
-                    <xs:attribute name="fmOp5FixedFreq" type="xs:decimal" default="440.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp5Mode="fixed"`) Fixed frequency in Hz for operator 5. Default: `440.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp5Level" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Output/modulation level for operator 5. Range: 0.0–1.0. Default: `1.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp5FixedFreq" type="xs:double" default="440.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp5Mode="fixed"`) Fixed frequency in Hz for operator 5. Default: `440.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp5Level" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Output/modulation level for operator 5. Range: 0.0–1.0. Default: `1.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
                     <xs:attribute name="fmOp5VelocitySensitivity" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Velocity sensitivity for operator 5. Range: 0–7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
-                    <xs:attribute name="fmOp5Feedback" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Self-feedback for operator 5. Range: 0.0–1.0. Default: `0.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
-                    <xs:attribute name="fmOp5Attack"   type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR attack time (seconds) for operator 5. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp5Decay"    type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR decay time (seconds) for operator 5. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp5Sustain"  type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR sustain level for operator 5. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp5Release"  type="xs:decimal" default="-1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR release time for operator 5. `-1` = transparent (outer ADSR controls). Default: `-1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp5Feedback" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Self-feedback for operator 5. Range: 0.0–1.0. Default: `0.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp5Attack"   type="xs:double" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR attack time (seconds) for operator 5. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp5Decay"    type="xs:double" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR decay time (seconds) for operator 5. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp5Sustain"  type="xs:double" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR sustain level for operator 5. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp5Release"  type="xs:double" default="-1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR release time for operator 5. `-1` = transparent (outer ADSR controls). Default: `-1.0`</xs:documentation></xs:annotation></xs:attribute>
 
                     <!-- ── Op 6 ── -->
-                    <xs:attribute name="fmOp6Ratio"   type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency ratio for FM operator 6 (the feedback/top-of-chain operator in most algorithms). Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp6Ratio"   type="xs:double" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency ratio for FM operator 6 (the feedback/top-of-chain operator in most algorithms). Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
                     <xs:attribute name="fmOp6Detune" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) DX7-compatible pitch detune for operator 6. Range: -7 to +7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="-7"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
                     <xs:attribute name="fmOp6Mode" default="ratio"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Frequency mode for operator 6. `ratio` or `fixed`. Default: `ratio`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:string"><xs:enumeration value="ratio"/><xs:enumeration value="fixed"/></xs:restriction></xs:simpleType></xs:attribute>
-                    <xs:attribute name="fmOp6FixedFreq" type="xs:decimal" default="440.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp6Mode="fixed"`) Fixed frequency in Hz for operator 6. Default: `440.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp6Level" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Output/modulation level for operator 6. Range: 0.0–1.0. Default: `1.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
+                    <xs:attribute name="fmOp6FixedFreq" type="xs:double" default="440.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`, `fmOp6Mode="fixed"`) Fixed frequency in Hz for operator 6. Default: `440.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp6Level" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Output/modulation level for operator 6. Range: 0.0–1.0. Default: `1.0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType></xs:attribute>
                     <xs:attribute name="fmOp6VelocitySensitivity" default="0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) Velocity sensitivity for operator 6. Range: 0–7. Default: `0`</xs:documentation></xs:annotation><xs:simpleType><xs:restriction base="xs:integer"><xs:minInclusive value="0"/><xs:maxInclusive value="7"/></xs:restriction></xs:simpleType></xs:attribute>
                     <xs:attribute name="fmOp6Feedback" default="0.0">
                         <xs:annotation>
@@ -3731,12 +3743,12 @@ most algorithms (algorithms 1–31). In algorithm 32 (all carriers), Op6 feeds b
 Default: `0.0`
                             </xs:documentation>
                         </xs:annotation>
-                        <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+                        <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
                     </xs:attribute>
-                    <xs:attribute name="fmOp6Attack"   type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR attack time (seconds) for operator 6. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp6Decay"    type="xs:decimal" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR decay time (seconds) for operator 6. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp6Sustain"  type="xs:decimal" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR sustain level for operator 6. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
-                    <xs:attribute name="fmOp6Release"  type="xs:decimal" default="-1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR release time for operator 6. `-1` = transparent (outer ADSR controls). Default: `-1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp6Attack"   type="xs:double" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR attack time (seconds) for operator 6. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp6Decay"    type="xs:double" default="0.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR decay time (seconds) for operator 6. Default: `0.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp6Sustain"  type="xs:double" default="1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR sustain level for operator 6. Default: `1.0`</xs:documentation></xs:annotation></xs:attribute>
+                    <xs:attribute name="fmOp6Release"  type="xs:double" default="-1.0"><xs:annotation><xs:documentation>(Only for `waveform="fm6op"`) ADSR release time for operator 6. `-1` = transparent (outer ADSR controls). Default: `-1.0`</xs:documentation></xs:annotation></xs:attribute>
 
                     <!--
                          DX7-compatible 4-stage rate/level operator envelopes.
@@ -3850,412 +3862,412 @@ plays back, relative to the preset's sample directory. Without it the oscillator
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) How many harmonic partials are generated. Range: 1-64. Default: `8`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="1"/><xs:maxInclusive value="64"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="1"/><xs:maxInclusive value="64"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicTilt" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Spectral tilt across the partials. Negative favours the lower
 partials, positive the upper ones. Range: -1.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="-1.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="-1.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicOddEvenBalance" default="0.5">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Balance between odd and even partials. `0` leaves only the odd
 partials, `1` only the even, `0.5` is neutral. Range: 0.0-1.0. Default: `0.5`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicNormalization" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) How strongly the summed partials are normalised back towards a
 constant level. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial1Level" default="1.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 1. Range: 0.0-1.0. Default: `1.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial2Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 2. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial3Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 3. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial4Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 4. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial5Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 5. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial6Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 6. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial7Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 7. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial8Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 8. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial9Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 9. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial10Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 10. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial11Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 11. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial12Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 12. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial13Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 13. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial14Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 14. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial15Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 15. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial16Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 16. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial17Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 17. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial18Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 18. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial19Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 19. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial20Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 20. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial21Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 21. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial22Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 22. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial23Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 23. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial24Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 24. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial25Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 25. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial26Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 26. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial27Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 27. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial28Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 28. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial29Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 29. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial30Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 30. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial31Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 31. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial32Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 32. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial33Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 33. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial34Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 34. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial35Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 35. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial36Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 36. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial37Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 37. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial38Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 38. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial39Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 39. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial40Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 40. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial41Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 41. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial42Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 42. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial43Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 43. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial44Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 44. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial45Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 45. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial46Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 46. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial47Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 47. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial48Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 48. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial49Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 49. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial50Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 50. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial51Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 51. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial52Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 52. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial53Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 53. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial54Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 54. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial55Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 55. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial56Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 56. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial57Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 57. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial58Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 58. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial59Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 59. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial60Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 60. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial61Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 61. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial62Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 62. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial63Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 63. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="harmonicPartial64Level" default="0.0">
             <xs:annotation><xs:documentation>
 (Only for `waveform="harmonic"`) Level of partial 64. Range: 0.0-1.0. Default: `0.0`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="0.0"/><xs:maxInclusive value="1.0"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="formantPreset" default="ee">
             <xs:annotation><xs:documentation>
@@ -4273,42 +4285,42 @@ formantNFreq/formantNBw attributes overrides that part of the preset. Default: `
 (Only for `waveform="formant"`) Centre frequency in Hz of formant 1, overriding the vowel preset.
 Range: 20-20000. Default: `270`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="20"/><xs:maxInclusive value="20000"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="20"/><xs:maxInclusive value="20000"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="formant1Bw" default="130">
             <xs:annotation><xs:documentation>
 (Only for `waveform="formant"`) Bandwidth in Hz of formant 1, overriding the vowel preset.
 Range: 1-20000. Default: `130`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="1"/><xs:maxInclusive value="20000"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="1"/><xs:maxInclusive value="20000"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="formant2Freq" default="2300">
             <xs:annotation><xs:documentation>
 (Only for `waveform="formant"`) Centre frequency in Hz of formant 2, overriding the vowel preset.
 Range: 20-20000. Default: `2300`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="20"/><xs:maxInclusive value="20000"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="20"/><xs:maxInclusive value="20000"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="formant2Bw" default="70">
             <xs:annotation><xs:documentation>
 (Only for `waveform="formant"`) Bandwidth in Hz of formant 2, overriding the vowel preset.
 Range: 1-20000. Default: `70`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="1"/><xs:maxInclusive value="20000"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="1"/><xs:maxInclusive value="20000"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="formant3Freq" default="3000">
             <xs:annotation><xs:documentation>
 (Only for `waveform="formant"`) Centre frequency in Hz of formant 3, overriding the vowel preset.
 Range: 20-20000. Default: `3000`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="20"/><xs:maxInclusive value="20000"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="20"/><xs:maxInclusive value="20000"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="formant3Bw" default="160">
             <xs:annotation><xs:documentation>
 (Only for `waveform="formant"`) Bandwidth in Hz of formant 3, overriding the vowel preset.
 Range: 1-20000. Default: `160`
             </xs:documentation></xs:annotation>
-            <xs:simpleType><xs:restriction base="xs:decimal"><xs:minInclusive value="1"/><xs:maxInclusive value="20000"/></xs:restriction></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:double"><xs:minInclusive value="1"/><xs:maxInclusive value="20000"/></xs:restriction></xs:simpleType>
         </xs:attribute>
         <xs:attribute name="loopDuringRelease" type="xs:boolean" default="true">
             <xs:annotation><xs:documentation>
@@ -4366,7 +4378,7 @@ Default: `legato`
             </xs:simpleType>
         </xs:attribute>
 
-        <xs:attribute name="delay" type="xs:decimal" default="0">
+        <xs:attribute name="delay" type="xs:double" default="0">
             <xs:annotation><xs:documentation>
 The delay time before the sample is triggered.
 This specifies the amount of delay, with the unit determined by the `delayUnit` attribute.
@@ -4404,7 +4416,7 @@ Default: `false`
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="retriggerInterval" type="xs:decimal" default="4.0">
+        <xs:attribute name="retriggerInterval" type="xs:double" default="4.0">
             <xs:annotation><xs:documentation>
 The time interval between pattern repetitions when retriggerEnabled is true.
 This determines how long to wait before retriggering the entire delay sequence.
@@ -4487,7 +4499,7 @@ Default: `127`
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="ampVelTrack" type="xs:decimal">
+        <xs:attribute name="ampVelTrack" type="xs:double">
             <xs:annotation>
                 <xs:documentation>
 The degree to which the velocity of the incoming notes affects the volume of the samples in this group.
@@ -4612,7 +4624,7 @@ The height of the sustain portion of the ADSR envelope.
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="release" type="xs:decimal">
+        <xs:attribute name="release" type="xs:double">
             <xs:annotation>
                 <xs:documentation>
 The length in seconds of the release portion of the ADSR envelope.
@@ -4758,7 +4770,7 @@ Values: `fast`, `normal`. Default: `fast`
             </xs:simpleType>
         </xs:attribute>
 
-        <xs:attribute name="silencingDecay" type="xs:decimal">
+        <xs:attribute name="silencingDecay" type="xs:double">
             <xs:annotation><xs:documentation>
 Specifies a custom fade-out time in seconds when a voice is silenced by the silencedByTags mechanism or tag polyphony limits.
 When set to a value greater than 0, this overrides the silencingMode behavior and uses the specified decay time for the fade-out.
@@ -4798,7 +4810,7 @@ Format: This can be a positive or negative whole number.
 
 <!-- Common attributes for UI widgets -->
     <xs:attributeGroup name="widgetGeometry">
-        <xs:attribute name="x" type="xs:integer" use="required">
+        <xs:attribute name="x" type="xs:double" use="required">
             <xs:annotation>
                 <xs:documentation>
 The x position, in pixels, where (0,0) is the top-left corner.
@@ -4806,7 +4818,7 @@ The x position, in pixels, where (0,0) is the top-left corner.
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="y" type="xs:integer" use="required">
+        <xs:attribute name="y" type="xs:double" use="required">
             <xs:annotation>
                 <xs:documentation>
 The y position, in pixels, where (0,0) is the top-left corner.
@@ -4818,7 +4830,7 @@ The y position, in pixels, where (0,0) is the top-left corner.
             The documentation specifies width and height as "required", but some presets
             by Hilowitz leave one/both of these undefined for labeled-knobs and controls.
         -->
-        <xs:attribute name="width" type="xs:integer">
+        <xs:attribute name="width" type="xs:double">
             <xs:annotation>
                 <xs:documentation>
 The width of the whole widget, in pixels
@@ -4826,7 +4838,7 @@ The width of the whole widget, in pixels
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="height" type="xs:integer">
+        <xs:attribute name="height" type="xs:double">
             <xs:annotation>
                 <xs:documentation>
 The height of the whole widget, in pixels
@@ -4854,7 +4866,7 @@ Default: `12`
 
 <!-- Common attributes for UI controls -->
     <xs:attributeGroup name="controlProperties">
-        <xs:attribute name="minValue" type="xs:decimal" default="0">
+        <xs:attribute name="minValue" type="xs:double" default="0">
             <xs:annotation>
                 <xs:documentation>
 The minimum value of your control.
@@ -4863,7 +4875,7 @@ Default: `0`
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="maxValue" type="xs:decimal" default="1">
+        <xs:attribute name="maxValue" type="xs:double" default="1">
             <xs:annotation>
                 <xs:documentation>
 The maximum value of your control.
@@ -4872,7 +4884,7 @@ Default: `1`
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="defaultValue" type="xs:decimal" default="0.5">
+        <xs:attribute name="defaultValue" type="xs:double" default="0.5">
             <xs:annotation>
                 <xs:documentation>
 The default value of your control. When the user double-clicks on this control in the UI, the value will be reset to this.
@@ -4881,7 +4893,7 @@ Default: `0.5`
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="value" type="xs:decimal" default="0">
+        <xs:attribute name="value" type="xs:double" default="0">
             <xs:annotation>
                 <xs:documentation>
 The initial value of your control.
@@ -5120,14 +5132,14 @@ Filter cutoff frequency in Hz.
     <xs:attributeGroup name="effectPhaserAttributes">
         <xs:attribute name="feedback" default="0.7">
             <xs:simpleType>
-                <xs:restriction base="xs:decimal">
+                <xs:restriction base="xs:double">
                     <xs:minInclusive value="-1.0" />
                     <xs:maxInclusive value="1.0" />
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
 
-        <xs:attribute name="centerFrequency" type="xs:decimal" default="400">
+        <xs:attribute name="centerFrequency" type="xs:double" default="400">
             <xs:annotation><xs:documentation>
 The center frequency (in Hz) of the phaser all-pass filters modulation.
 Default: `400`
@@ -5144,7 +5156,7 @@ Default: `400`
 This really just controls the volume of the input signal.
             </xs:documentation></xs:annotation>
             <xs:simpleType>
-                <xs:restriction base="xs:decimal">
+                <xs:restriction base="xs:double">
                     <xs:minInclusive value="1.0" />
                     <xs:maxInclusive value="1000.0" />
                 </xs:restriction>
@@ -5169,7 +5181,7 @@ This really just controls the volume of the input signal.
 `compressor`: The level in dB above which compression starts being applied (-60 – 0). Default: -12.
             </xs:documentation></xs:annotation>
             <xs:simpleType>
-                <xs:restriction base="xs:decimal">
+                <xs:restriction base="xs:double">
                     <xs:minInclusive value="-60.0" />
                     <xs:maxExclusive value="10.0" />
                 </xs:restriction>
@@ -5216,7 +5228,7 @@ wave_folder/wave_shaper attributes) for the compression threshold, in dB.
 The compression ratio. 1 = no compression, 20 = near-limiting. Bindable via parameter="FX_RATIO".
             </xs:documentation></xs:annotation>
             <xs:simpleType>
-                <xs:restriction base="xs:decimal">
+                <xs:restriction base="xs:double">
                     <xs:minInclusive value="1.0" />
                     <xs:maxInclusive value="20.0" />
                 </xs:restriction>
@@ -5228,7 +5240,7 @@ How quickly (in milliseconds) the compressor reacts once the signal crosses the 
 Bindable via parameter="FX_ATTACK".
             </xs:documentation></xs:annotation>
             <xs:simpleType>
-                <xs:restriction base="xs:decimal">
+                <xs:restriction base="xs:double">
                     <xs:minInclusive value="0.1" />
                     <xs:maxInclusive value="200.0" />
                 </xs:restriction>
@@ -5240,7 +5252,7 @@ How quickly (in milliseconds) the compressor lets go once the signal drops back 
 Bindable via parameter="FX_RELEASE".
             </xs:documentation></xs:annotation>
             <xs:simpleType>
-                <xs:restriction base="xs:decimal">
+                <xs:restriction base="xs:double">
                     <xs:minInclusive value="5.0" />
                     <xs:maxInclusive value="2000.0" />
                 </xs:restriction>
@@ -5251,7 +5263,7 @@ Bindable via parameter="FX_RELEASE".
 Gain, in dB, applied to the signal before compression. Bindable via parameter="FX_INPUT_GAIN".
             </xs:documentation></xs:annotation>
             <xs:simpleType>
-                <xs:restriction base="xs:decimal">
+                <xs:restriction base="xs:double">
                     <xs:minInclusive value="-24.0" />
                     <xs:maxInclusive value="24.0" />
                 </xs:restriction>
@@ -5262,7 +5274,7 @@ Gain, in dB, applied to the signal before compression. Bindable via parameter="F
 Makeup gain, in dB, applied to the signal after compression. Bindable via parameter="FX_OUTPUT_GAIN".
             </xs:documentation></xs:annotation>
             <xs:simpleType>
-                <xs:restriction base="xs:decimal">
+                <xs:restriction base="xs:double">
                     <xs:minInclusive value="-24.0" />
                     <xs:maxInclusive value="24.0" />
                 </xs:restriction>
@@ -5297,13 +5309,14 @@ The probability that any given ~50ms decision window gates the signal to silence
 
         <xs:attribute name="delayTime" default="0.7">
             <xs:annotation><xs:documentation>
-The delay time in seconds.
+The delay time. In the default format this is seconds, and the engine clamps it to 10.
+With delayTimeFormat="musical_time" it is a note division instead, where values above 10 are
+normal, so no upper bound is imposed here.
 Also used by `stereo_simulator` as its inter-channel delay time (valid range there is 0.001–0.1, default 0.005).
             </xs:documentation></xs:annotation>
             <xs:simpleType>
-                <xs:restriction base="xs:decimal">
+                <xs:restriction base="xs:double">
                     <xs:minInclusive value="0" />
-                    <xs:maxInclusive value="10" />
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
@@ -5315,7 +5328,7 @@ Half of this amount is subtracted from the left channel's delay time and half of
 For example, if the delayTime is `0.5` seconds and the stereoOffset is `0.02` s, then the actual left channel delay time will be `0.49` s and the actual right channel delay time will be `0.51` s so that the two channels are offset by `0.02` seconds.
             </xs:documentation></xs:annotation>
             <xs:simpleType>
-                <xs:restriction base="xs:decimal">
+                <xs:restriction base="xs:double">
                     <xs:minInclusive value="-10" />
                     <xs:maxInclusive value="10" />
                 </xs:restriction>
@@ -5329,7 +5342,7 @@ For example, if the delayTime is `0.5` seconds and the stereoOffset is `0.02` s,
     <xs:attributeGroup name="effectGainAttributes">
         <xs:attribute name="level" default="0.7">
             <xs:simpleType>
-                <xs:restriction base="xs:decimal">
+                <xs:restriction base="xs:double">
                     <xs:minInclusive value="0.0" />
                     <xs:maxInclusive value="8.0" />
                 </xs:restriction>
@@ -5353,7 +5366,7 @@ The modulation depth of the effect. Also used by `stereo_simulator` (ADT algorit
 The modulation speed in Hz. Also used by `stereo_simulator` (ADT algorithm only, range 0.01–20, default 0.5 there).
             </xs:documentation></xs:annotation>
             <xs:simpleType>
-                <xs:restriction base="xs:decimal">
+                <xs:restriction base="xs:double">
                     <xs:minInclusive value="0.0" />
                     <xs:maxInclusive value="20.0" />
                 </xs:restriction>
