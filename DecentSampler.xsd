@@ -899,6 +899,30 @@ In order for your drop-down menu to have options, it must contain `option` eleme
             <xs:element name="option" type="option"></xs:element>
         </xs:sequence>
 
+        <xs:attribute name="name" type="xs:string" />
+        <xs:attribute name="tags" type="xs:string" />
+        <xs:attribute name="visible" type="xs:boolean" default="true" />
+        <xs:attribute name="enabled" type="xs:boolean" default="true" />
+        <xs:attribute name="textSize" type="decimalPositive" />
+        <xs:attribute name="tooltip" type="xs:string" />
+
+        <xs:attribute name="placeholderText" type="xs:string">
+            <xs:annotation><xs:documentation>
+The text shown while no option is selected, which is how a menu starts unless `value` says
+otherwise. Once the user picks an option it is replaced by that option's name.
+Implemented as of 1.32.0; earlier versions ignored it and showed an empty box.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="requireSelection" type="xs:boolean">
+            <xs:annotation><xs:documentation>
+Ignored, and always has been. It described behaviour menus already have: they start with
+nothing selected unless `value` says otherwise, and there is no way back to that state once
+an option has been chosen. Declared only so the presets that copied it from the guide still
+validate. Do not use it.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
         <xs:attribute name="value" type="xs:integer">
             <xs:annotation>
                 <xs:documentation>
