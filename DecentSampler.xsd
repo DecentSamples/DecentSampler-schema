@@ -1829,6 +1829,20 @@ The first group in a file is group `0`, the second is group `1`, etc.
                         </xs:documentation></xs:annotation>
                     </xs:attribute>
 
+                    <xs:attribute name="groupPan" type="panPercentage">
+                        <xs:annotation>
+                            <xs:documentation>
+A pan position for this group, separate from the `pan` attribute.
+
+`pan` is inherited: setting it on `groups`, on `group` or on a `sample` all set the same
+single pan position for the sample, with the most specific one winning. `groupPan` is an
+additional pan offset that belongs to the group itself. It is added to the sample's pan
+position and to `globalPan`, and the total is clamped to the -100 to 100 range.
+Default: `0`
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+
                     <xs:attribute name="groupVolume" type="decibelOrAbsoluteGain">
                         <xs:annotation>
                             <xs:documentation>
@@ -1864,6 +1878,20 @@ Default: `0`
         </xs:sequence>
 
         
+        <xs:attribute name="globalPan" type="panPercentage">
+            <xs:annotation>
+                <xs:documentation>
+A pan position for the instrument as a whole, separate from the `pan` attribute.
+
+`pan` is inherited: setting it on `groups`, on `group` or on a `sample` all set the same
+single pan position for the sample, with the most specific one winning. `globalPan` is an
+additional pan offset that belongs to the instrument. It is added to the sample's pan
+position and to any `groupPan`, and the total is clamped to the -100 to 100 range.
+Default: `0`
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
         <xs:attribute name="globalVolume" type="decibelOrAbsoluteGain">
             <xs:annotation>
                 <xs:documentation>
