@@ -1458,6 +1458,19 @@ A tool tip to display when the user hovers over this label.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
+        <xs:attribute name="outlineColor" type="hexARGB">
+            <xs:annotation><xs:documentation>
+Colour of an outline drawn around the letters, to keep text readable over detailed
+background art. On its own it gives a 1px outline; see outlineWidth. Requires 1.33.0 (0000490).
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="outlineWidth" type="decimalPositive">
+            <xs:annotation><xs:documentation>
+How far, in pixels, the outline extends outside the letters. On its own the outline is
+black. Requires 1.33.0 (0000490).
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
         <xs:attributeGroup ref="textProperties" />
         <xs:attributeGroup ref="widgetGeometry" />
         <xs:attribute name="_index" type="xs:integer">
