@@ -4993,6 +4993,21 @@ The higher the number, the less sensitive the control will be to mouse movements
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
+        <xs:attribute name="fillFrom" default="min">
+            <xs:annotation><xs:documentation>
+Where a linear slider's filled part of the track starts. `min` fills from the minimum end,
+`center` from the middle, which reads correctly for pan and other bipolar controls, and
+`none` shows only the thumb. Requires 1.33.0 (0000492).
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="min" />
+                    <xs:enumeration value="center" />
+                    <xs:enumeration value="none" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+
         <xs:attribute name="reversed" type="xs:boolean" default="false">
             <xs:annotation><xs:documentation>
 Runs the control the other way: the minimum sits at the top of a vertical slider (or the
