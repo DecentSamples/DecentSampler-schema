@@ -115,6 +115,23 @@ Ignored by the engine. Cover art for a library is set in its dslibraryinfo file,
 ================================================================
 -->
 
+    <!-- A tag's voice limit: a positive count, or -1 for no limit (0000452). -->
+    <xs:simpleType name="polyphonyLimit">
+        <xs:union>
+            <xs:simpleType><xs:restriction base="xs:positiveInteger" /></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:integer"><xs:enumeration value="-1" /></xs:restriction></xs:simpleType>
+        </xs:union>
+    </xs:simpleType>
+
+    <!-- A sample position in frames. The engine reads it as an integer, and some exporters write
+         whole numbers with trailing zeros ("0.000"), which it reads correctly (0000452). -->
+    <xs:simpleType name="framePosition">
+        <xs:union>
+            <xs:simpleType><xs:restriction base="xs:nonNegativeInteger" /></xs:simpleType>
+            <xs:simpleType><xs:restriction base="xs:string"><xs:pattern value="[0-9]+\.0+" /></xs:restriction></xs:simpleType>
+        </xs:union>
+    </xs:simpleType>
+
     <xs:complexType name="ui">
         <xs:annotation>
             <xs:documentation>
@@ -1105,6 +1122,7 @@ TODO: `"general"` is not mentioned as a valid value, but is present in multiple 
                 <xs:restriction base="xs:string">
                     <xs:enumeration value="amp" />
                     <xs:enumeration value="control" />
+                    <xs:enumeration value="labeled_knob" />
                     <xs:enumeration value="effect" />
                     <xs:enumeration value="general" />
                     <xs:enumeration value="note" />
@@ -2100,10 +2118,11 @@ Default: `1.0`
                         </xs:annotation>
                     </xs:attribute>
 
-                    <xs:attribute name="polyphony" type="xs:positiveInteger">
+                    <xs:attribute name="polyphony" type="polyphonyLimit">
                         <xs:annotation>
                             <xs:documentation>
-How many voices are allowed for this tag. Leave the attribute off for no limit.
+How many voices are allowed for this tag. Leave the attribute off, or write `-1`, for no limit
+(`-1` is the engine's default and what the Developer's Guide documents).
 
 `0` is not a meaningful voice count - a sound that plays nothing is what `enabled="false"` is for -
 and it used to mean different things depending on where it was set, so it is no longer accepted.
@@ -2409,7 +2428,7 @@ to help identify the zone, and has no effect on playback.
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="start" type="xs:nonNegativeInteger" default="0">
+        <xs:attribute name="start" type="framePosition" default="0">
             <xs:annotation>
                 <xs:documentation>
 The frame/sample position of the start of the sample audio.
@@ -2419,7 +2438,7 @@ Default: `0`
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="end" type="xs:nonNegativeInteger">
+        <xs:attribute name="end" type="framePosition">
             <xs:annotation>
                 <xs:documentation>
 The frame/sample position of the end of the sample audio.
@@ -4547,6 +4566,7 @@ a velocity of `63` (half velocity) yields a gain of `0.5` (half volume), etc.
 `release` means the sample is played when the note off message is received (aka a release trigger).
 `first` means that the sample will only be played if no other notes are playing.
 `legato` means that the sample will only be played if some other notes are already playing.
+`continuous` means that the sample will always play.
 
 This can also be set at the `&lt;group&gt;` level. Default: `attack`.
             </xs:documentation></xs:annotation>
@@ -4556,6 +4576,7 @@ This can also be set at the `&lt;group&gt;` level. Default: `attack`.
                     <xs:enumeration value="release" />
                     <xs:enumeration value="first" />
                     <xs:enumeration value="legato" />
+                    <xs:enumeration value="continuous" />
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
@@ -4716,14 +4737,14 @@ Default: `1`
 <!--=================================-->
 
     <xs:attributeGroup name="loopingGroup">
-        <xs:attribute name="loopStart" type="xs:nonNegativeInteger" default="0">
+        <xs:attribute name="loopStart" type="framePosition" default="0">
             <xs:annotation><xs:documentation>
 The frame/sample position of the start of the sample's loop.
 If this is not specified, but the sample is a wave file with embedded loop markers, those will be used instead.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="loopEnd" type="xs:nonNegativeInteger">
+        <xs:attribute name="loopEnd" type="framePosition">
             <xs:annotation><xs:documentation>
 The frame/sample position of the end of the sample's loop.
 If this is not specified, but the sample is a wave file with embedded loop markers, those will be used instead.
