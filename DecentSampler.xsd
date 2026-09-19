@@ -4980,6 +4980,14 @@ The higher the number, the less sensitive the control will be to mouse movements
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
+        <xs:attribute name="reversed" type="xs:boolean" default="false">
+            <xs:annotation><xs:documentation>
+Runs the control the other way: the minimum sits at the top of a vertical slider (or the
+right of a horizontal one), so dragging down raises the value, as a drawbar does. The thumb,
+the filled part of the track and the drag direction all follow. Requires 1.33.0 (0000478).
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
         <xs:attribute name="valueType" default="float">
             <xs:annotation><xs:documentation>
 There are several possible values for this: `float` which yields numbers with two decimal points,
