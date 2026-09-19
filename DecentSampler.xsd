@@ -964,7 +964,12 @@ In order for your drop-down menu to have options, it must contain `option` eleme
         <xs:attribute name="tags" type="xs:string" />
         <xs:attribute name="visible" type="xs:boolean" default="true" />
         <xs:attribute name="enabled" type="xs:boolean" default="true" />
-        <xs:attribute name="textSize" type="decimalPositive" />
+        <xs:attribute name="textSize" type="decimalPositive">
+            <xs:annotation><xs:documentation>
+The height of the menu's text, for the box and its list. Honoured as of 1.33.0 (0000476);
+earlier versions ignored it and sized the text from the menu's height, capped at 16px.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
         <xs:attribute name="tooltip" type="xs:string" />
 
         <xs:attribute name="placeholderText" type="xs:string">
