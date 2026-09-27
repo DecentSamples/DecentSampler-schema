@@ -4972,7 +4972,13 @@ If no `parameterName` is specified and `label` is specified, then that will be u
 
         <xs:attribute name="style" type="controlStyle" default="rotary_vertical_drag" />
 
-        <xs:attribute name="type" type="xs:string" />
+        <xs:attribute name="type" type="xs:string">
+            <xs:annotation><xs:documentation>
+Deprecated alias for `valueType`, kept so older presets still load. Use `valueType` instead.
+If both are present, `valueType` wins. In 1.33.3 and earlier, a multi-state knob declared with
+`type="multi_state"` showed its states but never fired their bindings (0000408).
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
 
         <xs:attribute name="trackForegroundColor" type="hexARGB" />
         <xs:attribute name="trackBackgroundColor" type="hexARGB" />
