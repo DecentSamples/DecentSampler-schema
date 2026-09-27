@@ -2212,6 +2212,19 @@ Attributes: `damping`, `roomSize`, `wetLevel`
         <xs:attribute name="enabled" type="xs:boolean" />
         <xs:attribute name="levelUnit" type="xs:string" />
         <xs:attribute name="gain" type="xs:double" />
+        <xs:attribute name="gainUnit" default="linear">
+            <xs:annotation><xs:documentation>
+For peak, low_shelf and high_shelf: the unit `gain` is written in, and the unit of FX_FILTER_GAIN
+bindings and modulation on this effect. `linear` (default) is a multiplier, 1.0 being flat;
+`decibels` is a boost or cut in dB, 0 being flat. Requires 1.34.0 (0000421).
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="linear" />
+                    <xs:enumeration value="decibels" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
         <xs:attribute name="q" type="xs:double" />
         <xs:attribute name="delayTimeFormat" type="xs:string" />
         <xs:attribute name="pitchShift" type="xs:double" />
@@ -2241,6 +2254,19 @@ Attributes: `damping`, `roomSize`, `wetLevel`
         <xs:attribute name="enabled" type="xs:boolean" />
         <xs:attribute name="levelUnit" type="xs:string" />
         <xs:attribute name="gain" type="xs:double" />
+        <xs:attribute name="gainUnit" default="linear">
+            <xs:annotation><xs:documentation>
+For peak, low_shelf and high_shelf: the unit `gain` is written in, and the unit of FX_FILTER_GAIN
+bindings and modulation on this effect. `linear` (default) is a multiplier, 1.0 being flat;
+`decibels` is a boost or cut in dB, 0 being flat. Requires 1.34.0 (0000421).
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="linear" />
+                    <xs:enumeration value="decibels" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
         <xs:attribute name="q" type="xs:double" />
         <xs:attribute name="wetLevel" type="xs:double" />
         <xs:attribute name="roomSize" type="xs:double" />
