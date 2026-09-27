@@ -5408,12 +5408,26 @@ For example, if the delayTime is `0.5` seconds and the stereoOffset is `0.02` s,
 <!--=================================-->
 
     <xs:attributeGroup name="effectGainAttributes">
-        <xs:attribute name="level" default="0.7">
+        <xs:attribute name="level">
+            <xs:annotation><xs:documentation>
+The amount of gain. In decibels by default (-100 to 24, optionally written with a "dB" suffix, e.g. -6 or -6dB);
+with levelUnit="linear" it is a multiplier from 0 to 8, 1.0 being unity. Left out, the effect applies
+0.5 linear (about -6 dB).
+            </xs:documentation></xs:annotation>
             <xs:simpleType>
-                <xs:restriction base="xs:double">
-                    <xs:minInclusive value="0.0" />
-                    <xs:maxInclusive value="8.0" />
-                </xs:restriction>
+                <xs:union>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:double">
+                            <xs:minInclusive value="-100.0" />
+                            <xs:maxInclusive value="24.0" />
+                        </xs:restriction>
+                    </xs:simpleType>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value="\s*-?[0-9]+(\.[0-9]+)?\s*dB\s*" />
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:union>
             </xs:simpleType>
         </xs:attribute>
     </xs:attributeGroup>
