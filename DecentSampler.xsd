@@ -2297,7 +2297,9 @@ Specify parameters for each individual bus. Each bus can have its own volume, ou
             <xs:enumeration value="convolution" />
             <xs:enumeration value="delay" />
             <xs:enumeration value="gain" />
+            <xs:enumeration value="high_shelf" />
             <xs:enumeration value="highpass" />
+            <xs:enumeration value="low_shelf" />
             <xs:enumeration value="lowpass" />
             <xs:enumeration value="lowpass_1pl" />
             <xs:enumeration value="lowpass_4pl" />
@@ -2324,7 +2326,9 @@ Specify parameters for each individual bus. Each bus can have its own volume, ou
             <xs:enumeration value="convolution" />
             <xs:enumeration value="delay" />
             <xs:enumeration value="gain" />
+            <xs:enumeration value="high_shelf" />
             <xs:enumeration value="highpass" />
+            <xs:enumeration value="low_shelf" />
             <xs:enumeration value="lowpass" />
             <xs:enumeration value="lowpass_1pl" />
             <xs:enumeration value="lowpass_4pl" />
