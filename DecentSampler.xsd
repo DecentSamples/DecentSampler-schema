@@ -488,10 +488,10 @@ NOTE: In order for this to work, the plugin must be in MPE mode.
             <xs:element name="binding" type="binding" />
         </xs:sequence>
 
-        <xs:attribute name="scope" default="voice">
+        <xs:attribute name="scope" default="global">
             <xs:annotation><xs:documentation>
 Whether or not this MPE timbre exists for all notes or whether each keypress gets its own MPE timbre.
-Possible values are `global` and `voice` (default for MPE timbre).
+Possible values are `global` (the default) and `voice`; set `voice` explicitly for per-note behaviour.
 If `voice` is chosen, a new MPE timbre is started each time a new note is pressed.
             </xs:documentation></xs:annotation>
             <xs:simpleType>
@@ -538,10 +538,10 @@ NOTE: In order for this to work, the plugin must be in MPE mode.
             <xs:element name="binding" type="binding" />
         </xs:sequence>
 
-        <xs:attribute name="scope" default="voice">
+        <xs:attribute name="scope" default="global">
             <xs:annotation><xs:documentation>
 Whether or not this MPE pressure exists for all notes or whether each keypress gets its own MPE pressure.
-Possible values are `global` and `voice` (default for MPE pressure).
+Possible values are `global` (the default) and `voice`; set `voice` explicitly for per-note behaviour.
 If `voice` is chosen, a new MPE pressure is started each time a new note is pressed.
             </xs:documentation></xs:annotation>
             <xs:simpleType>
@@ -982,10 +982,10 @@ Default value: `100` (exponential).
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="scope" default="voice">
+        <xs:attribute name="scope" default="global">
             <xs:annotation><xs:documentation>
 Whether or not this envelope exists for all notes or whether each keypress gets its own envelope.
-Possible values are `global` and `voice` (default for envelopes).
+Possible values are `global` (the default) and `voice`; set `voice` explicitly for per-note behaviour.
 If `voice` is chosen, a new envelope is started each time a new note is pressed.
             </xs:documentation></xs:annotation>
             <xs:simpleType>
