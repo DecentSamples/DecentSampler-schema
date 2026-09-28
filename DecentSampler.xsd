@@ -2632,10 +2632,39 @@ Beneath the `note` element, you can have any number of bindings.
             <xs:element name="binding" type="binding" maxOccurs="unbounded" />
         </xs:sequence>
 
-        <xs:attribute name="note" type="midi7Bit" use="required" />
+        <xs:attribute name="note" use="required">
+            <xs:annotation><xs:documentation>
+The MIDI note (0-127) to listen on, or a range written with a dash, e.g. `24-35`.
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:union memberTypes="midi7Bit">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value="\s*[0-9]{1,3}\s*-\s*[0-9]{1,3}\s*" />
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:union>
+            </xs:simpleType>
+        </xs:attribute>
         <xs:attribute name="enabled" type="xs:boolean" />
         <xs:attribute name="swallowNotes" type="xs:boolean" />
-        <xs:attribute name="eventType" type="xs:string" />
+        <xs:attribute name="eventType" default="any">
+            <xs:annotation><xs:documentation>
+Which note events fire the bindings: `any` (the default), `note_on`, `note_off`, or, from 1.34.0 (0000412),
+`first_note_on`, which fires only when the range goes from no keys held to one, and `last_note_off`, which
+fires only when the last held key in the range is released. The last two count keys, so the sustain pedal
+does not keep a run going.
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="any" />
+                    <xs:enumeration value="note_on" />
+                    <xs:enumeration value="note_off" />
+                    <xs:enumeration value="first_note_on" />
+                    <xs:enumeration value="last_note_off" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
     </xs:complexType>
 
 <!--=================================-->
