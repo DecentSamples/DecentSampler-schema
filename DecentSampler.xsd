@@ -280,7 +280,198 @@ A hex representation of the ARGB color to be used for this key range.
             <xs:element name="envelope" type="modulatorEnvelope" />
             <xs:element name="mpeTimbre" type="modulatorMPETimbre" />
             <xs:element name="mpePressure" type="modulatorMPEPressure" />
+            <xs:element name="midiCC" type="modulatorMidiCC" />
+            <xs:element name="midiVelocity" type="modulatorMidiVelocity" />
+            <xs:element name="random" type="modulatorRandom" />
         </xs:choice>
+    </xs:complexType>
+
+<!--=================================-->
+
+    <xs:complexType name="modulatorMidiCC">
+        <xs:annotation>
+            <xs:documentation>
+The `midiCC` element uses a MIDI Continuous Controller as a modulation source. Unlike a `midi/cc` binding,
+the modulation it applies is temporary and does not change the underlying parameter values.
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="binding" type="binding" />
+        </xs:sequence>
+
+        <xs:attribute name="scope" default="global">
+            <xs:annotation><xs:documentation>
+Whether one modulator serves all notes (`global`, the default) or each note gets its own (`voice`).
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="global" />
+                    <xs:enumeration value="voice" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="modAmount" type="decimalMultiplier" default="1.0">
+            <xs:annotation><xs:documentation>
+How much the modulation affects its targets (the modulation depth), from 0 to 1. Default: 1.0.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="enabled" type="xs:boolean" default="true">
+            <xs:annotation><xs:documentation>
+Whether the modulator is active. When false, everything it modulates goes back to its unmodulated value.
+Bindable with type="modulator" parameter="ENABLED". Requires 1.34.0 (0000418).
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="number" use="required">
+            <xs:annotation><xs:documentation>
+The MIDI CC number to respond to (0-127), e.g. 1 for the mod wheel or 11 for expression.
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:integer">
+                    <xs:minInclusive value="0" />
+                    <xs:maxInclusive value="127" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="channel" default="voice">
+            <xs:annotation><xs:documentation>
+Which MIDI channel's CC values to read: `voice` (the default) reads the channel each note arrived on, which
+is what MPE needs; a number from 1 to 16 always reads that channel.
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:union>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:enumeration value="voice" />
+                        </xs:restriction>
+                    </xs:simpleType>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:integer">
+                            <xs:minInclusive value="1" />
+                            <xs:maxInclusive value="16" />
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:union>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+
+<!--=================================-->
+
+    <xs:complexType name="modulatorMidiVelocity">
+        <xs:annotation>
+            <xs:documentation>
+The `midiVelocity` element uses note-on velocity as a modulation source.
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="binding" type="binding" />
+        </xs:sequence>
+
+        <xs:attribute name="scope" default="global">
+            <xs:annotation><xs:documentation>
+Whether one modulator serves all notes (`global`, the default) or each note keeps its own velocity (`voice`). Per-note velocity modulation needs `voice`.
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="global" />
+                    <xs:enumeration value="voice" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="modAmount" type="decimalMultiplier" default="1.0">
+            <xs:annotation><xs:documentation>
+How much the modulation affects its targets (the modulation depth), from 0 to 1. Default: 1.0.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="enabled" type="xs:boolean" default="true">
+            <xs:annotation><xs:documentation>
+Whether the modulator is active. When false, everything it modulates goes back to its unmodulated value.
+Bindable with type="modulator" parameter="ENABLED". Requires 1.34.0 (0000418).
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+<!--=================================-->
+
+    <xs:complexType name="modulatorRandom">
+        <xs:annotation>
+            <xs:documentation>
+The `random` element generates random values between -1 and 1 as a modulation source.
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="binding" type="binding" />
+        </xs:sequence>
+
+        <xs:attribute name="scope" default="global">
+            <xs:annotation><xs:documentation>
+Whether one modulator serves all notes (`global`, the default) or each note gets its own (`voice`).
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="global" />
+                    <xs:enumeration value="voice" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="modAmount" type="decimalMultiplier" default="1.0">
+            <xs:annotation><xs:documentation>
+How much the modulation affects its targets (the modulation depth), from 0 to 1. Default: 1.0.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="enabled" type="xs:boolean" default="true">
+            <xs:annotation><xs:documentation>
+Whether the modulator is active. When false, everything it modulates goes back to its unmodulated value.
+Bindable with type="modulator" parameter="ENABLED". Requires 1.34.0 (0000418).
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="mode" default="note_on">
+            <xs:annotation><xs:documentation>
+When a new random value is generated: `note_on` (the default) on every note-on, or `periodic` at `frequency`.
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="note_on" />
+                    <xs:enumeration value="periodic" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="frequency" type="decimalPositive" default="10">
+            <xs:annotation><xs:documentation>
+How often, in Hz, a new value is generated in `periodic` mode. Default: 10.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="trigger" default="none">
+            <xs:annotation><xs:documentation>
+`attack` resets the generator on note-on; `none` (the default) does not. Mainly useful in `periodic` mode.
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="attack" />
+                    <xs:enumeration value="none" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="seed" type="xs:integer">
+            <xs:annotation><xs:documentation>
+A seed for the random number generator, for reproducible results.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
     </xs:complexType>
 
 <!--=================================-->
