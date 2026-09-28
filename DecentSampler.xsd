@@ -5419,6 +5419,19 @@ Also used by `stereo_simulator` as its inter-channel delay time (valid range the
             </xs:simpleType>
         </xs:attribute>
 
+        <xs:attribute name="feedbackCutoff" default="22000">
+            <xs:annotation><xs:documentation>
+A low-pass filter inside the delay's feedback loop, in Hz, so each repeat is darker than the last,
+like a tape delay. 22000 (the default) turns it off. Requires 1.34.0 (0000481).
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:double">
+                    <xs:minInclusive value="20" />
+                    <xs:maxInclusive value="22000" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+
         <xs:attribute name="stereoOffset" default="0">
             <xs:annotation><xs:documentation>
 The parameter allows you to introduce delay variations between the left and right channels.
