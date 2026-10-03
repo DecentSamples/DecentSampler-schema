@@ -4834,6 +4834,18 @@ a velocity of `63` (half velocity) yields a gain of `0.5` (half volume), etc.
             </xs:annotation>
         </xs:attribute>
 
+        <xs:attribute name="tuningIgnoresKeyTrack" type="xs:boolean">
+            <xs:annotation>
+                <xs:documentation>
+ Whether tuning still applies when `pitchKeyTrack` is below `1`.
+ Normally tuning is added to the played note before key tracking, so it shrinks along with
+ `pitchKeyTrack` and has no effect at all when `pitchKeyTrack` is `0`. Set this to `true` to
+ apply `globalTuning`, `groupTuning` and `tuning` in full whatever `pitchKeyTrack` is set to.
+ Default: `false`
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
         <xs:attribute name="trigger" default="attack">
             <xs:annotation><xs:documentation>
 `attack` means a sample is played when the note on message is received.
