@@ -2279,6 +2279,13 @@ Default: `1.0`
         <xs:attribute name="globalTuning" type="xs:double" default="0" />
 
         <xs:attributeGroup ref="regionSettings" />
+        <xs:attribute name="loopDuringRelease" type="xs:boolean" default="true">
+            <xs:annotation><xs:documentation>
+Whether a looped sample keeps looping while the note is releasing. `false` makes it leave the loop when
+the note is released and play on through the audio after the loop end. Can also be set on `&lt;group&gt;`
+and `&lt;sample&gt;`. Requires Decent Sampler 1.36.0. Default: `true`
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
         <xs:attribute name="pitchBendRange" type="xs:double" />
         <xs:attribute name="polyphony" type="xs:integer" />
         <xs:attribute name="tuning" type="xs:double" />
@@ -2733,6 +2740,13 @@ Default: `0`
         </xs:attribute>
 
         <xs:attributeGroup ref="regionSettings" />
+        <xs:attribute name="loopDuringRelease" type="xs:boolean" default="true">
+            <xs:annotation><xs:documentation>
+Whether a looped sample keeps looping while the note is releasing. `false` makes it leave the loop when
+the note is released and play on through the audio after the loop end. Can also be set on `&lt;groups&gt;`
+and `&lt;group&gt;`. Requires Decent Sampler 1.36.0. Default: `true`
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
         <xs:attribute name="length" type="xs:double" />
         <xs:attribute name="loopCrossfadeMilliseconds" type="xs:double">
           <xs:annotation><xs:documentation>Ignored by the engine. Written by the Logic EXS24 importer when it converts an instrument; loopCrossfade is the attribute that has an effect.</xs:documentation></xs:annotation>
@@ -4635,8 +4649,10 @@ Range: 1-20000. Default: `160`
         </xs:attribute>
         <xs:attribute name="loopDuringRelease" type="xs:boolean" default="true">
             <xs:annotation><xs:documentation>
-(Only for `waveform="wavetable"` and `waveform="harmonic_snapshot"`) Whether playback keeps looping
-through the frames while the note is releasing. Default: `true`
+Whether playback keeps looping while the note is releasing. On oscillators this applies to
+`waveform="wavetable"` and `waveform="harmonic_snapshot"`. On looped samples (requires Decent Sampler
+1.36.0), `false` makes the sample leave its loop when the note is released and play on through the
+audio after the loop end. Can also be set on `&lt;groups&gt;` and `&lt;sample&gt;`. Default: `true`
             </xs:documentation></xs:annotation>
         </xs:attribute>
         <xs:attribute name="polyphony" type="xs:positiveInteger">
