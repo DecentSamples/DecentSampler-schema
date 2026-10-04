@@ -1079,7 +1079,9 @@ The `&lt;button&gt;` element allows you to create a button within your UI.
 There are two styles of buttons: `text` buttons and `image` buttons.
         </xs:documentation></xs:annotation>
 
-        <xs:sequence minOccurs="1" maxOccurs="unbounded">
+        <!-- No states is allowed: an image button can use its own mainImage/hoverImage/clickImage,
+             for example as a logo with a tooltip. -->
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
             <xs:element name="state" type="buttonState" />
         </xs:sequence>
 
@@ -1677,10 +1679,11 @@ Specifies a positioned text label.
             </xs:documentation>
         </xs:annotation>
 
-        <xs:attribute name="text" type="xs:string" use="required">
+        <xs:attribute name="text" type="xs:string" default="">
             <xs:annotation>
                 <xs:documentation>
-The actual text that should be displayed as part of the label.
+The actual text that should be displayed as part of the label. Optional: it defaults to empty,
+which is useful for a label whose text is set later by a `TEXT` binding.
 A label's text can also be set dynamically using bindings using the `TEXT` binding parameter name.
                 </xs:documentation>
             </xs:annotation>
@@ -2769,11 +2772,11 @@ Within the `midi` element, you can have any number of `cc` elements.
 These allow you to map changes in incoming continuous controller messages to specific parameters of your instrument.
 To use this functionality, you'll want to add a separate `cc` element for each CC number you would like to respond to.
 The `cc` element has a single required attribute `number` which specifies the number (from 0 to 127) of the continuous controller you would like to listen on.
-Beneath the `cc` element, you can have any number of bindings.
+Beneath the `cc` element, you can have any number of bindings, including none.
         </xs:documentation></xs:annotation>
 
         <xs:sequence>
-            <xs:element name="binding" type="binding" maxOccurs="unbounded" />
+            <xs:element name="binding" type="binding" minOccurs="0" maxOccurs="unbounded" />
         </xs:sequence>
 
         <xs:attribute name="number" type="midi7Bit" use="required" />
@@ -2923,6 +2926,18 @@ Oscillators are useful for creating synthetic layers, sub-bass, or completely sy
         <xs:attributeGroup ref="synthesisSettings" />
         <xs:attributeGroup ref="regionSettings" />
 </xs:complexType>
+
+<!--=================================-->
+
+    <xs:simpleType name="midi7BitWholeDecimal">
+        <xs:annotation><xs:documentation>
+A note number written with a zero fraction, such as `60.0`. Decent Sampler's own editor saves some
+note numbers this way, and the engine reads them as whole numbers.
+        </xs:documentation></xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="(\d{1,2}|1[01]\d|12[0-7])\.0+" />
+        </xs:restriction>
+    </xs:simpleType>
 
 <!--=================================-->
 
@@ -3195,8 +3210,9 @@ Do not use absolute paths - they break across OS platforms and users.
 
     <xs:simpleType name="decibelGain">
         <xs:restriction base="xs:string">
-            <!-- A leading + is accepted by the engine (getDoubleValue), and presets use it. -->
-            <xs:pattern value="[+-]?\d+(\.\d*)?([eE][+-]?\d+)?dB"></xs:pattern>
+            <!-- A leading + is accepted by the engine (getDoubleValue), and presets use it.
+                 So are spaces before the unit ("10 dB"): the engine reads the number before "dB". -->
+            <xs:pattern value="[+-]?\d+(\.\d*)?([eE][+-]?\d+)? *dB"></xs:pattern>
         </xs:restriction>
     </xs:simpleType>
 
@@ -3292,7 +3308,7 @@ Default: `0`
     </xs:simpleType>
 
     <xs:simpleType name="noteNameOrNumber">
-        <xs:union memberTypes="midi7Bit humanReadableNoteName" />
+        <xs:union memberTypes="midi7Bit midi7BitWholeDecimal humanReadableNoteName" />
     </xs:simpleType>
 
 <!--=================================-->
