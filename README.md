@@ -74,6 +74,22 @@ Open your `settings.json` [(instructions here)](https://stackoverflow.com/a/6590
 
 An XML Schema Definition (XSD) is a standard way to describe the expected structure of an XML document.
 
+# engine-vocabulary.json
+
+`engine-vocabulary.json` lists the names the Decent Sampler engine actually accepts: binding levels,
+types and parameters, `seqMode` values and note names. It's generated from the engine's source, so
+don't edit it by hand:
+
+```
+tools/generate-engine-vocabulary.py ../DecentSampler   # regenerate from a DecentSampler checkout
+tools/check-xsd-vocabulary.py                          # fails if DecentSampler.xsd disagrees with it
+```
+
+The Decent Samples store's upload validator reads a copy of it, so the store and Decent Sampler's own
+Validate Preset check presets against the same names. Regenerate it, and copy it to the store
+(`store/resources/decentsampler/engine-vocabulary.json`), whenever the engine gains a binding
+parameter, type, level or `seqMode` value.
+
 # Credits
 
 Thanks to David Hilowitz for his exciting DecentSampler project.

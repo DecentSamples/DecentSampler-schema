@@ -3700,6 +3700,7 @@ Default: `0`
 <xs:enumeration value="fx_drive" />
 <xs:enumeration value="fx_drive_boost" />
 <xs:enumeration value="fx_feedback" />
+<xs:enumeration value="fx_feedback_cutoff" />
 <xs:enumeration value="fx_filter_frequency" />
 <xs:enumeration value="fx_filter_gain" />
 <xs:enumeration value="fx_filter_q" />
