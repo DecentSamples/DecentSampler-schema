@@ -63,6 +63,18 @@ SOFTWARE.
                     </xs:restriction>
                 </xs:simpleType>
             </xs:attribute>
+            <xs:attribute name="tuningSclFile" type="relativeFilePath">
+                <xs:annotation><xs:documentation>
+(optional): A relative path to a Scala `.scl` scale file. The instrument plays in that tuning when
+the preset loads, unless the player has chosen a scale of their own in the plugin.
+                </xs:documentation></xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="tuningKbmFile" type="relativeFilePath">
+                <xs:annotation><xs:documentation>
+(optional): A relative path to a Scala `.kbm` keyboard mapping file, used together with
+`tuningSclFile`. As with the scale, a mapping the player has chosen in the plugin takes priority.
+                </xs:documentation></xs:annotation>
+            </xs:attribute>
             <xs:attribute name="minVersion" type="xs:string">
                 <xs:annotation>
                     <xs:documentation>
@@ -171,20 +183,20 @@ After the first time this library is opened, this will get displayed on the “M
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="width" type="xs:double" use="required">
+        <xs:attribute name="width" type="xs:double" default="812">
             <xs:annotation>
                 <xs:documentation>
 The width of your user interface.
-Recommended value: `812`
+Default and recommended value: `812`
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="height" type="xs:double" use="required">
+        <xs:attribute name="height" type="xs:double" default="375">
             <xs:annotation>
                 <xs:documentation>
 The height of your user interface.
-Recommended value: `375`
+Default and recommended value: `375`
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
@@ -219,6 +231,7 @@ As such, every UI must have at most one `tab` element.
             <xs:element name="line" type="line" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="oscilloscope" type="oscilloscope" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="drawbars" type="drawbars" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="xyPad" type="xyPad" minOccurs="0" maxOccurs="unbounded" />
         </xs:choice>
 
         <xs:attribute name="name">
@@ -250,17 +263,17 @@ It's worth noting that colors specified in the `color` elements are overlayed on
 This is done to preserve the readability of the key labels.
                 </xs:documentation></xs:annotation>
                 <xs:complexType>
-                    <xs:attribute name="loNote" type="midi7Bit" use="required">
+                    <xs:attribute name="loNote" type="noteNameOrNumber" use="required">
                         <xs:annotation><xs:documentation>
 The bottom of the range for which this color should be displayed.
                         </xs:documentation></xs:annotation>
                     </xs:attribute>
-                    <xs:attribute name="hiNote" type="midi7Bit" use="required">
+                    <xs:attribute name="hiNote" type="noteNameOrNumber" use="required">
                         <xs:annotation><xs:documentation>
 The top of the range for which this color should be displayed.
                         </xs:documentation></xs:annotation>
                     </xs:attribute>
-                    <xs:attribute name="color" type="hexARGB">
+                    <xs:attribute name="color" type="colorString">
                         <xs:annotation><xs:documentation>
 A hex representation of the ARGB color to be used for this key range.
                         </xs:documentation></xs:annotation>
@@ -269,6 +282,13 @@ A hex representation of the ARGB color to be used for this key range.
                 </xs:complexType>
             </xs:element>
         </xs:sequence>
+        <xs:attribute name="centerNote" type="midi7Bit">
+            <xs:annotation><xs:documentation>
+A MIDI note number (0-127) that the on-screen keyboard should be centered on when the preset loads.
+If omitted, the keyboard centers itself on the lowest and highest mapped notes in the instrument,
+including any keyswitches.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
         <xs:attribute name="x" type="xs:double" />
     </xs:complexType>
 
@@ -614,10 +634,10 @@ The velocity of the note. This is a floating point number between 0 and 1.
                                         </xs:documentation>
                                     </xs:annotation>
                                 </xs:attribute>
-                                <xs:attribute name="note" type="midi7Bit" use="required">
+                                <xs:attribute name="note" type="noteNameOrNumber" use="required">
                                     <xs:annotation>
                                         <xs:documentation>
-The MIDI note number of the note.
+The note to play, as a MIDI note number or a note name such as `C3` (middle C is C3).
                                         </xs:documentation>
                                     </xs:annotation>
                                 </xs:attribute>
@@ -1425,7 +1445,12 @@ See DecentSampler documentation, Appendix D for an example.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="parameter" type="bindingParameterName" use="required" />
+        <xs:attribute name="parameter" type="bindingParameterName">
+            <xs:annotation><xs:documentation>
+The parameter the binding changes. Every binding type needs one except `note_sequence`, which
+starts and stops a sequence and has no parameter.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
 
         <xs:attribute name="tags">
             <xs:annotation><xs:documentation>
@@ -1441,6 +1466,21 @@ explicitly set. Prefer the typed attributes for new presets.
 A comma-separated list of group tags. At level="group", targets all group elements whose tags attribute
 contains any of these tags. This is the explicit, typed form of the group-selection behavior that the
 generic tags attribute has always provided.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="sampleTags" type="xs:string">
+            <xs:annotation><xs:documentation>
+A comma-separated list of sample tags. At level="sample", targets every individual sample element whose
+tags attribute contains any of these tags. At that level a plain tags list is treated the same way.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="oscillatorTags" type="xs:string">
+            <xs:annotation><xs:documentation>
+A comma-separated list of oscillator tags. At level="oscillator", targets every individual oscillator
+element whose tags attribute contains any of these tags. At that level a plain tags list is treated the
+same way.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
@@ -1469,6 +1509,17 @@ address controls by name rather than position.
         </xs:attribute>
 
         <xs:attribute name="translation" default="linear">
+            <xs:simpleType><xs:restriction base="xs:string">
+                <xs:enumeration value="linear" />
+                <xs:enumeration value="table" />
+                <xs:enumeration value="fixed_value" />
+            </xs:restriction></xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="translationType">
+            <xs:annotation><xs:documentation>
+An older spelling of `translation`, still read when `translation` is absent. Prefer `translation`.
+            </xs:documentation></xs:annotation>
             <xs:simpleType><xs:restriction base="xs:string">
                 <xs:enumeration value="linear" />
                 <xs:enumeration value="table" />
@@ -1547,7 +1598,7 @@ Value should be a floating point number from -36 to 36.
             </xs:documentation></xs:annotation>
         </xs:attribute>
         
-        <xs:attribute name="seqTransposeWithRootNote" type="midi7Bit">
+        <xs:attribute name="seqTransposeWithRootNote" type="noteNameOrNumber">
             <xs:annotation><xs:documentation>
 Transpose the notes in the sequence relative to the pitch of the incoming MIDI note.
 This can only be used when the sequence is being triggered by a MIDI note binding.
@@ -1659,7 +1710,7 @@ Default: `center`
             <xs:annotation>
                 <xs:documentation>
 The orientation of the text within the box described by the width and height attributes.
-Valid values: `horizontal`, `vertical_up`, `vertical_down`.
+Valid values: `horizontal`, `vertical_up`, `vertical_down`, and `vertical`, which is the same as `vertical_up`.
 Default is `horizontal`.
                 </xs:documentation>
             </xs:annotation>
@@ -1668,6 +1719,7 @@ Default is `horizontal`.
                     <xs:enumeration value="horizontal" />
                     <xs:enumeration value="vertical_up" />
                     <xs:enumeration value="vertical_down" />
+                    <xs:enumeration value="vertical" />
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
@@ -1691,7 +1743,7 @@ A tool tip to display when the user hovers over this label.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="outlineColor" type="hexARGB">
+        <xs:attribute name="outlineColor" type="colorString">
             <xs:annotation><xs:documentation>
 Colour of an outline drawn around the letters, to keep text readable over detailed
 background art. On its own it gives a 1px outline; see outlineWidth. Requires 1.33.0 (0000490).
@@ -1796,9 +1848,9 @@ The opacity of the animation. This is a floating point value between 0 and 1. De
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="sourceFormat" use="required">
+        <xs:attribute name="sourceFormat" default="vertical_image_strip">
             <xs:annotation><xs:documentation>
-The orientation of the frames within the image strip.
+The orientation of the frames within the image strip. Default: `vertical_image_strip`.
             </xs:documentation></xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
@@ -1814,6 +1866,13 @@ The orientation of the frames within the image strip.
                     </xs:enumeration>
                 </xs:restriction>
             </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="currentFrame" type="xs:nonNegativeInteger" default="0">
+            <xs:annotation><xs:documentation>
+The 0-based frame to show when the preset loads. Values past the last frame show the last frame.
+A binding can change it, which is how a `stopped` animation is stepped from frame to frame.
+            </xs:documentation></xs:annotation>
         </xs:attribute>
 
         <xs:attribute name="playbackMode" default="forward_loop">
@@ -1870,7 +1929,7 @@ All attributes support bindings for dynamic control.
             <xs:element name="binding" type="binding" />
         </xs:sequence>
 
-        <xs:attribute name="fillColor" type="hexARGB">
+        <xs:attribute name="fillColor" type="colorString">
             <xs:annotation>
                 <xs:documentation>
 A hex representation of the ARGB color to be used for the rectangle fill.
@@ -1880,7 +1939,7 @@ Example: `#FF0000FF` is fully opaque blue.
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="borderColor" type="hexARGB">
+        <xs:attribute name="borderColor" type="colorString">
             <xs:annotation>
                 <xs:documentation>
 A hex representation of the ARGB color to be used for the rectangle border.
@@ -1924,7 +1983,7 @@ A tool tip to display when the user hovers over this rectangle.
         </xs:attribute>
 
         <xs:attributeGroup ref="widgetGeometry" />
-        <xs:attribute name="color" type="hexARGB" />
+        <xs:attribute name="color" type="colorString" />
         <xs:attribute name="outlineColor" type="hexARGB" />
     </xs:complexType>
 
@@ -1975,7 +2034,7 @@ The y coordinate of the line's end point, in pixels, where (0,0) is the top-left
             </xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="lineColor" type="hexARGB">
+        <xs:attribute name="lineColor" type="colorString">
             <xs:annotation>
                 <xs:documentation>
 A hex representation of the ARGB color to be used for the line.
@@ -2090,6 +2149,98 @@ its drawbar positions.
         </xs:anyAttribute>
     </xs:complexType>
 
+    <xs:complexType name="xyPad">
+        <xs:annotation>
+            <xs:documentation>
+The `&lt;xyPad&gt;` element creates a two-dimensional pad: in effect two sliders, one for the x-axis
+and one for the y-axis, each running from 0.0 to 1.0. Bindings for each axis go inside its
+`&lt;x&gt;` and `&lt;y&gt;` child elements. A pad also takes up two automation parameters in the host,
+named after `label` (or `parameterName`) with " X" and " Y" added.
+            </xs:documentation>
+        </xs:annotation>
+
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="x" type="xyPadAxis">
+                <xs:annotation><xs:documentation>
+The bindings driven by the pad's horizontal position.
+                </xs:documentation></xs:annotation>
+            </xs:element>
+            <xs:element name="y" type="xyPadAxis">
+                <xs:annotation><xs:documentation>
+The bindings driven by the pad's vertical position.
+                </xs:documentation></xs:annotation>
+            </xs:element>
+        </xs:choice>
+
+        <xs:attributeGroup ref="widgetGeometry" />
+
+        <xs:attribute name="xValue" type="decimalMultiplier" default="0">
+            <xs:annotation><xs:documentation>
+The initial value of the x-axis, from 0 to 1. Default: 0.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="yValue" type="decimalMultiplier" default="0">
+            <xs:annotation><xs:documentation>
+The initial value of the y-axis, from 0 to 1. Default: 0.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="markerDiameter" type="xs:double" default="10">
+            <xs:annotation><xs:documentation>
+The diameter of the marker that moves around the pad, in pixels. Default: 10.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="markerOutlineColor" type="hexARGB">
+            <xs:annotation><xs:documentation>
+The color of the marker's outline.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="markerFillColor" type="hexARGB">
+            <xs:annotation><xs:documentation>
+The color of the marker's fill.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="outlineColor" type="hexARGB">
+            <xs:annotation><xs:documentation>
+The color of the pad's outline.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="bgColor" type="hexARGB">
+            <xs:annotation><xs:documentation>
+The color of the pad's background.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="label" type="xs:string">
+            <xs:annotation><xs:documentation>
+The name the host shows for the pad's two automation parameters, with " X" and " Y" added.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="parameterName" type="xs:string">
+            <xs:annotation><xs:documentation>
+Used for the automation parameter names when `label` is not set.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="tooltip" type="xs:string">
+            <xs:annotation><xs:documentation>
+A tool tip to display when the user hovers over the pad.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="tags" type="xs:string">
+            <xs:annotation><xs:documentation>
+A comma-separated list of tags, so that bindings can address this pad by tag.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="visible" type="xs:boolean" default="true" />
+        <xs:attribute name="enabled" type="xs:boolean" default="true" />
+    </xs:complexType>
+
+    <xs:complexType name="xyPadAxis">
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="binding" type="binding" />
+        </xs:sequence>
+    </xs:complexType>
+
+<!--=================================-->
+
     <xs:complexType name="oscilloscope">
         <xs:annotation>
             <xs:documentation>
@@ -2123,14 +2274,14 @@ The height of the oscilloscope element in pixels.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="backgroundColor" type="hexARGB" default="FF000000">
+        <xs:attribute name="backgroundColor" type="colorString" default="FF000000">
             <xs:annotation><xs:documentation>
 The background fill color of the oscilloscope display.
 Format: `AARRGGBB`. Default: `FF000000` (opaque black).
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="waveColor" type="hexARGB" default="FF00FF00">
+        <xs:attribute name="waveColor" type="colorString" default="FF00FF00">
             <xs:annotation><xs:documentation>
 The color used to draw the waveform line.
 Format: `AARRGGBB`. Default: `FF00FF00` (opaque green).
@@ -2305,7 +2456,7 @@ You only need to create this if you want to specify additional details about you
             </xs:documentation>
         </xs:annotation>
 
-        <xs:sequence maxOccurs="unbounded">
+        <xs:sequence minOccurs="0" maxOccurs="unbounded">
             <xs:element name="tag">
                 <xs:annotation>
                     <xs:documentation>
@@ -2491,6 +2642,11 @@ bindings and modulation on this effect. `linear` (default) is a multiplier, 1.0 
         </xs:attribute>
         <xs:attribute name="q" type="xs:double" />
         <xs:attribute name="wetLevel" type="xs:double" />
+        <xs:attribute name="dryWet" type="decimalMultiplier">
+            <xs:annotation><xs:documentation>
+Another name for `wetLevel` on the `delay` and `reverb` effects, from 0 to 1. Prefer `wetLevel`.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
         <xs:attribute name="roomSize" type="xs:double" />
         <xs:attribute name="damping" type="xs:double" />
         <xs:attribute name="feedback" type="xs:double" />
@@ -2813,6 +2969,182 @@ The first two digits are a hexadecimal representation of alpha level with 00 bei
 
 <!--=================================-->
 
+    <!-- 0000452: the colour attributes of rectangle, line, oscilloscope, label, labeled-knob/control
+         and the keyboard's color ranges are read through the engine's own colour parser, which also
+         takes a six-digit #RRGGBB (made fully opaque) and the standard colour names. Every other
+         colour attribute goes straight to JUCE, where #RRGGBB comes out fully transparent, so those
+         stay hexARGB. -->
+    <xs:simpleType name="colorString">
+        <xs:annotation>
+            <xs:documentation>
+An 8-digit ARGB hex color such as `FF4A90E2`, a 6-digit web color written with a leading `#` such as
+`#4A90E2` (always fully opaque), or a standard color name such as `red` or `lightblue`.
+Without the `#`, six digits are read as ARGB with zero alpha and the color is invisible.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:union memberTypes="hexARGB">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:pattern value="#[0-9a-fA-F]{6}" />
+                </xs:restriction>
+            </xs:simpleType>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="aliceblue" />
+                    <xs:enumeration value="antiquewhite" />
+                    <xs:enumeration value="aqua" />
+                    <xs:enumeration value="aquamarine" />
+                    <xs:enumeration value="azure" />
+                    <xs:enumeration value="beige" />
+                    <xs:enumeration value="bisque" />
+                    <xs:enumeration value="black" />
+                    <xs:enumeration value="blanchedalmond" />
+                    <xs:enumeration value="blue" />
+                    <xs:enumeration value="blueviolet" />
+                    <xs:enumeration value="brown" />
+                    <xs:enumeration value="burlywood" />
+                    <xs:enumeration value="cadetblue" />
+                    <xs:enumeration value="chartreuse" />
+                    <xs:enumeration value="chocolate" />
+                    <xs:enumeration value="coral" />
+                    <xs:enumeration value="cornflowerblue" />
+                    <xs:enumeration value="cornsilk" />
+                    <xs:enumeration value="crimson" />
+                    <xs:enumeration value="cyan" />
+                    <xs:enumeration value="darkblue" />
+                    <xs:enumeration value="darkcyan" />
+                    <xs:enumeration value="darkgoldenrod" />
+                    <xs:enumeration value="darkgray" />
+                    <xs:enumeration value="darkgreen" />
+                    <xs:enumeration value="darkgrey" />
+                    <xs:enumeration value="darkkhaki" />
+                    <xs:enumeration value="darkmagenta" />
+                    <xs:enumeration value="darkolivegreen" />
+                    <xs:enumeration value="darkorange" />
+                    <xs:enumeration value="darkorchid" />
+                    <xs:enumeration value="darkred" />
+                    <xs:enumeration value="darksalmon" />
+                    <xs:enumeration value="darkseagreen" />
+                    <xs:enumeration value="darkslateblue" />
+                    <xs:enumeration value="darkslategray" />
+                    <xs:enumeration value="darkslategrey" />
+                    <xs:enumeration value="darkturquoise" />
+                    <xs:enumeration value="darkviolet" />
+                    <xs:enumeration value="deeppink" />
+                    <xs:enumeration value="deepskyblue" />
+                    <xs:enumeration value="dimgray" />
+                    <xs:enumeration value="dimgrey" />
+                    <xs:enumeration value="dodgerblue" />
+                    <xs:enumeration value="firebrick" />
+                    <xs:enumeration value="floralwhite" />
+                    <xs:enumeration value="forestgreen" />
+                    <xs:enumeration value="fuchsia" />
+                    <xs:enumeration value="gainsboro" />
+                    <xs:enumeration value="ghostwhite" />
+                    <xs:enumeration value="gold" />
+                    <xs:enumeration value="goldenrod" />
+                    <xs:enumeration value="gray" />
+                    <xs:enumeration value="green" />
+                    <xs:enumeration value="greenyellow" />
+                    <xs:enumeration value="grey" />
+                    <xs:enumeration value="honeydew" />
+                    <xs:enumeration value="hotpink" />
+                    <xs:enumeration value="indianred" />
+                    <xs:enumeration value="indigo" />
+                    <xs:enumeration value="ivory" />
+                    <xs:enumeration value="khaki" />
+                    <xs:enumeration value="lavender" />
+                    <xs:enumeration value="lavenderblush" />
+                    <xs:enumeration value="lawngreen" />
+                    <xs:enumeration value="lemonchiffon" />
+                    <xs:enumeration value="lightblue" />
+                    <xs:enumeration value="lightcoral" />
+                    <xs:enumeration value="lightcyan" />
+                    <xs:enumeration value="lightgoldenrodyellow" />
+                    <xs:enumeration value="lightgray" />
+                    <xs:enumeration value="lightgreen" />
+                    <xs:enumeration value="lightgrey" />
+                    <xs:enumeration value="lightpink" />
+                    <xs:enumeration value="lightsalmon" />
+                    <xs:enumeration value="lightseagreen" />
+                    <xs:enumeration value="lightskyblue" />
+                    <xs:enumeration value="lightslategray" />
+                    <xs:enumeration value="lightslategrey" />
+                    <xs:enumeration value="lightsteelblue" />
+                    <xs:enumeration value="lightyellow" />
+                    <xs:enumeration value="lime" />
+                    <xs:enumeration value="limegreen" />
+                    <xs:enumeration value="linen" />
+                    <xs:enumeration value="magenta" />
+                    <xs:enumeration value="maroon" />
+                    <xs:enumeration value="mediumaquamarine" />
+                    <xs:enumeration value="mediumblue" />
+                    <xs:enumeration value="mediumorchid" />
+                    <xs:enumeration value="mediumpurple" />
+                    <xs:enumeration value="mediumseagreen" />
+                    <xs:enumeration value="mediumslateblue" />
+                    <xs:enumeration value="mediumspringgreen" />
+                    <xs:enumeration value="mediumturquoise" />
+                    <xs:enumeration value="mediumvioletred" />
+                    <xs:enumeration value="midnightblue" />
+                    <xs:enumeration value="mintcream" />
+                    <xs:enumeration value="mistyrose" />
+                    <xs:enumeration value="moccasin" />
+                    <xs:enumeration value="navajowhite" />
+                    <xs:enumeration value="navy" />
+                    <xs:enumeration value="oldlace" />
+                    <xs:enumeration value="olive" />
+                    <xs:enumeration value="olivedrab" />
+                    <xs:enumeration value="orange" />
+                    <xs:enumeration value="orangered" />
+                    <xs:enumeration value="orchid" />
+                    <xs:enumeration value="palegoldenrod" />
+                    <xs:enumeration value="palegreen" />
+                    <xs:enumeration value="paleturquoise" />
+                    <xs:enumeration value="palevioletred" />
+                    <xs:enumeration value="papayawhip" />
+                    <xs:enumeration value="peachpuff" />
+                    <xs:enumeration value="peru" />
+                    <xs:enumeration value="pink" />
+                    <xs:enumeration value="plum" />
+                    <xs:enumeration value="powderblue" />
+                    <xs:enumeration value="purple" />
+                    <xs:enumeration value="rebeccapurple" />
+                    <xs:enumeration value="red" />
+                    <xs:enumeration value="rosybrown" />
+                    <xs:enumeration value="royalblue" />
+                    <xs:enumeration value="saddlebrown" />
+                    <xs:enumeration value="salmon" />
+                    <xs:enumeration value="sandybrown" />
+                    <xs:enumeration value="seagreen" />
+                    <xs:enumeration value="seashell" />
+                    <xs:enumeration value="sienna" />
+                    <xs:enumeration value="silver" />
+                    <xs:enumeration value="skyblue" />
+                    <xs:enumeration value="slateblue" />
+                    <xs:enumeration value="slategray" />
+                    <xs:enumeration value="slategrey" />
+                    <xs:enumeration value="snow" />
+                    <xs:enumeration value="springgreen" />
+                    <xs:enumeration value="steelblue" />
+                    <xs:enumeration value="tan" />
+                    <xs:enumeration value="teal" />
+                    <xs:enumeration value="thistle" />
+                    <xs:enumeration value="tomato" />
+                    <xs:enumeration value="turquoise" />
+                    <xs:enumeration value="violet" />
+                    <xs:enumeration value="wheat" />
+                    <xs:enumeration value="white" />
+                    <xs:enumeration value="whitesmoke" />
+                    <xs:enumeration value="yellow" />
+                    <xs:enumeration value="yellowgreen" />
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:union>
+    </xs:simpleType>
+
+<!--=================================-->
+
     <xs:simpleType name="filterResonance">
         <xs:annotation>
             <xs:documentation>
@@ -2950,9 +3282,12 @@ Default: `0`
 
 <!--=================================-->
 
+    <!-- 0000452: what the engine's note-name parser takes. Any case, sharps on C D F G A, flats
+         (b or B) on D E G A B, and octaves -2 to 8 with middle C as C3. E#, Fb and the like are
+         rejected because the engine reads them as -1. -->
     <xs:simpleType name="humanReadableNoteName">
         <xs:restriction base="xs:string">
-            <xs:pattern value="[A-G]#?[0-9]" />
+            <xs:pattern value="([CDFGAcdfga]#|[DEGABdegab][bB]|[A-Ga-g])(-[12]|[0-8])" />
         </xs:restriction>
     </xs:simpleType>
 
@@ -3009,6 +3344,7 @@ Default: `0`
 <xs:enumeration value="FX_DRIVE" />
 <xs:enumeration value="FX_DRIVE_BOOST" />
 <xs:enumeration value="FX_FEEDBACK" />
+<xs:enumeration value="FX_FEEDBACK_CUTOFF" />
 <xs:enumeration value="FX_FILTER_FREQUENCY" />
 <xs:enumeration value="FX_FILTER_GAIN" />
 <xs:enumeration value="FX_FILTER_Q" />
@@ -5192,7 +5528,7 @@ The height of the whole widget, in pixels
 
 <!-- Common attributes for UI text -->
     <xs:attributeGroup name="textProperties">
-        <xs:attribute name="textColor" type="hexARGB" />
+        <xs:attribute name="textColor" type="colorString" />
         <xs:attribute name="textSize" type="xs:integer" default="12">
             <xs:annotation>
                 <xs:documentation>
@@ -5282,8 +5618,8 @@ If both are present, `valueType` wins. In 1.33.3 and earlier, a multi-state knob
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
-        <xs:attribute name="trackForegroundColor" type="hexARGB" />
-        <xs:attribute name="trackBackgroundColor" type="hexARGB" />
+        <xs:attribute name="trackForegroundColor" type="colorString" />
+        <xs:attribute name="trackBackgroundColor" type="colorString" />
 
         <xs:attribute name="customSkinImage" type="relativeFilePath">
             <xs:annotation><xs:documentation>
@@ -5292,6 +5628,13 @@ This is expected to be a JPEG or PNG in KnobMan format.
 A huge gallery of compatible knobs can be found here (https://www.g200kg.com/en/webknobman/gallery.php).
 &lt;hr /&gt;
 If you are using custom knobs, it’s important that you specify a `style=` value of either `custom_skin_vertical_drag`, `custom_skin_horizontal_drag`, or `custom_skin_horizontal_vertical_drag`.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="customSkinHoverImage" type="relativeFilePath">
+            <xs:annotation><xs:documentation>
+An alternate KnobMan-format image shown while the mouse is over the control. It must match
+`customSkinImage` in frame count and orientation.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
@@ -5486,6 +5829,11 @@ Filter cutoff frequency in Hz.
         <xs:attribute name="roomSize" type="decimalMultiplier" default="0.7" />
         <xs:attribute name="damping" type="decimalMultiplier" default="0.3"/>
         <xs:attribute name="wetLevel" type="decimalMultiplier" default="0.5"/>
+        <xs:attribute name="dryWet" type="decimalMultiplier">
+            <xs:annotation><xs:documentation>
+Another name for `wetLevel` on the `delay` and `reverb` effects, from 0 to 1. Prefer `wetLevel`.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
 
     </xs:attributeGroup>
 
@@ -5524,10 +5872,12 @@ Default: `400`
             <xs:annotation><xs:documentation>
 `wave_shaper` and `wave_folder`: The amount of distortion.
 This really just controls the volume of the input signal.
+`wave_shaper` accepts 0 to 1000, so values below 1 turn the input down;
+`wave_folder` limits it to 1 to 100.
             </xs:documentation></xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:double">
-                    <xs:minInclusive value="1.0" />
+                    <xs:minInclusive value="0.0" />
                     <xs:maxInclusive value="1000.0" />
                 </xs:restriction>
             </xs:simpleType>
