@@ -1,8 +1,8 @@
 {
   "about": "Names the Decent Sampler engine accepts, generated from its source by tools/generate-engine-vocabulary.py. Don't edit by hand.",
   "engine": {
-    "version": "1.36.1",
-    "commit": "29ec9da4"
+    "version": "1.36.2",
+    "commit": "dbd8b53e"
   },
   "binding": {
     "levels": [
@@ -355,6 +355,9 @@
       "SHAPE",
       "SILENCING_DECAY",
       "SILENCING_MODE",
+      "SLICE_ENVELOPE",
+      "SLICE_GRID",
+      "SLICE_LOOP_MODE",
       "TAG_ENABLED",
       "TAG_POLYPHONY",
       "TAG_VOLUME",
