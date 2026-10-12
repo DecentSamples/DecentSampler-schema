@@ -7,7 +7,11 @@ Sampler's own Validate Preset reads the same tables directly, so the two can't d
 file is regenerated whenever those tables change.
 
 Usage:
-    tools/generate-engine-vocabulary.py [path/to/DecentSampler]   (default: ../DecentSampler)
+    tools/generate-engine-vocabulary.py [path/to/DecentSampler] [--exclude REGEX ...]
+        (default source: ../DecentSampler)
+
+    --exclude leaves out binding parameters whose name matches REGEX (the whole name, upper
+    case). Use it for parameters that are in the source but not yet released.
 
 It reads these tables, each written one { "name", value } entry per line:
     Source/Models/DSBinding.cpp        kLevelNames, kTypeNames, kParameterMap
@@ -15,6 +19,7 @@ It reads these tables, each written one { "name", value } entry per line:
     Source/Libraries/DSPresetLint.cpp  kParameterAliases, kTypeAliases, kLevelAliases
 """
 
+import argparse
 import json
 import pathlib
 import re
@@ -46,7 +51,14 @@ def pairs(text, start_marker, path):
 
 
 def main():
-    source = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else HERE.parent / "DecentSampler").resolve()
+    parser = argparse.ArgumentParser(description="Generate engine-vocabulary.json from the Decent Sampler source.")
+    parser.add_argument("source", nargs="?", default=str(HERE.parent / "DecentSampler"))
+    parser.add_argument("--exclude", action="append", default=[], metavar="REGEX",
+                        help="leave out binding parameters whose whole name matches REGEX")
+    args = parser.parse_args()
+    excluded = [re.compile(pattern) for pattern in args.exclude]
+
+    source = pathlib.Path(args.source).resolve()
     binding_cpp = source / "Source/Models/DSBinding.cpp"
     helpers_cpp = source / "Source/Utilities/DSHelpers.cpp"
     lint_cpp = source / "Source/Libraries/DSPresetLint.cpp"
@@ -74,7 +86,8 @@ def main():
             "levels": names(binding, "kLevelNames[]", binding_cpp),
             "types": names(binding, "kTypeNames[]", binding_cpp),
             # Upper case: the engine upper-cases the parameter attribute before looking it up.
-            "parameters": sorted(set(names(binding, "kParameterMap {", binding_cpp))),
+            "parameters": sorted(name for name in set(names(binding, "kParameterMap {", binding_cpp))
+                                 if not any(pattern.fullmatch(name) for pattern in excluded)),
         },
         "seqModes": names(helpers, "kSeqModeNames[]", helpers_cpp),
         # Note names parseMIDINote() accepts before the octave number, upper case.
