@@ -2857,6 +2857,8 @@ This is useful for creating dynamic responses based on how hard a note is played
             <xs:annotation>
                 <xs:documentation>
 The relative path of the sample file to play for this zone.
+Supported formats: WAV (`.wav`), AIFF (`.aif`, `.aiff`) and FLAC (`.flac`), and since 1.39.0 ReCycle loops: REX2 (`.rx2`), REX (`.rex`) and ReCycle documents (`.rcy`).
+With `sampleMode="slice_stretch"`, a REX loop's slices, loop points and length in beats come from the file.
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
@@ -5332,7 +5334,7 @@ How the sample is played. `normal` (the default) plays it as usual. `slice_stret
         <xs:attribute name="beats">
             <xs:annotation>
                 <xs:documentation>
-For `sampleMode="slice_stretch"`: the length of the loop in beats (quarter notes). A two-bar loop in 4/4 is `beats="8"`. Takes priority over `originalTempo`. If neither is set, the length is guessed as the power-of-two number of beats that puts the loop's tempo closest to 120 BPM.
+For `sampleMode="slice_stretch"`: the length of the loop in beats (quarter notes). A two-bar loop in 4/4 is `beats="8"`. Takes priority over `originalTempo`. If neither is set, a REX loop (`.rx2`, `.rex`, `.rcy`) uses the length stored in the file; any other sample's length is guessed as the power-of-two number of beats that puts the loop's tempo closest to 120 BPM.
                 </xs:documentation>
             </xs:annotation>
             <xs:simpleType>
@@ -5381,10 +5383,11 @@ For `sampleMode="slice_stretch"`: the note length the loop is sliced into when i
             </xs:simpleType>
         </xs:attribute>
 
-        <xs:attribute name="sliceLoopMode" default="forward">
+        <xs:attribute name="sliceLoopMode">
             <xs:annotation>
                 <xs:documentation>
 For `sampleMode="slice_stretch"`: what fills the gap when a slice ends before the next one is due (at slower tempos, or on notes above the root note).
+Default: `forward`, or `off` for REX loops (`.rx2`, `.rex`, `.rcy`), since 1.39.0.
                 </xs:documentation>
             </xs:annotation>
             <xs:simpleType>
