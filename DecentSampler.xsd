@@ -5313,6 +5313,7 @@ Possible values are `memory`, `disk_streaming`, and `auto` (default).
             <xs:annotation>
                 <xs:documentation>
 How the sample is played. `normal` (the default) plays it as usual. `slice_stretch` plays it as a loop that keeps in time with the host's tempo, like Ableton Live's Beats warp mode: the loop is cut into slices and each slice starts on its own beat at the current tempo. The note sets the pitch of every slice without changing the rhythm. Slice-stretch samples always play from memory. Requires Decent Sampler 1.37.0.
+`slice_keys` plays one slice on each key: the zone's `loNote` plays the first slice, each key up the next, at the slice's original pitch; keys past the last slice are silent. Requires Decent Sampler 1.39.0.
                 </xs:documentation>
             </xs:annotation>
             <xs:simpleType>
@@ -5325,6 +5326,11 @@ How the sample is played. `normal` (the default) plays it as usual. `slice_stret
                     <xs:enumeration value="slice_stretch">
                         <xs:annotation>
                             <xs:documentation>Play the sample as a loop whose slices follow the host's tempo.</xs:documentation>
+                        </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="slice_keys">
+                        <xs:annotation>
+                            <xs:documentation>Play one slice on each key, from the zone's lowest note, at the slices' original pitch.</xs:documentation>
                         </xs:annotation>
                     </xs:enumeration>
                 </xs:restriction>
@@ -5360,7 +5366,7 @@ For `sampleMode="slice_stretch"`: the tempo, in BPM, the loop was recorded at. U
         <xs:attribute name="slices">
             <xs:annotation>
                 <xs:documentation>
-For `sampleMode="slice_stretch"`: where each slice starts, as frame/sample positions in the file separated by spaces (or commas). Example: `slices="0 11025 22050 33075"`. Points outside `start` and `end` are ignored. Without it, slices come from the WAV file's cue points, or else from `sliceGrid`.
+For `sampleMode="slice_stretch"` (and `slice_keys`): where each slice starts, as frame/sample positions in the file separated by spaces (or commas). Example: `slices="0 11025 22050 33075"`. Points outside `start` and `end` are ignored. Without it, slices come from the WAV file's cue points, or else from `sliceGrid`.
                 </xs:documentation>
             </xs:annotation>
             <xs:simpleType>
@@ -5373,7 +5379,7 @@ For `sampleMode="slice_stretch"`: where each slice starts, as frame/sample posit
         <xs:attribute name="sliceGrid" default="1/16">
             <xs:annotation>
                 <xs:documentation>
-For `sampleMode="slice_stretch"`: the note length the loop is sliced into when it has neither `slices` nor cue points, as a fraction of a bar: `1/4`, `1/8`, `1/16` (default), `1/32` and so on.
+For `sampleMode="slice_stretch"` (and `slice_keys`): the note length the loop is sliced into when it has neither `slices` nor cue points, as a fraction of a bar: `1/4`, `1/8`, `1/16` (default), `1/32` and so on.
                 </xs:documentation>
             </xs:annotation>
             <xs:simpleType>
@@ -5414,7 +5420,7 @@ Default: `forward`, or `off` for REX loops (`.rx2`, `.rex`, `.rcy`), since 1.39.
         <xs:attribute name="sliceEnvelope" default="100">
             <xs:annotation>
                 <xs:documentation>
-For `sampleMode="slice_stretch"`: a fade applied to every slice, from 0 to 100. At 100 there is no fade; lower values make each slice die away sooner.
+For `sampleMode="slice_stretch"` (and `slice_keys`): a fade applied to every slice, from 0 to 100. At 100 there is no fade; lower values make each slice die away sooner.
                 </xs:documentation>
             </xs:annotation>
             <xs:simpleType>
