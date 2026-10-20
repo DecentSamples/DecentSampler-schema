@@ -7024,4 +7024,178 @@ The volume of the audio being sent to the sample's eighth output. This is a floa
         </xs:attribute>
     </xs:attributeGroup>
 
+<!--
+================================================================
+    Snapshots (.dssnapshot), DecentSampler 1.39.0 and later
+================================================================
+-->
+    <xs:element name="DecentSamplerSnapshot">
+        <xs:annotation><xs:documentation>
+A snapshot: which preset it belongs to and the positions of that preset's controls, applied over
+the preset when the snapshot is loaded. Saved by File > Save Snapshot..., and can be shipped inside
+a library to offer variations of a preset without copying it.
+        </xs:documentation></xs:annotation>
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="preset" type="snapshotPreset" />
+                <xs:element name="controls" type="snapshotControls" minOccurs="0" />
+                <xs:element name="settings" type="snapshotSettings" minOccurs="0" />
+                <xs:element name="midi" type="snapshotMidi" minOccurs="0" />
+            </xs:all>
+            <xs:attribute name="formatVersion" type="xs:positiveInteger" use="required">
+                <xs:annotation><xs:documentation>
+(required): The snapshot format's version. Always 1 for now.
+                </xs:documentation></xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="name" type="xs:string">
+                <xs:annotation><xs:documentation>
+(optional): The name the snapshot is shown by. Defaults to the file name.
+                </xs:documentation></xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="snapshotPreset">
+        <xs:attribute name="path" type="xs:string" use="required">
+            <xs:annotation><xs:documentation>
+(required): The preset's path, relative to the library's top-level folder (the one with
+DSLibraryInfo.xml, or the .dsbundle folder), or just its file name if the snapshot sits next to it.
+.dspreset and .dsproduct are interchangeable.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="libraryPath" type="xs:string">
+            <xs:annotation><xs:documentation>
+(optional, written by Save Snapshot): The library's folder, so a user's own snapshot finds its preset.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="archive" type="xs:string">
+            <xs:annotation><xs:documentation>
+(optional, written by Save Snapshot): The .dslibrary file the preset is inside, when it is.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="productId" type="xs:positiveInteger">
+            <xs:annotation><xs:documentation>
+(optional, written by Save Snapshot): The store product, so the snapshot finds it wherever it's installed.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="library" type="xs:string">
+            <xs:annotation><xs:documentation>
+(optional): The library's name, used to find it and to tell the user which library a snapshot needs.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="presetName" type="xs:string">
+            <xs:annotation><xs:documentation>
+(optional): The preset's name, shown when it can't be found.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="snapshotControls">
+        <xs:sequence>
+            <xs:element name="control" type="snapshotControl" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="snapshotControl">
+        <xs:annotation><xs:documentation>
+One control's value. A control is found by its position among the first tab's knobs, buttons, menus,
+XY pads and drawbars; if the control there has a different type or label, by the one control with
+this type and label. Values outside the control's range are brought into range.
+        </xs:documentation></xs:annotation>
+        <xs:attribute name="index" type="xs:nonNegativeInteger" use="required">
+            <xs:annotation><xs:documentation>
+(required): The control's position among the first tab's value-holding controls, counting from 0.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="type" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="knob"/>
+                    <xs:enumeration value="button"/>
+                    <xs:enumeration value="menu"/>
+                    <xs:enumeration value="xyPad"/>
+                    <xs:enumeration value="drawbars"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="label" type="xs:string">
+            <xs:annotation><xs:documentation>
+(optional): The control's label, parameterName or name. Lets the snapshot find the control if its position changes.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="value" type="xs:decimal">
+            <xs:annotation><xs:documentation>
+(knob, button, menu): The control's value. For a menu, which option (from 1); for a button, which state.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="xValue" type="xs:decimal" />
+        <xs:attribute name="yValue" type="xs:decimal" />
+        <xs:anyAttribute processContents="lax">
+            <xs:annotation><xs:documentation>
+(drawbars): level1, level2 and so on, one per bar.
+            </xs:documentation></xs:annotation>
+        </xs:anyAttribute>
+    </xs:complexType>
+
+    <xs:complexType name="snapshotSettings">
+        <xs:attribute name="globalTuning" type="xs:decimal">
+            <xs:annotation><xs:documentation>
+(optional): Main Tuning, in semitones (-36 to 36).
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="snapshotMidi">
+        <xs:annotation><xs:documentation>
+The user's MIDI Learn mappings. Ignored in snapshots inside a library.
+        </xs:documentation></xs:annotation>
+        <xs:sequence>
+            <xs:element name="cc" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="binding" type="snapshotBinding" maxOccurs="unbounded" />
+                    </xs:sequence>
+                    <xs:attribute name="number" type="xs:nonNegativeInteger" use="required" />
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="snapshotBinding">
+        <xs:annotation><xs:documentation>
+Only the kinds MIDI Learn makes: a knob's value (level="ui" type="control" parameter="VALUE"
+control="N", where N is the knob's index in controls), or Main Volume / Main Tuning
+(level="instrument" type="amp" parameter="AMP_VOLUME" or "GLOBAL_TUNING").
+        </xs:documentation></xs:annotation>
+        <xs:attribute name="level" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="ui"/>
+                    <xs:enumeration value="instrument"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="type" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="control"/>
+                    <xs:enumeration value="amp"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="parameter" use="required">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="VALUE"/>
+                    <xs:enumeration value="AMP_VOLUME"/>
+                    <xs:enumeration value="GLOBAL_TUNING"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="control" type="xs:nonNegativeInteger" />
+        <xs:attribute name="translation" type="xs:string" />
+        <xs:attribute name="translationOutputMin" type="xs:decimal" />
+        <xs:attribute name="translationOutputMax" type="xs:decimal" />
+    </xs:complexType>
+
 </xs:schema>
