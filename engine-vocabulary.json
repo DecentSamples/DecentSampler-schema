@@ -1,8 +1,8 @@
 {
   "about": "Names the Decent Sampler engine accepts, generated from its source by tools/generate-engine-vocabulary.py. Don't edit by hand.",
   "engine": {
-    "version": "1.39.0",
-    "commit": "0b25b3a6"
+    "version": "1.40.1",
+    "commit": "f6aa3c3a"
   },
   "binding": {
     "levels": [
