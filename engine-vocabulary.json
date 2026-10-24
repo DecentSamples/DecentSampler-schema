@@ -1,8 +1,8 @@
 {
   "about": "Names the Decent Sampler engine accepts, generated from its source by tools/generate-engine-vocabulary.py. Don't edit by hand.",
   "engine": {
-    "version": "1.37.0",
-    "commit": "014ebcf0"
+    "version": "1.39.0",
+    "commit": "0b25b3a6"
   },
   "binding": {
     "levels": [
@@ -56,6 +56,8 @@
       "ENV_ATTACK_CURVE",
       "ENV_DECAY",
       "ENV_DECAY_CURVE",
+      "ENV_DELAY",
+      "ENV_HOLD",
       "ENV_RELEASE",
       "ENV_RELEASE_CURVE",
       "ENV_SUSTAIN",

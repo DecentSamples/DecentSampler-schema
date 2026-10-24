@@ -950,6 +950,20 @@ Bindable with type="modulator" parameter="ENABLED". Requires 1.34.0 (0000418).
 
         <xs:attributeGroup ref="adsrEnvelope" />
 
+        <xs:attribute name="delay" type="decimalPositive" default="0">
+            <xs:annotation><xs:documentation>
+The length in seconds of the envelope's delay stage: after a note starts, the envelope stays at zero for this long before its attack begins.
+Default value: `0` (no delay).
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="hold" type="decimalPositive" default="0">
+            <xs:annotation><xs:documentation>
+The length in seconds of the envelope's hold stage: after the attack, the envelope stays at its peak for this long before its decay begins.
+Default value: `0` (no hold).
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
         <xs:attribute name="modAmount" type="decimalMultiplier" default="1.0">
             <xs:annotation><xs:documentation>
 This value between `0` and `1` controls how much the modulation affects the things it is targeting.
@@ -3350,6 +3364,8 @@ Default: `0`
 <xs:enumeration value="ENV_ATTACK_CURVE" />
 <xs:enumeration value="ENV_DECAY" />
 <xs:enumeration value="ENV_DECAY_CURVE" />
+<xs:enumeration value="ENV_DELAY" />
+<xs:enumeration value="ENV_HOLD" />
 <xs:enumeration value="ENV_RELEASE" />
 <xs:enumeration value="ENV_RELEASE_CURVE" />
 <xs:enumeration value="ENV_SUSTAIN" />
@@ -3693,6 +3709,8 @@ Default: `0`
 <xs:enumeration value="env_attack_curve" />
 <xs:enumeration value="env_decay" />
 <xs:enumeration value="env_decay_curve" />
+<xs:enumeration value="env_delay" />
+<xs:enumeration value="env_hold" />
 <xs:enumeration value="env_release" />
 <xs:enumeration value="env_release_curve" />
 <xs:enumeration value="env_sustain" />
@@ -5268,6 +5286,7 @@ Default: `0.0` (no decay - release samples play at full velocity regardless of n
 
         <xs:attributeGroup ref="adsrEnvelope" />
         <xs:attributeGroup ref="adsrCurveSettings" />
+        <xs:attributeGroup ref="ampEnvelopeStages" />
         <xs:attributeGroup ref="loHiCCGroup" />
         <xs:attributeGroup ref="onLoHiCCTrigger" />
         <xs:attributeGroup ref="roundRobinGroup" />
@@ -5452,6 +5471,48 @@ The height of the sustain portion of the ADSR envelope.
 The length in seconds of the release portion of the ADSR envelope.
                 </xs:documentation>
             </xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+
+<!--=================================-->
+
+    <xs:attributeGroup name="ampEnvelopeStages">
+        <xs:attribute name="ampEnvDelay" type="decimalPositive" default="0">
+            <xs:annotation><xs:documentation>
+The length in seconds of the amp envelope's delay stage: the note starts on time but stays silent for this long before its attack begins, so it fades in partway through the sample. (The `delay` attribute is different: it starts the whole note later.)
+Default value: `0` (no delay).
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="ampEnvHold" type="decimalPositive" default="0">
+            <xs:annotation><xs:documentation>
+The length in seconds of the amp envelope's hold stage: after the attack, the note stays at full level for this long before its decay begins.
+Default value: `0` (no hold).
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="ampEnvAttack" type="decimalPositive">
+            <xs:annotation><xs:documentation>
+Another name for `attack`. If an element has both, `ampEnvAttack` wins.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="ampEnvDecay" type="decimalPositive">
+            <xs:annotation><xs:documentation>
+Another name for `decay`. If an element has both, `ampEnvDecay` wins.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="ampEnvSustain" type="decimalMultiplier">
+            <xs:annotation><xs:documentation>
+Another name for `sustain`. If an element has both, `ampEnvSustain` wins.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="ampEnvRelease" type="xs:double">
+            <xs:annotation><xs:documentation>
+Another name for `release`. If an element has both, `ampEnvRelease` wins.
+            </xs:documentation></xs:annotation>
         </xs:attribute>
     </xs:attributeGroup>
 
