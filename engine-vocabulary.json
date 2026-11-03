@@ -365,6 +365,7 @@
       "TAG_VOLUME",
       "TEXT",
       "TEXT_COLOR",
+      "TRIGGER",
       "VALUE",
       "VALUE_TYPE",
       "VISIBLE",
