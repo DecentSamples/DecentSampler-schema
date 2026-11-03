@@ -895,8 +895,25 @@ Default value: `1.0`.
             <xs:annotation><xs:documentation>
 The time in seconds to wait before the LFO starts outputting signal.
 During this delay period, the LFO outputs zero.
+The delay starts again each time the LFO restarts (see `trigger`), so for a global LFO
+with `trigger="none"` it only happens once, when the preset loads.
 Default value: `0.0` (no delay).
             </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="trigger" default="none">
+            <xs:annotation><xs:documentation>
+Whether a global LFO restarts when a note is played.
+`none` (the default): a global LFO runs continuously and is not affected by new notes.
+`attack`: a global LFO restarts from the beginning of its cycle (and its `delayTime` starts again) on every new note.
+Has no effect when `scope` is `voice`: voice LFOs always start fresh with each note.
+            </xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="attack" />
+                    <xs:enumeration value="none" />
+                </xs:restriction>
+            </xs:simpleType>
         </xs:attribute>
 
         <xs:attribute name="modBehavior" default="set">
