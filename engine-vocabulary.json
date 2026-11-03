@@ -2,7 +2,7 @@
   "about": "Names the Decent Sampler engine accepts, generated from its source by tools/generate-engine-vocabulary.py. Don't edit by hand.",
   "engine": {
     "version": "1.40.1",
-    "commit": "f6aa3c3a"
+    "commit": "386b8270"
   },
   "binding": {
     "levels": [
@@ -102,11 +102,13 @@
       "HEIGHT",
       "HIGHLIGHTED_BACKGROUND_COLOR",
       "HIGHLIGHTED_TEXT_COLOR",
+      "HI_CHANNEL",
       "HI_NOTE",
       "HI_VEL",
       "LEVEL",
       "LOOP_END",
       "LOOP_START",
+      "LO_CHANNEL",
       "LO_NOTE",
       "LO_VEL",
       "MAX_VALUE",
