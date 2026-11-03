@@ -2391,6 +2391,18 @@ Default: `1.0`
                         </xs:annotation>
                     </xs:attribute>
 
+                    <xs:attribute name="transpose" type="transposeSemitones" default="0">
+                        <xs:annotation>
+                            <xs:documentation>
+Transposes this group by a whole number of semitones (-48 to 48), added to `globalTranspose`.
+Unlike `groupTuning`, it plays whichever sample the group has mapped to the shifted note, at that
+sample's own pitch, so `transpose="12"` layered over an untransposed copy plays octaves.
+Positive values sound higher. Not inherited from `&lt;groups&gt;`.
+Default: `0`. Requires Decent Sampler 1.41.0.
+                            </xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+
                     <xs:attribute name="groupTuning" type="xs:double">
                         <xs:annotation>
                             <xs:documentation>
@@ -2446,6 +2458,18 @@ Default: `1.0`
         </xs:attribute>
 
         <xs:attribute name="globalTuning" type="xs:double" default="0" />
+
+        <xs:attribute name="globalTranspose" type="transposeSemitones" default="0">
+            <xs:annotation>
+                <xs:documentation>
+Transposes the whole instrument by a whole number of semitones (-48 to 48). Unlike `globalTuning`,
+it plays whichever sample is mapped to the shifted note, at that sample's own pitch: with
+`globalTranspose="2"`, C3 plays the sample mapped to D3. Positive values sound higher. Keyswitches
+and other `&lt;midi&gt;` note bindings stay on the key actually pressed.
+Default: `0`. Requires Decent Sampler 1.41.0.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
 
         <xs:attributeGroup ref="regionSettings" />
         <xs:attributeGroup ref="sampleModeGroup" />
@@ -3408,7 +3432,9 @@ Default: `0`
 <xs:enumeration value="SLICE_LOOP_MODE" />
 <xs:enumeration value="SLICE_GRID" />
 <xs:enumeration value="GLIDE_TIME" />
+<xs:enumeration value="GLOBAL_TRANSPOSE" />
 <xs:enumeration value="GLOBAL_TUNING" />
+<xs:enumeration value="GROUP_TRANSPOSE" />
 <xs:enumeration value="GROUP_TUNING" />
 <xs:enumeration value="HEIGHT" />
 <xs:enumeration value="HIGHLIGHTED_BACKGROUND_COLOR" />
@@ -3753,7 +3779,9 @@ Default: `0`
 <xs:enumeration value="slice_loop_mode" />
 <xs:enumeration value="slice_grid" />
 <xs:enumeration value="glide_time" />
+<xs:enumeration value="global_transpose" />
 <xs:enumeration value="global_tuning" />
+<xs:enumeration value="group_transpose" />
 <xs:enumeration value="group_tuning" />
 <xs:enumeration value="height" />
 <xs:enumeration value="hi_note" />
@@ -7258,5 +7286,15 @@ control="N", where N is the knob's index in controls), or Main Volume / Main Tun
         <xs:attribute name="translationOutputMin" type="xs:decimal" />
         <xs:attribute name="translationOutputMax" type="xs:decimal" />
     </xs:complexType>
+
+    <xs:simpleType name="transposeSemitones">
+        <xs:annotation>
+            <xs:documentation>Whole semitones, -48 to 48 (globalTranspose, transpose). Larger values are clamped.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="-48" />
+            <xs:maxInclusive value="48" />
+        </xs:restriction>
+    </xs:simpleType>
 
 </xs:schema>
