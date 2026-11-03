@@ -5267,6 +5267,8 @@ This can also be set at the `&lt;group&gt;` level. Default: `attack`.
             <xs:annotation><xs:documentation>
 Controls the volume decay rate for release-triggered samples based on how long the note was held.
 When a release trigger sample plays, its volume decreases based on the time elapsed since the note was initially pressed.
+That time runs until the release sample starts: key-up, or pedal-up if the sustain pedal is down.
+It is measured in audio time, so offline bounces sound the same as real-time playback (before 1.41.0 they had almost no decay).
 
 The value can be specified in two formats:
 
