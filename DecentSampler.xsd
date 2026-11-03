@@ -3408,6 +3408,7 @@ Default: `0`
 <xs:enumeration value="SLICE_LOOP_MODE" />
 <xs:enumeration value="SLICE_GRID" />
 <xs:enumeration value="GLIDE_TIME" />
+<xs:enumeration value="GLIDE_RETRIGGER" />
 <xs:enumeration value="GLOBAL_TUNING" />
 <xs:enumeration value="GROUP_TUNING" />
 <xs:enumeration value="HEIGHT" />
@@ -3753,6 +3754,7 @@ Default: `0`
 <xs:enumeration value="slice_loop_mode" />
 <xs:enumeration value="slice_grid" />
 <xs:enumeration value="glide_time" />
+<xs:enumeration value="glide_retrigger" />
 <xs:enumeration value="global_tuning" />
 <xs:enumeration value="group_tuning" />
 <xs:enumeration value="height" />
@@ -5094,6 +5096,20 @@ slides back from the released note with no new attack (envelopes and LFOs carry 
 the held note starts again at its original velocity. A key held only by the sustain pedal
 does not count. Usually set at the `groups` or `group` level.
 Default: `false`
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="glideRetrigger" type="xs:boolean" default="true">
+            <xs:annotation><xs:documentation>
+For monophonic instruments with glide (a tag with `polyphony="1"`, or an oscillator with
+`polyphony="1"`, and `glideMode` `legato` or `always` with a `glideTime` above 0).
+When `false`, a legato glide to a newly pressed key carries on the note that is already
+sounding instead of starting it again: the pitch glides, and the sample position, amp envelope,
+voice-level envelopes and LFOs keep running, with no new attack. Only when the new key plays the
+same sample (or oscillator); a key that reaches a different zone starts it with its own attack.
+Bindable with parameter="GLIDE_RETRIGGER". Usually set at the `groups` or `group` level.
+Requires Decent Sampler 1.41.0 (0000532).
+Default: `true`
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
