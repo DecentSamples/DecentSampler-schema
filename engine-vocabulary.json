@@ -96,6 +96,7 @@
       "FX_WET_LEVEL",
       "FX_WIDTH",
       "GLIDE_MODE",
+      "GLIDE_RETRIGGER",
       "GLIDE_TIME",
       "GLOBAL_TRANSPOSE",
       "GLOBAL_TUNING",
