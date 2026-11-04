@@ -5339,6 +5339,8 @@ This can also be set at the `&lt;group&gt;` level. Default: `attack`.
             <xs:annotation><xs:documentation>
 Controls the volume decay rate for release-triggered samples based on how long the note was held.
 When a release trigger sample plays, its volume decreases based on the time elapsed since the note was initially pressed.
+That time runs until the release sample starts: key-up, or pedal-up if the sustain pedal is down.
+It is measured in audio time, so offline bounces sound the same as real-time playback (before 1.41.0 they had almost no decay).
 
 The value can be specified in two formats:
 
@@ -5353,6 +5355,37 @@ This is useful for piano pedal-up samples and other release triggers where short
 Can be set at the `&lt;group&gt;`, `&lt;sample&gt;`, or `&lt;groups&gt;` level.
 
 Default: `0.0` (no decay - release samples play at full velocity regardless of note duration)
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="loHoldTime" type="decimalPositive">
+            <xs:annotation><xs:documentation>
+For release-triggered samples (`trigger="release"`) only: the shortest time, in seconds, the key
+must have been held for this sample to play. Use it with `hiHoldTime` to play one release sample
+after short notes and another after long ones, the way `loVel`/`hiVel` work for velocity.
+
+The range includes `loHoldTime` and excludes `hiHoldTime`, so `hiHoldTime="0.5"` on one group and
+`loHoldTime="0.5"` on another never both play.
+
+The hold time runs from key down to key up. With the sustain pedal down, the release sample still
+waits for the pedal, but the choice follows how long the key was held.
+Ignored on samples with any other trigger.
+Can be set at the `&lt;group&gt;`, `&lt;sample&gt;`, or `&lt;groups&gt;` level.
+
+Default: `0`. Requires Decent Sampler 1.41.0.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="hiHoldTime" type="decimalPositive">
+            <xs:annotation><xs:documentation>
+For release-triggered samples (`trigger="release"`) only: this sample plays only if the key was
+held for less than this many seconds. See `loHoldTime`.
+
+The range includes `loHoldTime` and excludes `hiHoldTime`.
+Ignored on samples with any other trigger.
+Can be set at the `&lt;group&gt;`, `&lt;sample&gt;`, or `&lt;groups&gt;` level.
+
+Default: no limit. Requires Decent Sampler 1.41.0.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
