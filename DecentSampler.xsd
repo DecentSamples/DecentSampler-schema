@@ -3005,6 +3005,15 @@ note numbers this way, and the engine reads them as whole numbers.
 
 <!--=================================-->
 
+    <xs:simpleType name="midiChannel">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1" />
+            <xs:maxInclusive value="16" />
+        </xs:restriction>
+    </xs:simpleType>
+
+<!--=================================-->
+
     <xs:simpleType name="curveShape">
         <xs:annotation>
             <xs:documentation>
@@ -3451,11 +3460,13 @@ Default: `0`
 <xs:enumeration value="HEIGHT" />
 <xs:enumeration value="HIGHLIGHTED_BACKGROUND_COLOR" />
 <xs:enumeration value="HIGHLIGHTED_TEXT_COLOR" />
+<xs:enumeration value="HI_CHANNEL" />
 <xs:enumeration value="HI_NOTE" />
 <xs:enumeration value="HI_VEL" />
 <xs:enumeration value="LEVEL" />
 <xs:enumeration value="LOOP_END" />
 <xs:enumeration value="LOOP_START" />
+<xs:enumeration value="LO_CHANNEL" />
 <xs:enumeration value="LO_NOTE" />
 <xs:enumeration value="LO_VEL" />
 <xs:enumeration value="MAX_VALUE" />
@@ -3794,11 +3805,13 @@ Default: `0`
 <xs:enumeration value="global_tuning" />
 <xs:enumeration value="group_tuning" />
 <xs:enumeration value="height" />
+<xs:enumeration value="hi_channel" />
 <xs:enumeration value="hi_note" />
 <xs:enumeration value="hi_vel" />
 <xs:enumeration value="highlighted_background_color" />
 <xs:enumeration value="highlighted_text_color" />
 <xs:enumeration value="level" />
+<xs:enumeration value="lo_channel" />
 <xs:enumeration value="lo_note" />
 <xs:enumeration value="lo_vel" />
 <xs:enumeration value="loop_end" />
@@ -5230,6 +5243,27 @@ Default: `0`
                 <xs:documentation>
 The highest velocity for which this zone should be triggered.
 Default: `127`
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="loChannel" type="midiChannel">
+            <xs:annotation>
+                <xs:documentation>
+The lowest MIDI channel (1 to 16) whose notes trigger this zone. With `hiChannel`, restricts a
+group, sample or oscillator to particular channels, so that channel 1 can play one group and
+channel 2 another. Inherited like `loNote`. Ignored in MPE mode.
+Default: `1`. Requires Decent Sampler 1.41.0.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+
+        <xs:attribute name="hiChannel" type="midiChannel">
+            <xs:annotation>
+                <xs:documentation>
+The highest MIDI channel (1 to 16) whose notes trigger this zone. For a single channel, set
+`loChannel` and `hiChannel` to the same number. Ignored in MPE mode.
+Default: `16`. Requires Decent Sampler 1.41.0.
                 </xs:documentation>
             </xs:annotation>
         </xs:attribute>
