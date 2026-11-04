@@ -1,8 +1,8 @@
 {
   "about": "Names the Decent Sampler engine accepts, generated from its source by tools/generate-engine-vocabulary.py. Don't edit by hand.",
   "engine": {
-    "version": "1.40.1",
-    "commit": "a86cacae"
+    "version": "1.41.0",
+    "commit": "05d6fda0"
   },
   "binding": {
     "levels": [
@@ -105,11 +105,13 @@
       "HEIGHT",
       "HIGHLIGHTED_BACKGROUND_COLOR",
       "HIGHLIGHTED_TEXT_COLOR",
+      "HI_CHANNEL",
       "HI_NOTE",
       "HI_VEL",
       "LEVEL",
       "LOOP_END",
       "LOOP_START",
+      "LO_CHANNEL",
       "LO_NOTE",
       "LO_VEL",
       "MAX_VALUE",
@@ -347,6 +349,7 @@
       "PLAYBACK_MODE",
       "RATE",
       "ROOT_NOTE",
+      "SAMPLE_DELAY",
       "SAMPLE_END",
       "SAMPLE_START",
       "SEQ_FOLLOW_GLOBAL_TEMPO",
