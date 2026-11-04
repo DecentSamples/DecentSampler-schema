@@ -3704,6 +3704,7 @@ Default: `0`
 <xs:enumeration value="PLAYBACK_MODE" />
 <xs:enumeration value="RATE" />
 <xs:enumeration value="ROOT_NOTE" />
+<xs:enumeration value="SAMPLE_DELAY" />
 <xs:enumeration value="SAMPLE_END" />
 <xs:enumeration value="SAMPLE_START" />
 <xs:enumeration value="SEQ_FOLLOW_GLOBAL_TEMPO" />
@@ -4051,6 +4052,7 @@ Default: `0`
 <xs:enumeration value="playback_mode" />
 <xs:enumeration value="rate" />
 <xs:enumeration value="root_note" />
+<xs:enumeration value="sample_delay" />
 <xs:enumeration value="sample_end" />
 <xs:enumeration value="sample_start" />
 <xs:enumeration value="seq_follow_global_tempo" />
@@ -5141,6 +5143,7 @@ Default: `legato`
 The delay time before the sample is triggered.
 This specifies the amount of delay, with the unit determined by the `delayUnit` attribute.
 Can be an integer or float value.
+A control or modulator can change it through the `SAMPLE_DELAY` binding parameter; a modulator changes each note's delay as it starts.
 Default: `0`
             </xs:documentation></xs:annotation>
         </xs:attribute>
