@@ -2,7 +2,7 @@
   "about": "Names the Decent Sampler engine accepts, generated from its source by tools/generate-engine-vocabulary.py. Don't edit by hand.",
   "engine": {
     "version": "1.40.1",
-    "commit": "37dda347"
+    "commit": "a86cacae"
   },
   "binding": {
     "levels": [
@@ -97,7 +97,9 @@
       "FX_WIDTH",
       "GLIDE_MODE",
       "GLIDE_TIME",
+      "GLOBAL_TRANSPOSE",
       "GLOBAL_TUNING",
+      "GROUP_TRANSPOSE",
       "GROUP_TUNING",
       "HEIGHT",
       "HIGHLIGHTED_BACKGROUND_COLOR",
@@ -344,7 +346,6 @@
       "PLAYBACK_MODE",
       "RATE",
       "ROOT_NOTE",
-      "SAMPLE_DELAY",
       "SAMPLE_END",
       "SAMPLE_START",
       "SEQ_FOLLOW_GLOBAL_TEMPO",
