@@ -5166,6 +5166,18 @@ Default: `legato`
             </xs:simpleType>
         </xs:attribute>
 
+        <xs:attribute name="returnToHeldNote" type="xs:boolean" default="false">
+            <xs:annotation><xs:documentation>
+For monophonic instruments (a tag with `polyphony="1"`, or an oscillator with `polyphony="1"`).
+When `true`, releasing the note that is sounding goes back to the most recently pressed key that
+is still held down, the way a mono synth does. If `glideMode` lets the note glide, the sound
+slides back from the released note with no new attack (envelopes and LFOs carry on); otherwise
+the held note starts again at its original velocity. A key held only by the sustain pedal
+does not count. Usually set at the `groups` or `group` level.
+Default: `false`
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
         <xs:attribute name="delay" type="xs:double" default="0">
             <xs:annotation><xs:documentation>
 The delay time before the sample is triggered.
