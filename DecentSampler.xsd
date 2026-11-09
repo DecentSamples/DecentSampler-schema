@@ -3752,6 +3752,7 @@ Default: `0`
 <xs:enumeration value="TAG_VOLUME" />
 <xs:enumeration value="TEXT" />
 <xs:enumeration value="TEXT_COLOR" />
+<xs:enumeration value="TRIGGER" />
 <xs:enumeration value="VALUE" />
 <xs:enumeration value="VALUE_TYPE" />
 <xs:enumeration value="VISIBLE" />
@@ -4103,6 +4104,7 @@ Default: `0`
 <xs:enumeration value="tag_volume" />
 <xs:enumeration value="text" />
 <xs:enumeration value="text_color" />
+<xs:enumeration value="trigger" />
 <xs:enumeration value="value" />
 <xs:enumeration value="value_type" />
 <xs:enumeration value="visible" />
