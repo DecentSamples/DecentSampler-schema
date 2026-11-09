@@ -5499,6 +5499,7 @@ Possible values are `memory`, `disk_streaming`, and `auto` (default).
                 <xs:documentation>
 How the sample is played. `normal` (the default) plays it as usual. `slice_stretch` plays it as a loop that keeps in time with the host's tempo, like Ableton Live's Beats warp mode: the loop is cut into slices and each slice starts on its own beat at the current tempo. The note sets the pitch of every slice without changing the rhythm. Slice-stretch samples always play from memory. Requires Decent Sampler 1.37.0.
 `slice_keys` plays one slice on each key: the zone's `loNote` plays the first slice, each key up the next, at the slice's original pitch; keys past the last slice are silent. Requires Decent Sampler 1.39.0.
+`spectral_stretch` and `solo_stretch` make the key (and everything else that changes pitch) change only the pitch, so the sample plays for its own length on every key, or follows the host's tempo when it has `beats` or `originalTempo`. `spectral_stretch` suits anything; `solo_stretch` is for one pitched voice (a solo instrument or singer) and analyses the sample when it loads, playing as `spectral_stretch` until that's done or if no pitch is found. Both always play from memory. Requires Decent Sampler 1.42.0.
                 </xs:documentation>
             </xs:annotation>
             <xs:simpleType>
@@ -5518,6 +5519,16 @@ How the sample is played. `normal` (the default) plays it as usual. `slice_stret
                             <xs:documentation>Play one slice on each key, from the zone's lowest note, at the slices' original pitch.</xs:documentation>
                         </xs:annotation>
                     </xs:enumeration>
+                    <xs:enumeration value="spectral_stretch">
+                        <xs:annotation>
+                            <xs:documentation>The key changes only the pitch: the sample keeps its length (or follows the tempo). For anything: chords, pads, loops, mixes.</xs:documentation>
+                        </xs:annotation>
+                    </xs:enumeration>
+                    <xs:enumeration value="solo_stretch">
+                        <xs:annotation>
+                            <xs:documentation>The key changes only the pitch, for one pitched voice: keeps its waveform, attack and vibrato. Analysed when the preset loads.</xs:documentation>
+                        </xs:annotation>
+                    </xs:enumeration>
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
@@ -5525,7 +5536,7 @@ How the sample is played. `normal` (the default) plays it as usual. `slice_stret
         <xs:attribute name="beats">
             <xs:annotation>
                 <xs:documentation>
-For `sampleMode="slice_stretch"`: the length of the loop in beats (quarter notes). A two-bar loop in 4/4 is `beats="8"`. Takes priority over `originalTempo`. If neither is set, a REX loop (`.rx2`, `.rex`, `.rcy`) uses the length stored in the file; any other sample's length is guessed as the power-of-two number of beats that puts the loop's tempo closest to 120 BPM.
+For `sampleMode="slice_stretch"`: the length of the loop in beats (quarter notes). A two-bar loop in 4/4 is `beats="8"`. Takes priority over `originalTempo`. If neither is set, a REX loop (`.rx2`, `.rex`, `.rcy`) uses the length stored in the file; any other sample's length is guessed as the power-of-two number of beats that puts the loop's tempo closest to 120 BPM. For `spectral_stretch` and `solo_stretch`: the sample's length in beats, which makes it follow the host's tempo; without `beats` or `originalTempo` (or a REX loop's own length) it keeps its own length, and nothing is guessed.
                 </xs:documentation>
             </xs:annotation>
             <xs:simpleType>
@@ -5538,7 +5549,7 @@ For `sampleMode="slice_stretch"`: the length of the loop in beats (quarter notes
         <xs:attribute name="originalTempo">
             <xs:annotation>
                 <xs:documentation>
-For `sampleMode="slice_stretch"`: the tempo, in BPM, the loop was recorded at. Used to work out the loop's length when `beats` isn't set.
+For `sampleMode="slice_stretch"`, `spectral_stretch` and `solo_stretch`: the tempo, in BPM, the loop was recorded at. Used to work out the loop's length when `beats` isn't set.
                 </xs:documentation>
             </xs:annotation>
             <xs:simpleType>
