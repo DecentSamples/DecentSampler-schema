@@ -1157,6 +1157,12 @@ A value of 0 means that the first state is active.
             </xs:documentation></xs:annotation>
         </xs:attribute>
 
+        <xs:attribute name="controlStyle" type="xs:string">
+            <xs:annotation><xs:documentation>
+The `id` of a `buttonStyle` in the interface's `controlStyles`. The player draws the button from
+that style instead of the usual text or image button. Versions before this was added ignore it.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
         <xs:attributeGroup ref="buttonImageAttributes" />
         <xs:attributeGroup ref="widgetGeometry" />
 
@@ -6016,9 +6022,9 @@ If both are present, `valueType` wins. In 1.33.3 and earlier, a multi-state knob
 
         <xs:attribute name="controlStyle" type="xs:string">
             <xs:annotation><xs:documentation>
-The `id` of a `knobStyle` in the interface's `controlStyles`. The player draws the knob from that
-style instead of the built-in knob or `customSkinImage`. It applies only while `style` is a
-rotary or custom skin style. Versions before this was added ignore it and show the knob's usual
+The `id` of a `knobStyle` or `sliderStyle` in the interface's `controlStyles`. The player draws
+the control from that style instead of its built-in look or `customSkinImage`. A knob style applies
+only while `style` is a rotary or custom skin style; a slider style only while it's a linear one. Versions before this was added ignore it and show the knob's usual
 look, which is why a style can be baked into a `customSkinImage` as a fallback.
             </xs:documentation></xs:annotation>
         </xs:attribute>
@@ -7474,6 +7480,8 @@ names one with its `controlStyle` attribute. Players older than this skip the wh
         </xs:documentation></xs:annotation>
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="knobStyle" type="knobStyle" />
+            <xs:element name="sliderStyle" type="sliderStyle" />
+            <xs:element name="buttonStyle" type="buttonStyle" />
         </xs:choice>
     </xs:complexType>
 
@@ -7698,6 +7706,161 @@ Angles are in degrees, clockwise from 12 o'clock.
         <xs:attribute name="width" type="xs:decimal" default="100" />
         <xs:attribute name="size" type="xs:decimal" default="12" />
         <xs:attribute name="color" type="colorString" />
+    </xs:complexType>
+
+
+    <!-- 0000623: slider and button styles -->
+    <xs:attributeGroup name="boxStyleLayer">
+        <xs:attribute name="opacity" type="xs:decimal" default="1" />
+        <xs:attribute name="show" default="always">
+            <xs:annotation><xs:documentation>`hover`, `notHover` or `pressed`: shown only then.</xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="always"/>
+                    <xs:enumeration value="hover"/>
+                    <xs:enumeration value="notHover"/>
+                    <xs:enumeration value="pressed"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="boxStyleFill">
+        <xs:attribute name="fill" type="colorString" />
+        <xs:attribute name="fill2" type="colorString" />
+        <xs:attribute name="gradient" default="none">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="none"/>
+                    <xs:enumeration value="linear"/>
+                    <xs:enumeration value="radial"/>
+                    <xs:enumeration value="conic"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="gradientAngle" type="xs:decimal" default="180" />
+        <xs:attribute name="sheens" type="xs:positiveInteger" default="4" />
+        <xs:attribute name="grain" type="xs:decimal" default="0" />
+        <xs:attribute name="outlineColor" type="colorString" />
+        <xs:attribute name="outlineWidth" type="xs:decimal" default="0" />
+        <xs:attribute name="radius" type="xs:decimal">
+            <xs:annotation><xs:documentation>Corner radius, in percent of the shape's shorter side: 50 is fully round.</xs:documentation></xs:annotation>
+        </xs:attribute>
+    </xs:attributeGroup>
+
+    <xs:complexType name="sliderStyle">
+        <xs:annotation><xs:documentation>
+A slider look made of layers, drawn in order with the first at the bottom. Sizes are in percent of
+the slider's thickness (its height when horizontal). The design is drawn horizontally, minimum at
+the left; a vertical slider shows it turned, minimum at the bottom. It applies to a `labeled-knob`
+or `control` whose `style` is a linear one.
+        </xs:documentation></xs:annotation>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="track">
+                <xs:annotation><xs:documentation>The groove the full length of the travel.</xs:documentation></xs:annotation>
+                <xs:complexType>
+                    <xs:group ref="knobStyleEffects" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:attributeGroup ref="boxStyleLayer" />
+                    <xs:attributeGroup ref="boxStyleFill" />
+                    <xs:attribute name="thickness" type="xs:decimal" default="30" />
+                    <xs:attribute name="color" type="colorString"><xs:annotation><xs:documentation>Another name for `fill`.</xs:documentation></xs:annotation></xs:attribute>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="fill">
+                <xs:annotation><xs:documentation>The part from where the fill starts (the control's `fillFrom`) to the value.</xs:documentation></xs:annotation>
+                <xs:complexType>
+                    <xs:group ref="knobStyleEffects" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:attributeGroup ref="boxStyleLayer" />
+                    <xs:attributeGroup ref="boxStyleFill" />
+                    <xs:attribute name="thickness" type="xs:decimal" default="30" />
+                    <xs:attribute name="color" type="colorString"><xs:annotation><xs:documentation>Another name for `fill`.</xs:documentation></xs:annotation></xs:attribute>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="ticks">
+                <xs:annotation><xs:documentation>Marks along the travel; with `lit`, those between the start of the fill and the value use `litColor`.</xs:documentation></xs:annotation>
+                <xs:complexType>
+                    <xs:group ref="knobStyleEffects" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:attributeGroup ref="boxStyleLayer" />
+                    <xs:attribute name="count" type="xs:positiveInteger" default="11" />
+                    <xs:attribute name="thickness" type="xs:decimal" default="60" />
+                    <xs:attribute name="width" type="xs:decimal" default="4" />
+                    <xs:attribute name="color" type="colorString" />
+                    <xs:attribute name="lit" type="xs:boolean" default="false" />
+                    <xs:attribute name="litColor" type="colorString" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="thumb">
+                <xs:annotation><xs:documentation>The handle, at the value.</xs:documentation></xs:annotation>
+                <xs:complexType>
+                    <xs:group ref="knobStyleEffects" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:attributeGroup ref="boxStyleLayer" />
+                    <xs:attributeGroup ref="boxStyleFill" />
+                    <xs:attribute name="length" type="xs:decimal" default="20" />
+                    <xs:attribute name="thickness" type="xs:decimal" default="80" />
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute name="id" type="xs:string" use="required" />
+    </xs:complexType>
+
+    <xs:complexType name="buttonStyle">
+        <xs:annotation><xs:documentation>
+A button look made of layers, drawn in order with the first at the bottom. x, y, w and h are in
+percent of the button's width and height; a circle's radius in percent of its shorter side. A
+layer with `state` shows only in those states (numbers from 0, separated by commas).
+        </xs:documentation></xs:annotation>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="rect">
+                <xs:complexType>
+                    <xs:group ref="knobStyleEffects" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:attributeGroup ref="boxStyleLayer" />
+                    <xs:attributeGroup ref="boxStyleFill" />
+                    <xs:attribute name="x" type="xs:decimal" default="0" />
+                    <xs:attribute name="y" type="xs:decimal" default="0" />
+                    <xs:attribute name="w" type="xs:decimal" default="100" />
+                    <xs:attribute name="h" type="xs:decimal" default="100" />
+                    <xs:attribute name="state" type="xs:string" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="circle">
+                <xs:complexType>
+                    <xs:group ref="knobStyleEffects" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:attributeGroup ref="boxStyleLayer" />
+                    <xs:attributeGroup ref="boxStyleFill" />
+                    <xs:attribute name="cx" type="xs:decimal" default="50" />
+                    <xs:attribute name="cy" type="xs:decimal" default="50" />
+                    <xs:attribute name="r" type="xs:decimal" default="40" />
+                    <xs:attribute name="state" type="xs:string" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="text">
+                <xs:complexType>
+                    <xs:group ref="knobStyleEffects" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:attributeGroup ref="boxStyleLayer" />
+                    <xs:attribute name="text" type="xs:string" />
+                    <xs:attribute name="showState" type="xs:boolean" default="false" />
+                    <xs:attribute name="x" type="xs:decimal" default="50" />
+                    <xs:attribute name="y" type="xs:decimal" default="50" />
+                    <xs:attribute name="w" type="xs:decimal" default="100" />
+                    <xs:attribute name="size" type="xs:decimal" default="40" />
+                    <xs:attribute name="color" type="colorString" />
+                    <xs:attribute name="state" type="xs:string" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="image">
+                <xs:complexType>
+                    <xs:group ref="knobStyleEffects" minOccurs="0" maxOccurs="unbounded" />
+                    <xs:attributeGroup ref="boxStyleLayer" />
+                    <xs:attribute name="path" type="relativeFilePath" use="required" />
+                    <xs:attribute name="x" type="xs:decimal" default="0" />
+                    <xs:attribute name="y" type="xs:decimal" default="0" />
+                    <xs:attribute name="w" type="xs:decimal" default="100" />
+                    <xs:attribute name="h" type="xs:decimal" default="100" />
+                    <xs:attribute name="state" type="xs:string" />
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+        <xs:attribute name="id" type="xs:string" use="required" />
     </xs:complexType>
 
 </xs:schema>
