@@ -155,6 +155,7 @@ Each dspreset should have at most one `ui` element.
         <xs:choice maxOccurs="unbounded">
             <xs:element name="tab" type="tab" />
             <xs:element name="keyboard" type="keyboard" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="controlStyles" type="controlStyles" minOccurs="0" maxOccurs="1"/>
         </xs:choice>
 
         <xs:attribute name="bgColor" type="hexARGB">
@@ -6013,6 +6014,15 @@ If both are present, `valueType` wins. In 1.33.3 and earlier, a multi-state knob
         <xs:attribute name="trackForegroundColor" type="colorString" />
         <xs:attribute name="trackBackgroundColor" type="colorString" />
 
+        <xs:attribute name="controlStyle" type="xs:string">
+            <xs:annotation><xs:documentation>
+The `id` of a `knobStyle` in the interface's `controlStyles`. The player draws the knob from that
+style instead of the built-in knob or `customSkinImage`. It applies only while `style` is a
+rotary or custom skin style. Versions before this was added ignore it and show the knob's usual
+look, which is why a style can be baked into a `customSkinImage` as a fallback.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
+
         <xs:attribute name="customSkinImage" type="relativeFilePath">
             <xs:annotation><xs:documentation>
 This is path to an image to use for the control.
@@ -7454,5 +7464,215 @@ control="N", where N is the knob's index in controls), or Main Volume / Main Tun
             <xs:maxInclusive value="48" />
         </xs:restriction>
     </xs:simpleType>
+
+
+    <!-- 0000619: control styles -->
+    <xs:complexType name="controlStyles">
+        <xs:annotation><xs:documentation>
+Looks for controls that the player draws itself, at any size, instead of image strips. A control
+names one with its `controlStyle` attribute. Players older than this skip the whole section.
+        </xs:documentation></xs:annotation>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="knobStyle" type="knobStyle" />
+        </xs:choice>
+    </xs:complexType>
+
+    <xs:complexType name="knobStyle">
+        <xs:annotation><xs:documentation>
+A knob look made of layers, drawn in order with the first at the bottom. Sizes and positions are
+in percent of the knob's square, with its center at 50,50, so a style looks the same at any size.
+Angles are in degrees, clockwise from 12 o'clock.
+        </xs:documentation></xs:annotation>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="circle" type="knobStyleCircle" />
+            <xs:element name="arc" type="knobStyleArc" />
+            <xs:element name="pointer" type="knobStylePointer" />
+            <xs:element name="ticks" type="knobStyleTicks" />
+            <xs:element name="image" type="knobStyleImage" />
+            <xs:element name="text" type="knobStyleText" />
+        </xs:choice>
+        <xs:attribute name="id" type="xs:string" use="required">
+            <xs:annotation><xs:documentation>The name controls use for this style in their `controlStyle` attribute.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="startAngle" type="xs:decimal" default="-135">
+            <xs:annotation><xs:documentation>Where the knob's sweep starts, at its minimum value.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="endAngle" type="xs:decimal" default="135">
+            <xs:annotation><xs:documentation>Where the knob's sweep ends, at its maximum value.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="bakedImage" type="relativeFilePath">
+            <xs:annotation><xs:documentation>The image strip this style was last baked into, for older players.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="bakedFrames" type="xs:positiveInteger">
+            <xs:annotation><xs:documentation>How many frames the baked image strip has.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="bakedHash" type="xs:string">
+            <xs:annotation><xs:documentation>Written when the style is baked, so Validate can tell when the strip is out of date. Don't edit it.</xs:documentation></xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:group name="knobStyleEffects">
+        <xs:choice>
+            <xs:element name="shadow">
+                <xs:annotation><xs:documentation>A drop shadow under the layer.</xs:documentation></xs:annotation>
+                <xs:complexType>
+                    <xs:attribute name="dx" type="xs:decimal" default="0" />
+                    <xs:attribute name="dy" type="xs:decimal" default="2" />
+                    <xs:attribute name="blur" type="xs:decimal" default="3" />
+                    <xs:attribute name="color" type="colorString" default="99000000" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="glow">
+                <xs:annotation><xs:documentation>A soft glow around the layer, for example an LED arc.</xs:documentation></xs:annotation>
+                <xs:complexType>
+                    <xs:attribute name="radius" type="xs:decimal" default="4" />
+                    <xs:attribute name="color" type="colorString" default="CCFFFFFF" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="bevel">
+                <xs:annotation><xs:documentation>Lightens the layer's edge that faces the light and darkens the opposite one, for a raised look.</xs:documentation></xs:annotation>
+                <xs:complexType>
+                    <xs:attribute name="depth" type="xs:decimal" default="2" />
+                    <xs:attribute name="lightAngle" type="xs:decimal" default="-45" />
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:group>
+
+    <xs:attributeGroup name="knobStyleLayer">
+        <xs:attribute name="opacity" type="xs:decimal" default="1" />
+        <xs:attribute name="rotate" type="xs:string">
+            <xs:annotation><xs:documentation>`value` turns the layer with the knob's value, around cx, cy.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="show" default="always">
+            <xs:annotation><xs:documentation>`hover` shows the layer only while the mouse is over the knob; `notHover` only while it isn't.</xs:documentation></xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="always"/>
+                    <xs:enumeration value="hover"/>
+                    <xs:enumeration value="notHover"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="cx" type="xs:decimal" default="50" />
+        <xs:attribute name="cy" type="xs:decimal" default="50" />
+    </xs:attributeGroup>
+
+    <xs:complexType name="knobStyleCircle">
+        <xs:annotation><xs:documentation>A filled disc, with an optional gradient and outline.</xs:documentation></xs:annotation>
+        <xs:group ref="knobStyleEffects" minOccurs="0" maxOccurs="unbounded" />
+        <xs:attributeGroup ref="knobStyleLayer" />
+        <xs:attribute name="r" type="xs:decimal" default="40" />
+        <xs:attribute name="fill" type="colorString" />
+        <xs:attribute name="fill2" type="colorString">
+            <xs:annotation><xs:documentation>The gradient's second color.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="gradient" default="none">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="none"/>
+                    <xs:enumeration value="linear"/>
+                    <xs:enumeration value="radial"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="gradientAngle" type="xs:decimal" default="180">
+            <xs:annotation><xs:documentation>The direction a linear gradient runs from `fill` to `fill2`; 180 is top to bottom.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="outlineColor" type="colorString" />
+        <xs:attribute name="outlineWidth" type="xs:decimal" default="0" />
+    </xs:complexType>
+
+    <xs:complexType name="knobStyleArc">
+        <xs:annotation><xs:documentation>Part of a ring: the whole sweep for a track, or up to the value.</xs:documentation></xs:annotation>
+        <xs:group ref="knobStyleEffects" minOccurs="0" maxOccurs="unbounded" />
+        <xs:attributeGroup ref="knobStyleLayer" />
+        <xs:attribute name="r" type="xs:decimal" default="45" />
+        <xs:attribute name="width" type="xs:decimal" default="4" />
+        <xs:attribute name="color" type="colorString" />
+        <xs:attribute name="from" default="start">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="start"/>
+                    <xs:enumeration value="center"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="to" default="end">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="end"/>
+                    <xs:enumeration value="value"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="cap" default="round">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="round"/>
+                    <xs:enumeration value="butt"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+
+    <xs:complexType name="knobStylePointer">
+        <xs:annotation><xs:documentation>The indicator that turns with the value, from radius r1 out to r2.</xs:documentation></xs:annotation>
+        <xs:group ref="knobStyleEffects" minOccurs="0" maxOccurs="unbounded" />
+        <xs:attributeGroup ref="knobStyleLayer" />
+        <xs:attribute name="shape" default="line">
+            <xs:simpleType>
+                <xs:restriction base="xs:string">
+                    <xs:enumeration value="line"/>
+                    <xs:enumeration value="dot"/>
+                    <xs:enumeration value="triangle"/>
+                    <xs:enumeration value="notch"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="r1" type="xs:decimal" default="10" />
+        <xs:attribute name="r2" type="xs:decimal" default="40" />
+        <xs:attribute name="width" type="xs:decimal" default="4" />
+        <xs:attribute name="color" type="colorString" />
+    </xs:complexType>
+
+    <xs:complexType name="knobStyleTicks">
+        <xs:annotation><xs:documentation>Scale markings spread evenly over the sweep.</xs:documentation></xs:annotation>
+        <xs:group ref="knobStyleEffects" minOccurs="0" maxOccurs="unbounded" />
+        <xs:attributeGroup ref="knobStyleLayer" />
+        <xs:attribute name="count" type="xs:positiveInteger" default="11" />
+        <xs:attribute name="r1" type="xs:decimal" default="44" />
+        <xs:attribute name="r2" type="xs:decimal" default="48" />
+        <xs:attribute name="width" type="xs:decimal" default="1" />
+        <xs:attribute name="color" type="colorString" />
+        <xs:attribute name="lit" type="xs:boolean" default="false">
+            <xs:annotation><xs:documentation>Ticks up to the current value use `litColor`, like an LED ring.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="litColor" type="colorString" />
+    </xs:complexType>
+
+    <xs:complexType name="knobStyleImage">
+        <xs:annotation><xs:documentation>An image from the library, for example a photographed knob cap with `rotate="value"`.</xs:documentation></xs:annotation>
+        <xs:group ref="knobStyleEffects" minOccurs="0" maxOccurs="unbounded" />
+        <xs:attributeGroup ref="knobStyleLayer" />
+        <xs:attribute name="path" type="relativeFilePath" use="required" />
+        <xs:attribute name="x" type="xs:decimal" default="0" />
+        <xs:attribute name="y" type="xs:decimal" default="0" />
+        <xs:attribute name="w" type="xs:decimal" default="100" />
+        <xs:attribute name="h" type="xs:decimal" default="100" />
+    </xs:complexType>
+
+    <xs:complexType name="knobStyleText">
+        <xs:annotation><xs:documentation>Fixed text, or the knob's current value with `showValue`, centered on x, y.</xs:documentation></xs:annotation>
+        <xs:group ref="knobStyleEffects" minOccurs="0" maxOccurs="unbounded" />
+        <xs:attributeGroup ref="knobStyleLayer" />
+        <xs:attribute name="text" type="xs:string" />
+        <xs:attribute name="showValue" type="xs:boolean" default="false" />
+        <xs:attribute name="x" type="xs:decimal" default="50" />
+        <xs:attribute name="y" type="xs:decimal" default="50" />
+        <xs:attribute name="width" type="xs:decimal" default="100" />
+        <xs:attribute name="size" type="xs:decimal" default="12" />
+        <xs:attribute name="color" type="colorString" />
+    </xs:complexType>
 
 </xs:schema>
