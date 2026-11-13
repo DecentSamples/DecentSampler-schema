@@ -7472,6 +7472,9 @@ control="N", where N is the knob's index in controls), or Main Volume / Main Tun
     </xs:simpleType>
 
 
+    <!-- 0000624: a shared styles file's top element -->
+    <xs:element name="controlStyles" type="controlStyles" />
+
     <!-- 0000619: control styles -->
     <xs:complexType name="controlStyles">
         <xs:annotation><xs:documentation>
@@ -7483,6 +7486,13 @@ names one with its `controlStyle` attribute. Players older than this skip the wh
             <xs:element name="sliderStyle" type="sliderStyle" />
             <xs:element name="buttonStyle" type="buttonStyle" />
         </xs:choice>
+        <xs:attribute name="path" type="relativeFilePath">
+            <xs:annotation><xs:documentation>
+A file of styles shared with other presets, relative to the preset: its top element is a
+`controlStyles` of its own. Styles written in the preset are used instead of shared ones with the
+same `id`. Paths inside the shared file (image layers) are relative to that file.
+            </xs:documentation></xs:annotation>
+        </xs:attribute>
     </xs:complexType>
 
     <xs:complexType name="knobStyle">
