@@ -7529,6 +7529,24 @@ Angles are in degrees, clockwise from 12 o'clock.
                     <xs:attribute name="color" type="colorString" default="CCFFFFFF" />
                 </xs:complexType>
             </xs:element>
+            <xs:element name="specular">
+                <xs:annotation><xs:documentation>A soft highlight on the side of the layer the light comes from.</xs:documentation></xs:annotation>
+                <xs:complexType>
+                    <xs:attribute name="lightAngle" type="xs:decimal" default="-45" />
+                    <xs:attribute name="size" type="xs:decimal" default="40" />
+                    <xs:attribute name="strength" type="xs:decimal" default="0.6" />
+                    <xs:attribute name="color" type="colorString" default="FFFFFFFF" />
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="innerShadow">
+                <xs:annotation><xs:documentation>A shadow inside the layer, cast from its edge, as if it were sunk in.</xs:documentation></xs:annotation>
+                <xs:complexType>
+                    <xs:attribute name="dx" type="xs:decimal" default="0" />
+                    <xs:attribute name="dy" type="xs:decimal" default="2" />
+                    <xs:attribute name="blur" type="xs:decimal" default="3" />
+                    <xs:attribute name="color" type="colorString" default="99000000" />
+                </xs:complexType>
+            </xs:element>
             <xs:element name="bevel">
                 <xs:annotation><xs:documentation>Lightens the layer's edge that faces the light and darkens the opposite one, for a raised look.</xs:documentation></xs:annotation>
                 <xs:complexType>
@@ -7573,11 +7591,18 @@ Angles are in degrees, clockwise from 12 o'clock.
                     <xs:enumeration value="none"/>
                     <xs:enumeration value="linear"/>
                     <xs:enumeration value="radial"/>
+                    <xs:enumeration value="conic"/>
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
         <xs:attribute name="gradientAngle" type="xs:decimal" default="180">
-            <xs:annotation><xs:documentation>The direction a linear gradient runs from `fill` to `fill2`; 180 is top to bottom.</xs:documentation></xs:annotation>
+            <xs:annotation><xs:documentation>The direction a linear gradient runs from `fill` to `fill2` (180 is top to bottom); for `conic`, where the first sheen is.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="sheens" type="xs:positiveInteger" default="4">
+            <xs:annotation><xs:documentation>For `gradient="conic"` (brushed metal): how many bright streaks run round the circle.</xs:documentation></xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="grain" type="xs:decimal" default="0">
+            <xs:annotation><xs:documentation>For `gradient="conic"`: fine brushed rings, from 0 (none) to 1.</xs:documentation></xs:annotation>
         </xs:attribute>
         <xs:attribute name="outlineColor" type="colorString" />
         <xs:attribute name="outlineWidth" type="xs:decimal" default="0" />
