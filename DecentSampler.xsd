@@ -7663,13 +7663,14 @@ Angles are in degrees, clockwise from 12 o'clock.
         <xs:annotation><xs:documentation>The indicator that turns with the value, from radius r1 out to r2.</xs:documentation></xs:annotation>
         <xs:group ref="knobStyleEffects" minOccurs="0" maxOccurs="unbounded" />
         <xs:attributeGroup ref="knobStyleLayer" />
-        <xs:attribute name="shape" default="line">
+        <xs:attribute name="shape" default="rounded">
+            <xs:annotation><xs:documentation>rounded and square: a bar with rounded or square ends. dot: a dot halfway between r1 and r2. triangle: pointing out, its base at r1.</xs:documentation></xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
-                    <xs:enumeration value="line"/>
+                    <xs:enumeration value="rounded"/>
+                    <xs:enumeration value="square"/>
                     <xs:enumeration value="dot"/>
                     <xs:enumeration value="triangle"/>
-                    <xs:enumeration value="notch"/>
                 </xs:restriction>
             </xs:simpleType>
         </xs:attribute>
